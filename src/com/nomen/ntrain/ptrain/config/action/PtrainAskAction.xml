@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_每日三问
+@author 林木山
+@date 2014-3-24
+-->
+<struts>
+    <package name="PtrainAsk" extends="nsoft-ic" namespace="/Ptrain/Ask">
+		<!-- =============Jquery================== -->
+		<!-- 查找每日三问 出题轮次 每日出题次数 -->
+    	<action name="findPtrainAskPushnumByJq" class="ptrainAskAction" method="findPtrainAskPushnumByJq"></action>
+		<!-- 查找每日三问 题目列表 -->
+    	<action name="findPtrainAskitemListByJq" class="ptrainAskAction" method="findPtrainAskitemListByJq"></action>
+		<!-- 每日三问 主表记录[删除] -->
+    	<action name="deletePtrainAskByJq" class="ptrainAskAction" method="deletePtrainAskByJq"></action>
+
+
+
+		<!-- 莆田岗位培训_每日三问 三问答题 列表信息 -->
+    	<action name="listptrainask" class="ptrainAskAction" method="listPtrainAsk">
+    		<result name="gotoAsk">/Ptrain/Study/Answ_Oper_List.jsp</result>
+    		<result name="gotoQuery">/Ptrain/Study/Answ_Quser_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_每日三问 新增/修改[保存]-->
+    	<action name="saveptrainaskitem" class="ptrainAskAction" method="savePtrainAskitem">
+    		<result name="gotoAsk">/Ptrain/Study/Answ_Oper_List.jsp</result>
+    		<result name="gotoQuery">/Ptrain/Study/Answ_Quser_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_每日三问 个人查询  列表信息 -->
+    	<action name="listptrainaskquery" class="ptrainAskAction" method="listPtrainAskQuery">
+    		<result name="success">/Ptrain/Study/Answ_Quser_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_每日三问 个人查询  详细页面[弹出] -->
+    	<action name="setptrainaskitemwin" class="ptrainAskAction" method="setPtrainAskitemWin">
+    		<result name="success">/Ptrain/Study/Answ_Quser_Win.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_每日三问 试题浏览  列表信息 -->
+    	<action name="listptrainaskskim" class="ptrainAskAction" method="listPtrainAskSkim">
+    		<result name="success">/Ptrain/Study/Exp_Quser_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_每日三问 试题浏览 Excel导出 -->
+    	<action name="saveptrainaskskimexpexcel" class="ptrainAskAction" method="savePtrainAskSkimExpExcel"></action>
+		
+		
+		<!-- =============查询统计相关================== -->
+		<!-- 查询统计_每日三问情况_应用统计 Excel导出 -->
+    	<action name="saveptrainaskappstatexpexcel" class="ptrainAskAction" method="savePtrainAskAppStatExpExcel"></action>
+		
+		<!-- 查询统计_每日三问情况_应用统计 答题人员 Excel导出 -->
+    	<action name="saveptrainaskuserexpexcel" class="ptrainAskAction" method="savePtrainAskUserExpExcel"></action>
+    	
+		<!-- 查询统计_每日三问情况_英雄榜单 Excel导出 -->
+    	<action name="saveptrainaskrankexpexcel" class="ptrainAskAction" method="savePtrainAskRankExpExcel"></action>
+		
+		<!-- =============查询统计相关 [修改后]================== -->
+		<!-- 查询统计_每日三问 [页面跳转] -->
+		<action name="toforwardqueryask" class="ptrainAskAction" method="toForwardQueryAsk">
+    		<result name="success">/Ptrain/Query/Answ_Stat_List.jsp</result>
+		</action>
+		
+		<!-- 查询统计_每日三问情况_应用统计 列表信息 -->
+    	<action name="listptrainaskappstat" class="ptrainAskAction" method="listPtrainAskAppStat"></action>
+		
+		<!-- 查询统计_每日三问情况_应用统计 答题人员[弹出] -->
+    	<action name="toforwardqueryaskuserwin" class="ptrainAskAction" method="toForwardQueryAskUserWin">
+    		<result name="success">/Ptrain/Query/Answ_Stat_Win.jsp</result>
+		</action>
+		
+		<!-- 查询统计_每日三问情况_应用统计 答题人员[列表数据] -->
+    	<action name="setptrainaskuserwin" class="ptrainAskAction" method="setPtrainAskUserWin"></action>
+		
+		<!-- 查询统计_每日三问情况_英雄榜单 列表信息[弹出] -->
+    	<action name="toforwardqueryaskrank" class="ptrainAskAction" method="toForwardQueryAskRank">
+    		<result name="success">/Ptrain/Query/Answ_Rank_List.jsp</result>
+		</action>
+		
+		<!-- 查询统计_每日三问情况_英雄榜单 列表信息 -->
+    	<action name="listptrainaskrank" class="ptrainAskAction" method="listPtrainAskRank"></action>
+		
+	</package>
+</struts>
+

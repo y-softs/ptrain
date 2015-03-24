@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_资源表
+@author 许东雄
+@date 2014-11-15
+-->
+<sqlMap namespace="webContent">
+	<typeAlias alias="ptrainContentBean" type="com.nomen.ntrain.ptrain.bean.PtrainContentBean"/>
+
+	<!-- 资源列表 -->
+	<select id="findPtrainContentList" resultClass="ptrainContentBean" parameterClass="map">
+		select 
+			id,unitid,title,to_char(estatime,'yyyy-MM-dd HH24:mi:ss') estatime from 
+		ptrain_content
+		where flowsta=99 and usesign=1
+		<isNotEmpty prepend="and" property="kind">
+			kind = #kind#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			((title like '%' || #keyword# || '%' ) or (content like '%' || #keyword# || '%'))
+		</isNotEmpty>
+		order by sortnum
+	</select>
+	<!-- Bean查询 -->
+	<select id="findPtrainContentBean" resultClass="ptrainContentBean" parameterClass="string">
+		select id, unitid, kind, typeid, title, content,flowsta,usesign, sortnum from ptrain_content where id = #value#
+	</select>
+	
+</sqlMap>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_知识学习
+@author 许东雄
+@date 2014-3-24
+-->
+<sqlMap namespace="webBbs">
+	<typeAlias alias="ptrainBbsBean" type="com.nomen.ntrain.ptrain.bean.PtrainBbsBean"/>
+
+	<!-- 查找莆田岗位培训_知识学习列表信息 -->
+	<select id="findPtrainBbsList" resultClass="ptrainBbsBean" parameterClass="map">
+		select 
+			id,kind,title,content,browse,downnum,anssign,evasign,estauser,to_char(estatime,'yyyy-mm-dd') estatime,
+			/*获取回复数*/
+			(select count(*) from ptrain_bbs p where p.fatherid = b.id) intflag,
+			/* 专业类别 */
+			(select codename from ptrain_code c where c.id = b.specid) strflag,
+			/* 版主人员 */
+			(select managers from ptrain_manager m where m.kpid = b.specid) management,
+			/* 点赞 */
+			(select count(*) from ptrain_nicelog n where n.bbsid = b.id) nice
+		 from ptrain_bbs b where 1=1
+		<!-- 帖子类别（1常规帖，0资源共享帖） -->
+		<isNotEmpty prepend="and" property="kind">
+			kind = #kind#
+		</isNotEmpty>
+		<!-- 专业类别 -->
+		<isNotEmpty prepend="and" property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<!-- 待回答 -->
+		<isNotEmpty prepend="and" property="anssign">
+			anssign = #anssign#
+		</isNotEmpty>
+		<!-- 待评价 -->
+		<isNotEmpty prepend="and" property="evasign">
+			evasign is null
+		</isNotEmpty>
+		<!-- 我的帖子 -->
+		<isNotEmpty prepend="and" property="showsign">
+			estauser = #userid#
+		</isNotEmpty>		
+		<isNotEmpty prepend="and" property="keyword">		
+			((title like '%' || #keyword# || '%' ) or (content like '%' || #keyword# || '%'))
+		</isNotEmpty>
+		<!-- 父ID -->
+		<isNotEmpty prepend="and" property="fatherid">
+			fatherid = #fatherid#
+		</isNotEmpty>
+		order by estatime desc
+	</select>
+	
+	<!-- 主帖互动记录 列表 -->
+	<select id="findPtrainBbsChildList" resultClass="ptrainBbsBean" parameterClass="map">
+		select 
+			id,content,to_char(estatime,'yyyy-MM-dd HH24:mi:ss') estatime,
+			(select username from tb_data_user u where u.id = b.estauser) estauser	
+		 from ptrain_bbs b where 1=1
+		<!-- 主贴ID-->
+		<isNotEmpty prepend="and" property="fatherid">
+			fatherid = #fatherid#
+		</isNotEmpty>
+		order by estatime desc
+	</select>
+	<!-- 查找莆田岗位培训_知识学习信息 -->
+	<select id="findPtrainBbsBeanById" resultClass="ptrainBbsBean" parameterClass="string">
+		select 
+			id,unitid,fatherid,specid,kind,title,content,browse,nvl(downnum,0) downnum,anssign,expans,evasign
+		from ptrain_bbs b where id=#value#
+	</select>
+	<!-- Map Bean 查询 -->
+	<select id="findPtrainBbsBeanByMap" resultClass="ptrainBbsBean" parameterClass="map">
+		select 
+			id,unitid,fatherid,specid,kind,title,content,browse,nvl(downnum,0) downnum,anssign,expans,evasign,
+			to_char(estatime,'yyyy-MM-dd HH24:mi:ss') estatime,
+			(select username from tb_data_user u where u.id = b.estauser) estauser,
+			to_char(maintime,'yyyy-MM-dd HH24:mi:ss') maintime,
+			(select username from tb_data_user u where u.id = b.mainuser) mainuser,
+			/*获取回复数*/
+			(select count(*) from ptrain_bbs p where p.fatherid = b.id) intflag,
+			/* 专业类别 */
+			(select codename from ptrain_code c where c.id = b.specid) strflag,
+	      	/*登录人是否已点赞*/
+	      	(select count(*) from ptrain_nicelog n where n.bbsid = b.id and userid = $userid$) nice,
+	      	/*点赞数*/
+	      	(select count(*) from ptrain_nicelog n where n.bbsid = b.id) nicecount
+		from ptrain_bbs b where id=#id#
+	</select>
+	<!-- 添加莆田岗位培训_知识学习信息 -->
+	<insert id="insertPtrainBbs" parameterClass="ptrainBbsBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_bbs.nextval as id from dual
+		</selectKey>
+		insert into ptrain_bbs
+		  (id,unitid,fatherid,specid,kind,title,content,nice,browse,downnum,anssign,expans,evasign,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#fatherid#,#specid#,#kind#,#title#,#content#,default,default,#downnum#,#anssign#,#expans#,#evasign#,#estauser#,to_date(to_char(sysdate,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss'),#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+	<!-- 添加 回复 Jq -->
+	<insert id="insertPtrainBbsByJq" parameterClass="ptrainBbsBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_bbs.nextval as id from dual
+		</selectKey>
+		insert into ptrain_bbs
+		  (id,unitid,fatherid,content,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#fatherid#,#content#,#estauser#,to_date(to_char(sysdate,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss'),#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert>
+	<!-- 动态 添加语句 -->
+	<insert id="insertPtrainNicelog" parameterClass="string" >
+		$isql$
+	</insert>  
+	<!-- 更新莆田岗位培训_知识学习信息 -->
+	<update id="updatePtrainBbs" parameterClass="ptrainBbsBean">
+		update ptrain_bbs set 
+		<isNotEmpty property="specid">specid = #specid#,</isNotEmpty>
+		<isNotEmpty property="kind">kind = #kind#,</isNotEmpty>
+		<isNotEmpty property="title">title = #title#,</isNotEmpty>
+		<isNotEmpty property="content">content = #content#,</isNotEmpty>
+		<isNotEmpty property="nice">nice = #nice#,</isNotEmpty>
+		<isNotEmpty property="browse">browse = #browse#,</isNotEmpty>
+		<isNotEmpty property="anssign">anssign = #anssign#,</isNotEmpty>
+		<isNotEmpty property="expans">expans = #expans#,</isNotEmpty>
+		<isNotEmpty property="evasign">evasign = #evasign#,</isNotEmpty>
+		mainuser = #mainuser#,
+		maintime = to_date(to_char(sysdate,'yyyy-MM-dd HH24:mi:ss'),'yyyy-MM-dd HH24:mi:ss')
+		where  id = #id#
+	</update>
+	<!-- 动态更新 SQL语句 -->
+	<update id="updateDynamicSQL" parameterClass="string">
+		$usql$
+	</update>
+	<!-- 删除莆田岗位培训_知识学习信息 -->
+	<delete id="deletePtrainBbsById" parameterClass="string">
+		delete ptrain_bbs where id in (
+						select id from ptrain_bbs b start with id = #id# connect by prior id = fatherid
+						)
+	</delete>
+	<!-- 根据帖子ID删除记录 -->
+	<delete id="deletePtrainNicelogByBbsId" parameterClass="string">
+		delete ptrain_nicelog where bbsid = #value#
+	</delete>
+</sqlMap>

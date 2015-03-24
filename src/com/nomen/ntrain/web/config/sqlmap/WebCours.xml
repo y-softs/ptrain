@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_课件资源表
+@author 许东雄
+@date 2014-11-16
+-->
+<sqlMap namespace="webCours">
+	<typeAlias alias="ptrainCoursBean" type="com.nomen.ntrain.ptrain.bean.PtrainCoursBean"/>
+
+	<!-- 查找莆田岗位培训_课件资源表列表信息 -->
+	<select id="findPtrainCoursList" resultClass="ptrainCoursBean" parameterClass="map">
+		select  
+			id,title,time,
+			(select max(savepath)||max(savename)   from ptrain_file f where f.recid= c.id and modsign=4) strflag
+		from ptrain_cours c
+		where flowsta=99
+		<isNotEmpty prepend="and" property="typeid">
+			typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		order by id
+	</select>
+	<!-- 目录列表 -->
+	<select id="findPtrainCoursChilList" resultClass="ptrainCoursBean" parameterClass="map">
+		select 
+		  id,title,endsign,level intflag
+		from ptrain_cours 
+			start with fatherid = #fatherid#
+			connect by prior id = fatherid
+		order siblings by id		
+	</select>
+	<!-- 查找莆田岗位培训_课件资源表信息 -->
+	<select id="findPtrainCoursBeanById" resultClass="ptrainCoursBean" parameterClass="string">
+		select 
+			id,typeid,fatherid,title,content,object,hour,time,fileid,endsign,
+			(select savepath from  ptrain_file f where f.id = c.fileid) savepath,		
+      		(select savename from  ptrain_file f where f.id = c.fileid) filename,		
+      		(select savepath||savename from  ptrain_file f where f.id = c.fileid) strflag,
+      		(select max(savepath) || max(savename) from  ptrain_file f where f.recid = c.id and modsign=2) intflag
+		from ptrain_cours c where id=#value#
+	</select>
+
+</sqlMap>

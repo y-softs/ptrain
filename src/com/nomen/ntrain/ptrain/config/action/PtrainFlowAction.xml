@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位学习_审核流程
+@author 林木山
+@date 2014-3-14
+-->
+<struts>
+    <package name="PtrainFlow" extends="nsoft-ic" namespace="/Ptrain/Flow">
+
+		<!-- 莆田岗位学习_审核流程 列表信息 -->
+    	<action name="toforwardptrainflow" class="ptrainFlowAction" method="toForwardPtrainflow">
+    		<result name="success">/Ptrain/Request/Conte_User_Win1.jsp</result>
+    	</action>
+		
+    	<action name="listptrainflow" class="ptrainFlowAction" method="listPtrainFlow">
+		</action>
+	</package>
+</struts>
+

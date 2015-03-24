@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	@description 莆田岗位培训管理系统 [前台]
+	@author 许东雄
+	@date 2014-11-13
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<bean id="webLoginAction" class="com.nomen.ntrain.web.action.LoginAction" scope="prototype"> 
+	    <property name="loginService" ref="loginService" />
+	</bean>
+	<!-- 知识学习 -->
+	<bean id="webBbsDAO" class="com.nomen.ntrain.web.dao.impl.WebBbsDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webBbsService" class="com.nomen.ntrain.web.service.impl.WebBbsServiceImpl" parent="baseService">
+		<property name="webBbsDAO" ref="webBbsDAO" />
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<bean id="webBbsAction" class="com.nomen.ntrain.web.action.WebBbsAction" scope="prototype"> 
+	    <property name="webBbsService" ref="webBbsService" />
+	    <property name="ptrainCodeService" ref="ptrainCodeService" />
+	    <property name="ptrainFileService" ref="ptrainFileService" />
+	</bean>
+	
+	<!-- 每日三问答题表 -->
+	<bean id="webAskDAO" class="com.nomen.ntrain.web.dao.impl.WebAskDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webAskService" class="com.nomen.ntrain.web.service.impl.WebAskServiceImpl" parent="baseService">
+		<property name="webAskDAO" ref="webAskDAO" />
+	</bean>
+	<bean id="webAskAction" class="com.nomen.ntrain.web.action.WebAskAction" scope="prototype"> 
+	    <property name="webAskService" ref="webAskService" />
+	    <property name="webAskitemService" ref="webAskitemService" />
+	    <property name="webPolicyService" ref="webPolicyService" />
+	    <property name="webPostuserService" ref="webPostuserService" />
+	</bean>
+	
+	<!-- 每日三问答题表 -->
+	<bean id="webAskitemDAO" class="com.nomen.ntrain.web.dao.impl.WebAskitemDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webAskitemService" class="com.nomen.ntrain.web.service.impl.WebAskitemServiceImpl" parent="baseService">
+		<property name="webAskitemDAO" ref="webAskitemDAO" />
+	</bean>
+	<!-- 抽题策略 -->
+	<bean id="webPolicyDAO" class="com.nomen.ntrain.web.dao.impl.WebPolicyDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webPolicyService" class="com.nomen.ntrain.web.service.impl.WebPolicyServiceImpl" parent="baseService">
+		<property name="webPolicyDAO" ref="webPolicyDAO" />
+	</bean>
+	<!-- 岗位人员 -->
+	<bean id="webPostuserDAO" class="com.nomen.ntrain.web.dao.impl.WebPostuserDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webPostuserService" class="com.nomen.ntrain.web.service.impl.WebPostuserServiceImpl" parent="baseService">
+		<property name="webPostuserDAO" ref="webPostuserDAO" />
+	</bean>
+	
+	<!-- 每日三问答题表 -->
+	<bean id="webQuestionsDAO" class="com.nomen.ntrain.web.dao.impl.WebQuestionsDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webQuestionsService" class="com.nomen.ntrain.web.service.impl.WebQuestionsServiceImpl" parent="baseService">
+		<property name="webQuestionsDAO" ref="webQuestionsDAO" />
+	</bean>
+	<bean id="webQuestionsAction" class="com.nomen.ntrain.web.action.WebQuestionsAction" scope="prototype"> 
+	    <property name="webQuestionsService" ref="webQuestionsService" />
+	</bean>
+	
+	<!-- 培训需求报名 -->
+	<bean id="webRequserDAO" class="com.nomen.ntrain.web.dao.impl.WebRequserDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webRequserService" class="com.nomen.ntrain.web.service.impl.WebRequserServiceImpl" parent="baseService">
+		<property name="webRequserDAO" ref="webRequserDAO" />
+		<property name="ptrainFlowDAO" ref="ptrainFlowDAO" />
+	</bean>
+	<bean id="webRequserAction" class="com.nomen.ntrain.web.action.WebRequserAction" scope="prototype"> 
+	    <property name="webRequserService" ref="webRequserService" />
+	    <property name="ptrainCodeService" ref="ptrainCodeService" />
+	    <property name="ptrainFileService" ref="ptrainFileService" />
+	    <property name="loginService" ref="loginService" />
+	</bean>
+	
+	<!-- 资源管理 -->
+	<bean id="webContentDAO" class="com.nomen.ntrain.web.dao.impl.WebContentDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webContentService" class="com.nomen.ntrain.web.service.impl.WebContentServiceImpl" parent="baseService">
+		<property name="webContentDAO" ref="webContentDAO" />
+	</bean>
+	<bean id="webContentAction" class="com.nomen.ntrain.web.action.WebContentAction" scope="prototype"> 
+	    <property name="webContentService" ref="webContentService" />
+	    <property name="ptrainFileService" ref="ptrainFileService" />
+	    <property name="ptrainCodeService" ref="ptrainCodeService" />
+<!--	    <property name="ptrainFileService" ref="ptrainFileService" />-->
+	</bean>
+	<!-- 课件 -->
+	<bean id="webCoursDAO" class="com.nomen.ntrain.web.dao.impl.WebCoursDAOImpl" parent="nsoftDao"></bean>
+	<bean id="webCoursService" class="com.nomen.ntrain.web.service.impl.WebCoursServiceImpl" parent="baseService">
+		<property name="webCoursDAO" ref="webCoursDAO" />
+	</bean>
+	<bean id="webCoursAction" class="com.nomen.ntrain.web.action.WebCoursAction" scope="prototype"> 
+	    <property name="webCoursService" ref="webCoursService" />
+	    <property name="ptrainCodeService" ref="ptrainCodeService" />
+	</bean>
+</beans>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- 
+	@description 人员基本信息sql映射 
+    @author 钱新红
+    @date 2009-09-30
+ 	@modifier 陈高添-丁新良
+ 	@date 2010-04-29、2010-12-02
+ -->
+<sqlMap namespace="DataUserZ">
+    <typeAlias alias="dataUserZBean" type="com.nomen.ntrain.data.bean.DataUserZBean" />
+    <typeAlias alias="dataCodeBean" type="com.nomen.ntrain.data.bean.DataCodeBean" />
+    <typeAlias alias="dataPostBean" type="com.nomen.ntrain.data.bean.DataPostBean" />
+    <!-- 查询人员列表 -->
+    <select id="findDataUserZList" parameterClass="map" resultClass="dataUserZBean">
+    	select 
+		  u.id, u.unitid, u.deptid, u.groupid, u.username,u.userid, u.workid, u.stateid,u.remark,
+	      (select organname from tb_data_organ o where o.id = u.deptid)deptname,
+	      (select organname from tb_data_organ o where o.id = u.groupid)groupname,
+	      (select codename from tb_data_code c where c.id = u.sex)sex,
+	      (select codename from tb_data_code c where c.id = u.stateid)statename,
+	      decode(us.mpostid,'',us.mpost,(select c.codename from tb_data_code c where c.id = us.mpostid)) mpost
+		from vi_user_orginfo2 us,
+			 tb_data_user u
+		where u.id=us.id
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deptid">
+			deptid = #deptid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="stateid">
+			stateid = #stateid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+    		$fields$ like '%'||#keyword#||'%'
+    	</isNotEmpty>
+    	<isNotEmpty prepend="order by" property="sortfield">
+			$sortfield$
+    	</isNotEmpty>
+    	<isEmpty prepend="order by" property="sortfield">
+			u.sortnum
+    	</isEmpty>
+    </select>
+    
+    <!-- 查询人员Bean -->
+    <select id="findDataUserZBeanById" parameterClass="string" resultClass="dataUserZBean">
+    	select 
+		  u.id, u.unitid, u.deptid, u.groupid, u.username,u.userid, u.workid, u.stateid,u.remark,
+	      (select organname from tb_data_organ o where o.id = u.deptid)deptname,
+	      (select organname from tb_data_organ o where o.id = u.groupid)groupname,u.sex,
+	      to_char(u.birthday,'yyyy-mm-dd')birthday,u.sortnum,u.remark,
+	      (select codename from tb_data_code c where c.id = u.stateid)statename,
+	      decode(us.mpostid,'',us.mpost,(select c.codename from tb_data_code c where c.id = us.mpostid)) mpost
+		from vi_user_orginfo2 us,
+			 tb_data_user u
+		where u.id=us.id
+		  and u.id = #value#
+    </select>
+    
+    <!-- 添加人员基本信息 -->
+    <insert id="insertDataUserZBean" parameterClass="dataUserZBean">
+    	<selectKey resultClass="java.lang.String" keyProperty="id">
+    		select seq_data_user.nextval as id from dual
+    	</selectKey>
+    	<![CDATA[
+    	insert into tb_data_user
+    		  (id,unitid,deptid,groupid,username,py,photo,userid,workid,sex,birthday,countryid,natalid,place,politid,politdate,
+    		   kindid,kinddate,stateid,statedate,sortnum,loginpsd,changesign,oldunitid,olddeptid,oldgroupid,remark,estauser,estatime,mainuser,maintime)
+    	values
+    	      (#id#,#unitid#,#deptid#,#groupid#,#username#,#py#,#image:BLOB#,#userid#,#workid#,#sex#,to_date(#birthday#,'YYYY-MM-DD'),
+    	       #countryid#,#natalid#,#place#,#politid#,to_date(#politdate#,'YYYY-MM-DD'),#kindid#,to_date(#kinddate#,'YYYY-MM-DD'),
+    	       #stateid#,to_date(#statedate#,'YYYY-MM-DD'),#sortnum#,#loginpsd#,#changesign#,#unitid#,#deptid#,#groupid#,#remark#,#estauser#,sysdate,#mainuser#,sysdate)
+    	]]>
+    </insert>
+    
+    <!-- 修改人员基本信息 -->
+    <update id="updateDataUserZBean" parameterClass="dataUserZBean">
+    	update tb_data_user 
+    	   set
+    	   <isNotEmpty prepend="" property="deptid">olddeptid = #deptid#,deptid = #deptid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="groupid">oldgroupid = #groupid#,groupid = #groupid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="username">username = #username#,</isNotEmpty>
+    	   <isNotNull  prepend="" property="py">py = #py#,</isNotNull>	  
+    	   <isNotEmpty prepend="" property="userid">userid = #userid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="workid">workid = #workid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="birthday">birthday = to_date(#birthday#,'YYYY-MM-DD'),</isNotEmpty>
+    	   <isNotEmpty prepend="" property="countryid">countryid = #countryid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="place">place = #place#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="loginpsd">loginpsd = #loginpsd#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="sex">sex = #sex#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="natalid">natalid = #natalid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="politid">politid = #politid#,</isNotEmpty> 
+    	   <isNotEmpty prepend="" property="kindid">kindid = #kindid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="stateid">stateid = #stateid#,</isNotEmpty>
+    	   <isNotEmpty prepend="" property="sortnum">sortnum = #sortnum#,</isNotEmpty>
+    	   <isNotNull  prepend="" property="photo">photo = #image:BLOB#,</isNotNull>
+    	   	  politdate = to_date(#politdate#,'YYYY-MM-DD'),
+    	   	  kinddate  = to_date(#kinddate#,'YYYY-MM-DD'),
+    	   	  statedate = to_date(#statedate#,'YYYY-MM-DD'),
+			  remark   = #remark#,    	   	
+    	   	  mainuser = #mainuser#,
+    	   	  maintime = sysdate
+    	where id = #id#
+    </update>
+    
+    <!-- 删除人员基本信息 -->
+    <delete id="deleteDataUserZBeanByIdStr" parameterClass="java.lang.String">
+    	<![CDATA[delete from tb_data_user where id in ($id$)]]>
+    </delete>
+    
+    <!-- 查询人员的最大的排序号 -->
+    <select id="findDataUserZMaxSortNum" parameterClass="map" resultClass="java.lang.String">
+		select count(1)+1 from tb_data_user
+		where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deptid">
+			deptid = #deptid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="groupid">
+			groupid = #groupid#
+		</isNotEmpty>
+    </select>
+    
+    <!-- 获取人员的常用代码列表 （机构代码表）【通用】-->
+    <select id="findDataCodeList" parameterClass="map" resultClass="dataCodeBean">
+    	select 
+    		id,specsign,endsign,codevalue,decode(fatherid,#fatherid#,codename,'+ '||codename) codename 
+    	from tb_data_code
+    	where 1=1
+    	<isNotEmpty prepend="and" property="level">
+    		level = #level#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="endsign">
+    		endsign = #endsign#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="specsign">
+    		specsign = #specsign#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="gradeid">
+    		','||gradeid||',' like '%,'||#gradeid#||',%'
+    	</isNotEmpty>
+    	and usesign = 1
+    	and (nature = 1 and unitid is null
+    		<isNotEmpty prepend="" property="unitid">
+	    	or (nature=2 and unitid = #unitid#)
+	    	</isNotEmpty>)
+    	<isNotEmpty prepend="and" property="keyword">
+    		$fields$ like '%'||#keyword#||'%'
+    	</isNotEmpty>
+    	start with fatherid = #fatherid# 
+    	connect by prior id = fatherid
+        order siblings by sortnum
+    </select>
+    
+    <!-- 添加人员岗位信息 [新]-->
+    <insert id="insertDataPostBean" parameterClass="dataPostbean">
+    	insert into tb_data_post
+  			(userid,typeid,natureid,posttypeid,mgrade,mpostid,mpost,mstate,postgrade,dutygrade,
+  			 dutydate,mdate,mtype,specname,workyear,specid,partid,partdate,specpost,
+  			 pgrade1,ppostid1,ppost1,pstate1, pdate1, ptype1, 
+  			 pgrade2, ppostid2, ppost2, pstate2, pdate2, ptype2, 
+  			 pgrade3, ppostid3, ppost3, pstate3, pdate3, ptype3, 
+  			 remark,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		 	(#userid#,#typeid#,#natureid#,#posttypeid#,#mgrade#,#mpostid#,#mpost#,#mstate#,#postgrade#,#dutygrade#, 
+		 	to_date(#dutydate#,'yyyy-MM-dd'),to_date(#mdate#,'yyyy-MM-dd'), #mtype#, #specname#, #workyear#,#specid#,#partid#,to_date(#partdate#,'yyyy-MM-dd'),#specpost#,
+		  	#pgrade1#,#ppostid1#,#ppost1#, #pstate1#,to_date(#pdate1#,'yyyy-MM-dd'),#ptype1#,
+		  	#pgrade2#,#ppostid2#,#ppost2#,#pstate2#,to_date(#pdate2#,'yyyy-MM-dd'),#ptype2#, 
+		  	#pgrade3#,#ppostid3#,#ppost3#,#pstate3#,to_date(#pdate3#,'yyyy-MM-dd'),#ptype3#,
+		  	#remark#, #estauser#,sysdate,#mainuser#,sysdate, #strflag#, #intflag#)
+    </insert>  
+    
+    <!-- 修改人员岗位信息 [新]-->
+    <update id="updateDataPostBean" parameterClass="dataPostbean">
+    	update tb_data_post  set 
+    	<isNotNull property="typeid">typeid=#typeid#,</isNotNull>
+    	<isNotNull property="natureid">natureid=#natureid#,</isNotNull>
+    	<isNotNull property="posttypeid">posttypeid=#posttypeid#,</isNotNull>
+    	<isNotNull property="mgrade">mgrade=#mgrade#,</isNotNull>
+    	<isNotNull property="mpostid">mpostid=#mpostid#,</isNotNull>
+		<isNotNull property="mpost">mpost=#mpost#,</isNotNull>
+    	<isNotNull property="mstate">mstate=#mstate#,</isNotNull>
+    	<isNotNull property="postgrade">postgrade=#postgrade#,</isNotNull>
+    	<isNotNull property="dutygrade">dutygrade=#dutygrade#,</isNotNull>
+    	<isNotNull property="dutydate">dutydate=to_date(#dutydate#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="mdate">mdate=to_date(#mdate#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="mtype">mtype=#mtype#,</isNotNull>
+		<isNotNull property="specname">specname=#specname#,</isNotNull>
+		<isNotNull property="workyear">workyear=to_date(#workyear#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="specid">specid=#specid#,</isNotNull>
+		<isNotNull property="partid">partid=#partid#,</isNotNull>
+		<isNotNull property="specpost">specpost=#specpost#,</isNotNull>
+		<isNotNull property="partdate">partdate=to_date(#partdate#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="pgrade1">pgrade1=#pgrade1#,</isNotNull>
+		<isNotNull property="ppostid1">ppostid1=#ppostid1#,</isNotNull>
+		<isNotNull property="ppost1">ppost1=#ppost1#,</isNotNull>
+		<isNotNull property="pstate1">pstate1=#pstate1#,</isNotNull>
+		<isNotNull property="pdate1">pdate1=to_date(#pdate1#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="ptype1">ptype1=#ptype1#,</isNotNull>
+		<isNotNull property="pgrade2">pgrade2=#pgrade2#,</isNotNull>
+		<isNotNull property="ppostid2">ppostid2=#ppostid2#,</isNotNull>
+		<isNotNull property="ppost2">ppost2=#ppost2#,</isNotNull>
+		<isNotNull property="pstate2">pstate2=#pstate2#,</isNotNull>
+		<isNotNull property="pdate2">pdate2=to_date(#pdate2#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="ptype2">ptype2=#ptype2#,</isNotNull>		
+		<isNotNull property="pgrade3">pgrade3=#pgrade3#,</isNotNull>
+		<isNotNull property="ppostid3">ppostid3=#ppostid3#,</isNotNull>
+		<isNotNull property="ppost3">ppost3=#ppost3#,</isNotNull>
+		<isNotNull property="pstate3">pstate3=#pstate3#,</isNotNull>
+		<isNotNull property="pdate3">pdate3=to_date(#pdate3#,'yyyy-MM-dd'),</isNotNull>
+		<isNotNull property="ptype3">ptype3=#ptype3#,</isNotNull>
+		<isNotNull property="remark">remark=#remark#,</isNotNull>
+		mainuser = #mainuser#,
+    	maintime = sysdate
+   		where userid = #userid#
+    </update>
+    
+</sqlMap>

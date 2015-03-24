@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_讲师团队
+@author 林木山
+@date 2014-3-14
+-->
+<struts>
+    <package name="PtrainTeacher" extends="nsoft-ic" namespace="/Ptrain/Teacher">
+
+		<!-- 莆田岗位培训_讲师团队 列表信息 -->
+    	<action name="listptrainteacher" class="ptrainTeacherAction" method="listPtrainTeacher">
+    		<result name="success">/Ptrain/Base/Lect_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_讲师团队 新增、修改[跳转] -->
+    	<action name="setptrainteacher" class="ptrainTeacherAction" method="setPtrainTeacher">
+    		<result name="success">/Ptrain/Base/Lect_Set.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_讲师团队 新增/修改[保存]-->
+    	<action name="saveptrainteacher" class="ptrainTeacherAction" method="savePtrainTeacher">
+    		<result name="success">/Ptrain/Base/Lect_List.jsp</result>
+    		<result name="input">/Ptrain/Base/Lect_Set.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_讲师团队 删除 -->
+    	<action name="deleteptrainteacher" class="ptrainTeacherAction" method="deletePtrainTeacher">
+    		<result name="success">/Ptrain/Base/Lect_List.jsp</result>
+		</action>
+
+	</package>
+</struts>
+

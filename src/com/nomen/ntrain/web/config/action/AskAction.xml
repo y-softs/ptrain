@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_每日三问
+@author 林木山
+@date 2014-3-24
+-->
+<struts>
+    <package name="webAsk" extends="nsoft-web" namespace="/pt/ask">
+		
+		<!-- =============Jquery================== -->
+		<!-- 查找每日三问 出题轮次 每日出题次数 -->
+    	<action name="findPtrainAskPushnumByJq" class="webAskAction" method="findPtrainAskPushnumByJq"></action>
+		<!-- 查找每日三问 题目列表 -->
+    	<action name="findPtrainAskitemListByJq" class="webAskAction" method="findPtrainAskitemListByJq"></action>
+		<!-- 每日三问 主表记录[删除] -->
+    	<action name="deletePtrainAskByJq" class="webAskAction" method="deletePtrainAskByJq"></action>
+		<!-- 莆田岗位培训_每日三问 三问答题 列表信息 -->
+    	<action name="listptrainask" class="webAskAction" method="listPtrainAsk">
+    		<result name="gotoAsk">/Web/Ask/Oper_List.jsp</result>
+    		<result name="gotoQuery">/Web/Ask/Quser_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_每日三问 新增/修改[保存]-->
+    	<action name="saveptrainaskitem" class="webAskAction" method="savePtrainAskitem">
+    		<result name="gotoAsk">/Web/Ask/Oper_List.jsp</result>
+    		<result name="gotoQuery">/Web/Ask/Quser_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_每日三问 个人查询  列表信息 -->
+    	<action name="listptrainaskquery" class="webAskAction" method="listPtrainAskQuery">
+    		<result name="success">/Web/Ask/Quser_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_每日三问 个人查询  详细页面[弹出] -->
+    	<action name="setptrainaskitemwin" class="webAskAction" method="setPtrainAskitemWin">
+    		<result name="success">/Web/Ask/Quser_Win.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_每日三问 试题浏览  列表信息 -->
+    	<action name="listptrainaskskim" class="webAskAction" method="listPtrainAskSkim">
+    		<result name="success">/Web/Ask/Exp_List.jsp</result>
+		</action>
+		
+				<!-- 莆田岗位培训_试题 详细信息 -->
+    	<action name="setptrainquestionswin" class="webQuestionsAction" method="setPtrainQuestionsWin">
+    		<result name="success">/Web/Ask/Exp_Win.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_每日三问 试题浏览 Excel导出 -->
+    	<action name="saveptrainaskskimexpexcel" class="webAskAction" method="savePtrainAskSkimExpExcel"></action>
+	</package>
+</struts>
+

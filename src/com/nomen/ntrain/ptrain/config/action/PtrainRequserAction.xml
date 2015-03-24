@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_培训需求报名
+@author 林木山
+@date 2014-3-21
+-->
+<struts>
+    <package name="PtrainRequser" extends="nsoft-ic" namespace="/Ptrain/Requser">
+
+		<!-- 莆田岗位培训_培训需求报名 列表信息 -->
+    	<action name="listptrainrequser" class="ptrainRequserAction" method="listPtrainRequser">
+    		<param name="sign">1</param>
+    		<result name="success">/Ptrain/Request/Conte_Sign_List.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+
+		<!-- 莆田岗位培训_培训需求报名 已报名人员[跳转] -->
+    	<action name="toforwardgathreqsign" class="ptrainRequserAction" method="toForwardQueryReqSign">
+    		<result name="success">/Ptrain/Request/Conte_Sign_Win2.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_培训需求报名报名[保存]-->
+    	<action name="saveptrainrequser" class="ptrainRequserAction" method="savePtrainRequser">
+    		<result name="success">/Ptrain/Request/Conte_Sign_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_培训需求报名 删除 -->
+    	<action name="deleteptrainrequser" class="ptrainRequserAction" method="deletePtrainRequser">
+    		<result name="success">/Ptrain/Request/Conte_Sign_List.jsp</result>
+		</action>
+		
+		<!-- =========================查询统计相关======================= -->
+		
+		<!-- 查询统计_自助需求情况 Excel导出 -->
+    	<action name="saveptrainrequserexpexcel" class="ptrainRequserAction" method="savePtrainRequserExpExcel"></action>
+		<!-- 查询统计_自助需求情况 已报名人员 Excel导出 -->
+    	<action name="saveptrainrequsersignexpexcel" class="ptrainRequserAction" method="savePtrainRequserSignExpExcel"></action>
+    	
+		<!-- =========================查询统计相关[修改后]======================= -->
+		<!-- 查询统计_自助需求情况 列表信息[跳转] -->
+    	<action name="toforwardqueryrequser" class="ptrainRequserAction" method="toForwardQueryRequser">
+    		<param name="sign">2</param>
+    		<result name="success">/Ptrain/Query/Sign_State_List.jsp</result>
+		</action>
+		<!-- 查询统计_自助需求情况 列表信息 -->
+    	<action name="listptrainrequser_que" class="ptrainRequserAction" method="listPtrainRequser"></action>
+		
+		<!-- 查询统计_自助需求情况 已报名人员列表[跳转] -->
+    	<action name="toforwardqueryreqsign" class="ptrainRequserAction" method="toForwardQueryReqSign">
+    		<result name="success">/Ptrain/Query/Sign_State_Win2.jsp</result>
+		</action>
+		<!-- 查询统计_自助需求情况 已报名人员列表 -->
+    	<action name="listptrainrequsersign_que" class="ptrainRequserAction" method="listPtrainRequserSign"></action>
+		
+	</package>
+</struts>
+

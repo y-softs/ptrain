@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- 
+	@description 部门和班组信息sqlMap 
+    @author 钱新红
+    @date 2009-06-07
+    @modifier tian_chen、DXL
+    @date 2010-05-25、2011-06-05
+ -->
+<sqlMap namespace="DataOrganZ">
+	<typeAlias alias="dataCodeBean" type="com.nomen.ntrain.data.bean.DataCodeBean" />
+	<typeAlias alias="dataOrganZBean" type="com.nomen.ntrain.data.bean.DataOrganZBean" />
+	<!-- =================机构管理 >> 机构维护[列表]============================ -->
+	<!-- 只获取部门列表[根据fatherid] -->
+	<select id="findDataOrganZListByFatherid" parameterClass="map" resultClass="dataOrganZBean">
+		select 
+			id, unitid, fatherid, organname, shortname, py, nature, endsign, specsign, usesign, organvalue, sortnum, 
+			estauser, to_char(estatime,'yyyy-mm-dd')estatime, mainuser, to_char(maintime,'yyyy-mm-dd')maintime, strflag, intflag,
+			level lev
+		from tb_data_organ
+		where 1=1
+	    <isNotEmpty prepend="and" property="unitid">
+	    	unitid = #unitid#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="nature">
+	    	nature = #nature#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="fatherid">
+	    	fatherid = #fatherid#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="usesign">
+	    	usesign = #usesign#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="keyword">
+	    	($fields$  like '%'||#keyword#||'%')
+	    </isNotEmpty>
+	    <isNotEmpty property="sortfield">
+	    	<isEqual property="sortfield" compareValue="sortnum">
+		    	 order by sortnum,id
+		    </isEqual>
+		    <isNotEqual property="sortfield" compareValue="sortnum">
+		    	 order by $sortfield$
+		    </isNotEqual>
+	    </isNotEmpty>
+	    <isEmpty property="sortfield">
+	    	order by sortnum
+	    </isEmpty>
+	</select>
+	
+	<!-- 查询部门列表[树状] -->
+	<select id="findDataOrganZTreeList" parameterClass="map" resultClass="dataOrganZBean">
+		select 
+			id, unitid, fatherid, organname, shortname, py, nature, endsign, specsign, usesign, organvalue, sortnum, 
+			estauser, to_char(estatime,'yyyy-mm-dd')estatime, mainuser, to_char(maintime,'yyyy-mm-dd')maintime, strflag, intflag,
+			level lev,
+       		(select nvl(count(1),0) from tb_data_organ o1 where o1.fatherid = o.id)chilcount
+		from tb_data_organ o
+		where 1=1
+	    <isNotEmpty prepend="and" property="usesign">
+	    	usesign = #usesign#
+	    </isNotEmpty>
+		<!-- 查询所有的fatherid=0 -->
+		<isNotEmpty prepend="" property="fatherid">
+			start with fatherid = #fatherid#
+		</isNotEmpty>
+		<!-- 根据id= 筛选单个级联的树状列表 -->
+		<isEmpty property="fatherid">
+			<isNotEmpty prepend="" property="id">
+				start with id = #id#
+			</isNotEmpty>
+		</isEmpty>
+	    <isNotEmpty prepend="and" property="unitid">
+	    	unitid = #unitid#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="nature">
+	    	nature = #nature#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="and" property="keyword">
+	    	($fields$  like '%'||#keyword#||'%')
+	    </isNotEmpty>
+	    <!-- 仅显示部门数据 -->
+	    <isNotEmpty property="showsign">
+	    	<isEqual property="showsign" compareValue="1">
+    			connect by prior fatherid = id
+	    	</isEqual>
+	    </isNotEmpty>
+	    <isEmpty property="showsign">
+    		connect by prior id = fatherid
+	    </isEmpty>
+    	<isNotEmpty property="sortfield">
+	    	<isEqual property="sortfield" compareValue="sortnum">
+		    	 order siblings by sortnum,id
+		    </isEqual>
+		    <isNotEqual property="sortfield" compareValue="sortnum">
+		    	 order siblings by $sortfield$
+		    </isNotEqual>
+	    </isNotEmpty>
+	    <isEmpty property="sortfield">
+	    	order siblings by sortnum
+	    </isEmpty>
+	</select>
+	
+	<!-- 通过主键ID查询机构信息 -->
+    <select id="findDataOrganZBeanById" parameterClass="string" resultClass="dataOrganZBean">
+    	<![CDATA[
+    	select 
+    		id, organname,shortname,py,organvalue, nature, fatherid, endsign, specsign,usesign, sortnum, unitid, 
+    		estauser, to_char(estatime,'yyyy-mm-dd hh24:mi') estatime, mainuser, to_char(maintime,'yyyy-mm-dd hh24:mi') maintime, strflag, intflag 
+    	from tb_data_organ 
+    	where id=#id#
+    	]]>
+    </select>
+    
+    <!-- 通过主键ID查询 机构树字符串 (部门>>班组>>子班组 形式) -->
+    <select id="findDataOrganZTreeBeanById" parameterClass="string" resultClass="dataOrganZBean">
+    	<![CDATA[
+    	select 
+    		id, organname,shortname,py,organvalue, nature, fatherid, endsign, specsign,usesign, sortnum, unitid, 
+    		estauser, to_char(estatime,'yyyy-mm-dd hh24:mi') estatime, mainuser, to_char(maintime,'yyyy-mm-dd hh24:mi') maintime, strflag, intflag,
+    		(select fatherid from tb_data_organ o1 where o1.id = o.fatherid)grandfatherid,
+    		replace(substr(fun_getnamebyidstr('organname','select organname from  (select organname,level lev from tb_data_organ o start with o.id='||o.id||' connect by prior fatherid = id) order by lev desc'),2),',','>>') firstr,
+    		replace(substr(fun_getnamebyidstr('organname','select organname from  (select organname,level lev from tb_data_organ o start with o.id='||o.fatherid||' connect by prior fatherid = id) order by lev desc'),2),',','>>')secstr
+    	from tb_data_organ o
+    	where id=#id#
+    	]]>
+    </select>
+	
+	<!-- 添加机构信息 -->
+    <insert id="insertDataOrganZBean" parameterClass="dataOrganZBean">
+    	<selectKey resultClass="java.lang.String" keyProperty="id">
+    		select seq_data_organ.nextval as id from dual
+    	</selectKey>
+    	<![CDATA[
+    	insert into tb_data_organ
+    		(id, unitid,fatherid,nature,organname,shortname,py,endsign,specsign,usesign,organvalue,sortnum,
+    		estauser,estatime,mainuser,maintime,strflag,intflag)
+    	values
+    		(#id#,#unitid#,#fatherid#,#nature#,#organname#,#shortname#,#py#,#endsign#,#specsign#,#usesign#,#organvalue#,#sortnum#
+    		,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+    	]]>
+    </insert>
+    
+    <!-- 修改机构信息 -->
+    <update id="updateDataOrganZBean" parameterClass="dataOrganZBean">
+    	update tb_data_organ 
+    	set 
+	    	mainuser=#mainuser#,
+	    	maintime=sysdate
+	    <isNotEmpty prepend="," property="nature">
+	    	nature=#nature#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="fatherid">
+	    	fatherid=#fatherid#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="organname">
+	    	organname=#organname#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="shortname">
+	    	shortname=#shortname#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="py">
+	    	py = #py#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="organvalue">
+	    	organvalue=#organvalue#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="endsign">
+	    	endsign=#endsign#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="specsign">
+	    	specsign = #specsign#
+	    </isNotEmpty>
+	    <isNotEmpty prepend="," property="sortnum">
+	    	sortnum=#sortnum#
+	    </isNotEmpty>
+    	where id=#id#
+    </update>
+    
+    <!-- 删除机构信息 -->
+    <delete id="deleteDataOrganZBeanById" parameterClass="string">
+    	<![CDATA[
+    	delete from tb_data_organ 
+    	where id in(
+    	select id from tb_data_organ
+    	start with id =#value#
+		connect by prior id = fatherid
+		)
+    	]]>
+    </delete>
+	
+	<!-- 禁/启用机构 -->
+    <update id="updateDataOrganZUseSign" parameterClass="map" >
+    	update tb_data_organ 
+    	set 
+    		usesign = #usesign#,
+    		mainuser=#mainuser#,
+    		maintime=sysdate
+    	where id in 
+    		(
+    		select 
+    			id 
+    		from tb_data_organ
+    	 	start with id = #id#
+    	 	connect by prior id = fatherid
+    	 	)
+    </update>
+	
+	<!-- 查询机构下一个排序号 -->
+    <select id="findNextSortNum" parameterClass="map" resultClass="string">
+    	select 
+    		nvl(count(*),0)+1 
+    	from tb_data_organ 
+    	where unitid=to_number(#unitid#) 
+    	  and fatherid=to_number(#fatherid#)
+    	<isNotEmpty prepend="and" property="nature">
+    		nature = #nature#
+    	</isNotEmpty>
+    </select>
+	
+    <!-- 获取最大的机构编号 -->
+    <select id="findMaxOrganZCode" parameterClass="map" resultClass="string">
+    	select organvalue 
+    	from (
+			select organvalue
+			from tb_data_organ 
+			where unitid=to_number(#unitid#) 
+			  and fatherid=to_number(#fatherid#)
+			  and organvalue is not null
+			<isNotEmpty prepend="and" property="nature">
+	    		nature = #nature#
+	    	</isNotEmpty>
+			order by organvalue desc
+		)
+		where rownum=1
+    </select>
+	
+    <!-- 验证判断编号是否已存在 -->
+    <select id="chkDataOrganZCodeValueIsExists" parameterClass="map" resultClass="string">
+    	select 
+    		nvl(count(*),0) count
+		from tb_data_organ org
+		where org.organvalue=#organvalue#
+		  and org.fatherid=#fatherid#
+		  and org.unitid=#unitid#
+    </select>
+    
+    <!-- 根据选中idStr查询机构树状列表 -->
+    <select id="findDataOrganZTreeListByIdStr" parameterClass="map" resultClass="dataOrganZBean">
+    	select o1.organname, o1.id, o1.fatherid, level lev
+		  from (select id
+		          from tb_data_organ
+		         start with id in ($idstr$)
+		        connect by prior fatherid = id
+		         group by id) temp,
+		       tb_data_organ o1
+		 where temp.id = o1.id
+		 start with fatherid = #fatherid#
+		connect by prior o1.id = o1.fatherid
+    </select>
+    
+    <!-- 更新机构合并后的人员机构信息 -->
+    <update id="updateDataOrganZUserInfoByMerge" parameterClass="map">
+    	update tb_data_user set deptid=#deptid#,groupid=#groupid#
+    	where $idstr$ like '%,'||groupid||',%'
+    </update>
+    
+    <!-- 更新机构合并[机构的状态] -->
+    <update id="updateDataOrganZUseSignByMerge" parameterClass="map">
+    	update tb_data_organ 
+    	set 
+	    	mainuser=#mainuser#,
+	    	maintime=sysdate,
+	    	usesign = #usesign#
+	   	where id in ($id$)
+    </update>
+    
+</sqlMap>

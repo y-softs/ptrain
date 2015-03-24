@@ -1,0 +1,61 @@
+{
+    "totalCount": 100,
+    "items": [
+        {
+            "DEPTNAME":"人力资源部",
+            "GROUPNAME":"本部室",
+			"USERNAME":"邱少栋",
+            "SEX":"1",
+            "POSTNAME":"主任",
+            "WORDID":"10000",
+            "USERID":"350127196609143932",
+            "DATETIME":"2011-10-10",
+            "STATE":"1",
+            "DSTATE":"0"
+        },{
+            "DEPTNAME":"人力资源部",
+            "GROUPNAME":"本部室",
+            "USERNAME":"李文彦",
+            "SEX":"1",
+            "POSTNAME":"副主任（分管薪酬）",
+            "WORDID":"10001",
+            "USERID":"350127196609143932",
+            "DATETIME":"2011-10-10",
+            "STATE":"2",
+            "DSTATE":"1"
+        },{
+            "DEPTNAME":"人力资源部",
+            "GROUPNAME":"本部室",
+            "USERNAME":"何唤",
+            "SEX":"1",
+            "POSTNAME":"人事管理专责",
+            "WORDID":"10002",
+            "USERID":"350127196609143932",
+            "DATETIME":"2011-10-10",
+            "STATE":"11",
+            "DSTATE":"0"
+        },{
+            "DEPTNAME":"人力资源部",
+            "GROUPNAME":"本部室",
+            "USERNAME":"沈从文",
+            "SEX":"1",
+            "POSTNAME":"薪酬管理专责",
+            "WORDID":"10003",
+            "USERID":"350127196609143932",
+            "DATETIME":"2011-10-10",
+            "STATE":"91",
+            "DSTATE":"0"
+        },{
+            "DEPTNAME":"人力资源部",
+            "GROUPNAME":"本部室",
+            "USERNAME":"刘斌",
+            "SEX":"0",
+            "POSTNAME":"培训管理专责",
+            "WORDID":"10004",
+            "USERID":"350127196609143932",
+            "DATETIME":"2011-10-10",
+            "STATE":"91"    ,
+            "DSTATE":"0"
+        }
+    ]
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- 
+	@description 莆田岗位培训_权限设置
+    @author 郑学仕
+    @date 2014-11-14
+ -->
+ <sqlMap namespace="BaseRoleUser">
+ 	<typeAlias alias="baseRoleBean" type="com.nomen.ntrain.base.bean.BaseRoleBean"/>
+ 	<typeAlias alias="baseRoleUserBean" type="com.nomen.ntrain.base.bean.BaseRoleUserBean"/>
+ 	<typeAlias alias="loginbean" type="com.nomen.ntrain.base.bean.LoginBean" /> 
+ 	<!-- 已引入的人员信息 -->
+ 	<select id="findBaseRoleUserList" parameterClass="map" resultClass="baseRoleUserBean">
+ 		SELECT 
+ 			A.ROLEIDS,B.ID,U.UNITNAME UNITID,
+ 			B.DEPTID,B.USERNAME,A.USERID,
+ 			A.MAINUSER,MAINUSERNAME,O.ORGANNAME,
+ 			(SELECT R.ROLENAME FROM BASE_ROLE R WHERE R.ID = A.ROLEIDS)ROLENAME
+	    FROM BASE_ROLE_USER A,TB_DATA_USER B,TB_BASE_UNIT U,TB_DATA_ORGAN O
+	    WHERE A.USERID=B.ID AND B.UNITID = U.ID AND B.DEPTID = O.ID
+	     <isNotEmpty  prepend="AND" property="keyword">
+           	B.$fields$ LIKE '%'||#keyword#||'%'
+        </isNotEmpty>
+        <isNotEmpty prepend="AND" property="roleid">
+          	A.ROLEIDS=#roleid# 
+        </isNotEmpty>
+        <isEmpty prepend="AND" property="roleid">
+        	<isNotEmpty prepend="" property="userid">
+          		(A.ROLEIDS IN(
+	          		SELECT R1.ID FROM 
+	          			BASE_ROLE R1 ,
+	              		(SELECT R.WEIGHT FROM 
+	              		    BASE_ROLE R ,
+	              		    BASE_ROLE_USER U
+	               		WHERE U.USERID = #userid# AND U.ROLEIDS = R.ID) T
+					WHERE R1.WEIGHT >=T.WEIGHT)
+				OR A.ROLEIDS IS NULL)
+        	</isNotEmpty>
+        </isEmpty>
+        <isNotEmpty prepend="AND" property="deptid">
+          	B.DEPTID=#deptid#
+        </isNotEmpty>
+	    ORDER BY A.ROLEIDS,B.UNITID,B.DEPTID,B.USERNAME
+ 	</select>
+ 	
+ 	<!-- 未引入的人员信息 -->
+ 	<select id="findBaseRoleUserList2" parameterClass="map" resultClass="loginbean">
+ 		SELECT 
+ 			P.ID,P.DEPTID,P.USERNAME,U.UNITNAME,
+ 			O.ORGANNAME DEPTNAME,P.USERID
+       FROM TB_DATA_USER P,TB_BASE_UNIT U,TB_DATA_ORGAN O
+       		WHERE P.UNITID = U.ID AND P.DEPTID = O.ID
+       		AND P.ID NOT IN (SELECT USERID FROM BASE_ROLE_USER) 
+	  	<isNotEmpty prepend="AND" property="deptid">
+	  		P.DEPTID=#deptid#
+	  	</isNotEmpty>
+	  	<isNotEmpty prepend="AND" property="keyword">
+			$fields$ LIKE '%'||#keyword#||'%'
+		</isNotEmpty>
+ 	</select>
+ 	
+ 	<!-- 新增用户信息 -->
+ 	<insert id="insertBaseRoleUser" parameterClass="baseRoleUserBean">
+ 		INSERT INTO BASE_ROLE_USER
+		  (USERID, ROLEIDS, MAINUSER,MAINUSERNAME)
+		VALUES
+		  (#userid#, #roleids#,#mainuser#,#mainusername#)
+ 	</insert>
+ 	
+ 	<!-- 修改用户信息 -->
+ 	<update id="updateBaseRoleUser" parameterClass="baseRoleUserBean">
+ 		UPDATE BASE_ROLE_USER 
+ 		SET MAINUSER=#mainuser#,
+ 		    ROLEIDS=#roleids#,
+ 		    MAINUSERNAME=#mainusername#
+		 WHERE USERID=#userid#
+ 	</update>
+ 	
+ 	<!-- 查询用户记录信息 -->
+ 	<select id="findBaseRoleUserCount" parameterClass="string" resultClass="string">
+ 		SELECT NVL(COUNT(1),0) FROM Base_ROLE_USER WHERE 1=1 AND USERID=#value#
+ 	</select>
+ 	
+ 	<!-- 删除用户管理信息 -->
+ 	<delete id="deleteBaseRoleUserByUserid" parameterClass="string">
+ 		DELETE FROM BASE_ROLE_USER WHERE USERID=#value#
+ 	</delete>
+ 	
+ 	<!-- 查询某个人员是否是超级管理员 -->
+ 	<select id="isSuperManager" parameterClass="map" resultClass="string">
+ 		SELECT NVL(COUNT(1),0) FROM Base_ROLE_USER WHERE 1=1 AND USERID=#userid# AND ','||ROLEIDS||',' LIKE '%,'||#rolesuperid#||',%'
+ 	</select>
+ </sqlMap>

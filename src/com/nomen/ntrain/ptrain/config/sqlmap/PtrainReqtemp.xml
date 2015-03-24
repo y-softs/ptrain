@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_培训点菜临时表
+@author 林木山
+@date 2014-3-18
+-->
+<sqlMap namespace="PtrainReqtemp">
+	<typeAlias alias="ptrainReqtempBean" type="com.nomen.ntrain.ptrain.bean.PtrainReqtempBean"/>
+
+	<!-- 查找莆田岗位培训_培训点菜临时表列表信息 -->
+	<select id="findPtrainReqtempList" resultClass="ptrainReqtempBean" parameterClass="map">
+		select 
+			r.id,r.unitid,r.specid,r.spectemp,r.itemname,itemdesc,daycount,daycounttemp,reqform,teacher,reqtype,datasign 
+		from 
+			ptrain_reqtemp r 
+		where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			r.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			r.specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			r.reqtype = #reqtype#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="showsign1">
+			r.datasign = -1
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="showsign2">
+			r.datasign = 1
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_培训点菜临时表信息 -->
+	<select id="findPtrainReqtempBeanById" resultClass="ptrainReqtempBean" parameterClass="string">
+		select id,unitid,specid,spectemp,itemname,itemdesc,daycount,daycounttemp,reqform,teacher,reqtype,datasign from ptrain_reqtemp where id=#value#
+	</select>
+
+	<!-- 添加莆田岗位培训_培训点菜临时表信息 -->
+	<insert id="insertPtrainReqtemp" parameterClass="ptrainReqtempBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_req.nextval as id from dual
+		</selectKey>
+		insert into ptrain_reqtemp
+		  (id,unitid,specid,spectemp,itemname,itemdesc,daycount,daycounttemp,reqform,teacher,reqtype,datasign)
+		values
+		  (#id#,#unitid#,#specid#,#spectemp#,#itemname#,#itemdesc#,#daycount#,#daycounttemp#,#reqform#,#teacher#,#reqtype#,#datasign#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_培训点菜临时表信息 -->
+	<update id="updatePtrainReqtemp" parameterClass="ptrainReqtempBean">
+		update ptrain_reqtemp set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="spectemp">
+			spectemp = #spectemp#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="itemname">
+			itemname = #itemname#
+		</isNotEmpty>
+		<isNotNull prepend="," property="itemdesc">
+			itemdesc = #itemdesc#
+		</isNotNull>
+		<isNotEmpty prepend="," property="daycount">
+			daycount = #daycount#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="daycounttemp">
+			daycounttemp = #daycounttemp#
+		</isNotEmpty>
+		<isNotNull prepend="," property="reqform">
+			reqform = #reqform#
+		</isNotNull>
+		<isNotNull prepend="," property="teacher">
+			teacher = #teacher#
+		</isNotNull>
+		<isNotNull prepend="," property="datasign">
+			datasign = #datasign#
+		</isNotNull>
+		where  id = #id#
+	</update>
+
+	<!-- 更新莆田岗位培训_培训点菜临时表信息[专业ID等] -->
+	<update id="updatePtrainReqtempSpecid" parameterClass="map">
+		update ptrain_reqtemp set specid = (select max(id) from ptrain_code where fatherid=#fatherid# and codename = spectemp)
+		,daycount=decode(fun_isnumber(daycounttemp),1,daycounttemp)
+		where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			reqtype = #reqtype#
+		</isNotEmpty>
+	</update>
+
+	<!-- 更新莆田岗位培训_培训点菜临时表信息[异常处理] -->
+	<update id="updatePtrainReqtempExc" parameterClass="map">
+		update ptrain_reqtemp set  datasign = -1 where (specid is null or itemname is null
+		<isNotEmpty prepend="or" property="chkdaycount">
+			daycount is null
+		</isNotEmpty>)
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			reqtype = #reqtype#
+		</isNotEmpty>
+	</update>
+
+	<!-- 删除莆田岗位培训_培训点菜临时表信息 -->
+	<delete id="deletePtrainReqtempById" parameterClass="string">
+		delete from ptrain_reqtemp where id in ($value$)
+	</delete>
+
+	<!-- 删除莆田岗位培训_培训点菜临时表信息 -->
+	<delete id="deletePtrainReqtempByMap" parameterClass="map">
+		delete from ptrain_reqtemp where unitid = #unitid#
+		<isNotEmpty prepend="and" property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specidchk">
+			specid != #specidchk#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			reqtype = #reqtype#
+		</isNotEmpty>
+	</delete>
+	
+	<!-- 添加莆田岗位培训_试题信息 临时表导入到主表 -->
+	<insert id="insertPtrainReqExcel" parameterClass="map" >
+		insert into ptrain_req
+		  (id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,reqtype,flowmark,estauser,estatime,mainuser,maintime)
+		  (select id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,$reqtype$,'$flowmark$',$operuserid$,sysdate,$operuserid$,sysdate
+		  from ptrain_reqtemp rt where datasign = 1
+		  <isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="specid">
+			specid = #specid#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="reqtype">
+			reqtype = #reqtype#
+		  </isNotEmpty>
+		  <isNotEmpty prepend="and" property="reqtempid">
+			id in ($reqtempid$)
+		  </isNotEmpty>
+		  )
+	</insert>
+
+	<!-- 更新莆田岗位培训_试题临时表信息[已导标志] -->
+	<update id="updatePtrainReqtempDatasign" parameterClass="map">
+		update ptrain_reqtemp set datasign = 0 where 1=1
+	  <isNotEmpty prepend="and" property="unitid">
+		unitid = #unitid#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="and" property="specid">
+		specid = #specid#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="and" property="reqtype">
+		reqtype = #reqtype#
+	  </isNotEmpty>
+	  <isNotEmpty prepend="and" property="reqtempid">
+		id in ($reqtempid$)
+	  </isNotEmpty>
+	</update>
+
+</sqlMap>

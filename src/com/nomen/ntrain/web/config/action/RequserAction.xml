@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_培训需求报名
+@author 林木山
+@date 2014-3-21
+-->
+<struts>
+    <package name="webRequser" extends="nsoft-web" namespace="/pt/requser">
+<!--    	<global-results>-->
+<!--			<result name="nodata">/Include/NoData.jsp</result>-->
+<!--		</global-results>-->
+
+		<!-- 员工报名 列表信息 -->
+    	<action name="listptrainreq" class="webRequserAction" method="listPtrainReq">
+    		<result name="success">/Web/Request/User_List.jsp</result>
+		</action>
+		<!-- 新增/修改 跳转 -->
+    	<action name="setptrainreq" class="webRequserAction" method="setPtrainReq">
+    		<result name="success">/Web/Request/User_Set.jsp</result>
+		</action>
+		<!--  删除 -->
+    	<action name="deleteptrainreq" class="webRequserAction" method="deletePtrainReq">
+    		<result name="success">/Web/Request/User_List.jsp</result>
+		</action>
+		<!-- 更新 -->
+    	<action name="updateptrainreqchk" class="webRequserAction" method="updatePtrainReqChk">
+    		<result name="success">/Web/Request/User_List.jsp</result>
+		</action>
+		<!-- 保存 -->
+    	<action name="saveptrainreq" class="webRequserAction" method="savePtrainReq">
+    		<result name="success">/Web/Request/User_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_培训需求报名 列表信息 -->
+    	<action name="listptrainrequser" class="webRequserAction" method="listPtrainRequser">
+    		<result name="success">/Web/Request/Esta_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_培训需求报名报名[保存]-->
+    	<action name="saveptrainrequser" class="webRequserAction" method="savePtrainRequser">
+    		<result name="success">/Web/Request/Esta_List.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_培训需求报名 删除 -->
+    	<action name="deleteptrainrequser" class="webRequserAction" method="deletePtrainRequser">
+    		<result name="success">/Web/Request/Esta_List.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_培训需求报名 已报名人员列表 -->
+    	<action name="listptrainrequsersign" class="webRequserAction" method="listPtrainRequserSign">
+    		<result name="success">/Web/Request/Esta_Win2.jsp</result>
+		</action>
+		<!-- 详细页 -->
+    	<action name="setptrainreqwin" class="webRequserAction" method="setPtrainReqWin">
+    		<result name="success">/Web/Request/Esta_Win1.jsp</result>
+		</action>
+	</package>
+</struts>
+

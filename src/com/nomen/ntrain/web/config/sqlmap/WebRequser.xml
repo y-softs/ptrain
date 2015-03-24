@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_培训需求报名
+@author 林木山
+@date 2014-3-21
+-->
+<sqlMap namespace="webRequser">
+	<typeAlias alias="ptrainRequserBean" type="com.nomen.ntrain.ptrain.bean.PtrainRequserBean"/>
+	<typeAlias alias="ptrainReqBean" type="com.nomen.ntrain.ptrain.bean.PtrainReqBean"/>
+	<!-- 员工加菜 列表 -->
+	<select id="findPtrainReqList" resultClass="ptrainReqBean" parameterClass="map">
+		select 
+			r.id,r.itemname,r.itemdesc,r.flowsta,r.flowmark,r.state,
+			(select codename from ptrain_code c where c.id = r.specid) strflag,
+			(select count(*) from ptrain_requser re where re.reqid = r.id) intflag
+		from ptrain_req r,ptrain_code c
+		where r.specid = c.id and  r.flowsta >= 0
+		<isNotEmpty prepend="and" property="specid">
+			r.specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			r.reqtype = #reqtype#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="requserid">
+			r.requserid = #requserid#
+		</isNotEmpty>				
+		<isNotEmpty prepend="and" property="keyword">		
+			((r.itemname like '%' || #keyword# || '%' ) or (r.itemdesc like '%' || #keyword# || '%'))
+		</isNotEmpty>
+		 order by r.estatime desc, r.id desc
+	</select>
+	<!-- 查找莆田岗位培训_培训需求报名 列表信息 -->
+	<!-- 查询统计_自助需求情况 列表信息 -->
+	<select id="findPtrainRequserList" resultClass="ptrainReqBean" parameterClass="map" remapResults="true">
+		select 
+			r.id,c.codename specid,r.itemname,r.itemdesc,r.daycount,r.reqform,r.teacher,r.state,r.reqtype<isNotEmpty property="loginuserid">,rqu.id strflag</isNotEmpty>
+			,nvl(requsernum,0) intflag,to_char(r.maintime ,'yyyy-mm-dd') maintime,pf.filenum
+		from 
+			ptrain_req r,ptrain_code c,(select reqid,count(*) requsernum  from ptrain_requser group by reqid) ru,
+			(select recid,count(*) filenum  from ptrain_file f where f.modsign=#modsign# group by recid) pf
+			<isNotEmpty property="loginuserid">
+				,(select id,reqid from ptrain_requser where userid=#loginuserid#)rqu 
+			</isNotEmpty>
+		where r.specid = c.id and r.id=ru.reqid(+) and r.id=pf.recid(+)<isNotEmpty property="loginuserid"> and r.id = rqu.reqid(+)</isNotEmpty>
+		<isNotEmpty prepend="and" property="loginuserid">
+			r.id=ru.reqid(+)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			r.specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			r.reqtype = #reqtype#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowstagath"><!-- 汇总维护查询的数据 -->
+			(r.reqtype not in ($reqtypegath$) or (r.reqtype in ($reqtypegath$) and r.flowsta = #flowstagath#))
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+			r.state = #state#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="requserid">
+			r.requserid = #requserid#
+		</isNotEmpty>						
+		<isNotEmpty prepend="and" property="keyword">		
+			((r.itemname like '%' || #keyword# || '%' ) or (r.itemdesc like '%' || #keyword# || '%'))
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_培训需求报名信息 已报名人员列表 -->
+	<select id="findPtrainRequserSignList" resultClass="ptrainRequserBean" parameterClass="map" remapResults="true">
+		select 
+			ru.id,ru.reqid,u.username userid,u.workid,udept.organname deptname,ugroup.organname groupname,to_char(regdate,'yyyy-mm-dd hh24:mi:ss') regdate 
+		from 
+			ptrain_requser ru,tb_data_user u,tb_data_organ udept,tb_data_organ ugroup
+		where ru.userid=u.id and u.deptid=udept.id and u.deptid=ugroup.id(+)
+		<isNotEmpty prepend="and" property="reqid">
+			ru.reqid = #reqid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deptid">
+			u.deptid = #deptid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="groupid">
+			(u.groupid = $groupid$ or u.groupid in (select id from tb_data_organ where 1=1			
+			and fatherid = #groupid# and usesign=1))
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="subgroupid">
+			u.groupid = #subgroupid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+	<!-- 查找莆田岗位培训_培训点菜信息 -->
+	<select id="findPtrainReqBeanById" resultClass="ptrainReqBean" parameterClass="string">
+		select id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,fun_getNameAsID(requserid,0) requserid,reqtype,state,flowsta,to_char(subtime,'yyyy-mm-dd') subtime,flowmark,strflag,intflag from ptrain_req where id=#value#
+	</select>
+	<!-- 查找莆田岗位培训_培训点菜信息 -->
+	<select id="findPtrainReqBeanByMap" resultClass="ptrainReqBean" parameterClass="map">
+		select 
+			r.id,r.unitid,c.codename specid,r.itemname,r.itemdesc,r.daycount,r.reqform,r.teacher,fun_getNameAsID(r.requserid,0) requserid,r.reqtype,r.state,r.flowsta,to_char(r.subtime,'yyyy-mm-dd') subtime,r.flowmark,
+			(select count(*) from ptrain_requser where reqid=r.id) intflag,to_char(r.maintime ,'yyyy-mm-dd') maintime
+		from ptrain_req r,ptrain_code c where r.specid = c.id and r.id=#id#
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+	</select>
+	<!-- 添加莆田岗位培训_培训需求报名信息 -->
+	<insert id="insertPtrainRequser" parameterClass="ptrainRequserBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_requser.nextval as id from dual
+		</selectKey>
+		insert into ptrain_requser
+		  (id,reqid,userid,regdate,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#reqid#,#userid#,sysdate,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+	<!-- 添加莆田岗位培训_培训点菜信息 -->
+	<insert id="insertPtrainReq" parameterClass="ptrainReqBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_req.nextval as id from dual
+		</selectKey>
+		insert into ptrain_req
+		  (id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,requserid,reqtype,state,flowsta,subtime,flowmark,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#specid#,#itemname#,#itemdesc#,#daycount#,#reqform#,#teacher#,#requserid#,#reqtype#,#state#,#flowsta#,#subtime#,#flowmark#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+	<!-- 更新莆田岗位培训_培训需求报名信息 -->
+	<update id="updatePtrainRequser" parameterClass="ptrainRequserBean">
+		update ptrain_requser set  id = #id#
+		<isNotEmpty prepend="," property="reqid">
+			reqid = #reqid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="regdate">
+			regdate = #regdate#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>	
+	<!-- 更新莆田岗位培训_培训点菜信息 -->
+	<update id="updatePtrainReq" parameterClass="ptrainReqBean">
+		update ptrain_req set  id = #id#
+		<isNotEmpty prepend="," property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="itemname">
+			itemname = #itemname#
+		</isNotEmpty>
+		<isNotNull prepend="," property="itemdesc">
+			itemdesc = #itemdesc#
+		</isNotNull>
+		<isNotEmpty prepend="," property="daycount">
+			daycount = #daycount#
+		</isNotEmpty>
+		<isNotNull prepend="," property="reqform">
+			reqform = #reqform#
+		</isNotNull>
+		<isNotNull prepend="," property="teacher">
+			teacher = #teacher#
+		</isNotNull>
+		<isNotEmpty prepend="," property="requserid">
+			requserid = #requserid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="reqtype">
+			reqtype = #reqtype#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="state">
+			state = #state#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="flowsta">
+			flowsta = #flowsta#
+		</isNotEmpty>
+		<isNotNull prepend="," property="subtime">
+			subtime = to_date(#subtime#,'yyyy-mm-dd')
+		</isNotNull>
+		<isNotEmpty prepend="," property="flowmark">
+			flowmark = #flowmark#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+	<!-- 删除莆田岗位培训_培训需求报名信息 -->
+	<delete id="deletePtrainRequserById" parameterClass="string">
+		delete from ptrain_requser where id in ($value$)
+	</delete>
+	<!-- 删除莆田岗位培训_培训点菜信息 -->
+	<delete id="deletePtrainReqById" parameterClass="string">
+		delete from ptrain_req where id in ($value$)
+	</delete>
+</sqlMap>

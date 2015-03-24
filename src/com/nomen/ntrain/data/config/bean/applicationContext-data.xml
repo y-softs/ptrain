@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	@description 人员数据子系统 
+    @author 钱新红
+    @date 2009-09-17
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<!-- 部门和班组机构模块 -->
+	<bean id="dataOrganZDAO" class="com.nomen.ntrain.data.dao.implement.DataOrganZDAOImpl" parent="nsoftDao"/>
+	<bean id="dataOrganZService" class="com.nomen.ntrain.data.service.implement.DataOrganZServiceImpl" parent="baseService">
+		<property name="dataOrganZDAO" ref="dataOrganZDAO"/>
+	</bean>
+	<bean id="dataOrganZAction" class="com.nomen.ntrain.data.action.DataOrganZAction" scope="prototype"> 
+	    <property name="dataOrganZService" ref="dataOrganZService"/>
+	    <property name="loginService" ref="loginService"/>
+	</bean>
+	
+	<!-- 人员基本信息模块 -->
+	<bean id="dataUserZDAO" class="com.nomen.ntrain.data.dao.implement.DataUserZDAOImpl" parent="nsoftDao"/>
+	<bean id="dataUserZService" class="com.nomen.ntrain.data.service.implement.DataUserZServiceImpl" parent="baseService">
+		<property name="dataUserZDAO" ref="dataUserZDAO"/>
+	</bean>
+	<bean id="dataUserZAction" class="com.nomen.ntrain.data.action.DataUserZAction" scope="prototype"> 
+	    <property name="dataUserZService" ref="dataUserZService"/>
+	    <property name="loginService" ref="loginService"/>
+	</bean>
+</beans>

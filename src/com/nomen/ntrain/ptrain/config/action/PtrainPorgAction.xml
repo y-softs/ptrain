@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_咨询公司
+@author 林木山
+@date 2014-3-13
+-->
+<struts>
+    <package name="PtrainPorg" extends="nsoft-ic" namespace="/Ptrain/Porg">
+		<!-- ===================JQuery================ -->
+		<!-- 更新[启用、禁止] -->
+    	<action name="updatePtrainPorgUsesignByJq" class="ptrainPorgAction" method="updatePtrainPorgUsesignByJq">
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 列表信息 -->
+    	<action name="listptrainporg" class="ptrainPorgAction" method="listPtrainPorg">
+    		<result name="success">/Ptrain/Base/Cons_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 新增、修改[跳转] -->
+    	<action name="setptrainporg" class="ptrainPorgAction" method="setPtrainPorg">
+    		<result name="success">/Ptrain/Base/Cons_Set1.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 新增/修改[保存]-->
+    	<action name="saveptrainporg" class="ptrainPorgAction" method="savePtrainPorg">
+    		<result name="success">/Ptrain/Base/Cons_List.jsp</result>
+    		<result name="input">/Ptrain/Base/Cons_Set1.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 删除 -->
+    	<action name="deleteptrainporg" class="ptrainPorgAction" method="deletePtrainPorg">
+    		<result name="success">/Ptrain/Base/Cons_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 导入Excel 跳转  -->
+    	<action name="setptrainporgexcel" class="ptrainPorgAction" method="setPtrainPorgExcel">
+    		<result name="success">/Ptrain/Base/Cons_Set2.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 导入Excel 保存 -->
+    	<action name="saveptrainporgexcel" class="ptrainPorgAction" method="savePtrainPorgExcel">
+    		<param name="savePath">/Ptrain/Base/Upload/</param>
+    		<result name="success">/Ptrain/Base/Cons_List.jsp</result>
+    		<result name="input">/Ptrain/Base/Cons_Set2.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_咨询公司 Excel导出 -->
+    	<action name="saveptrainporgexpexcel" class="ptrainPorgAction" method="savePtrainPorgExpExcel"></action>
+
+	</package>
+</struts>
+

@@ -1,0 +1,162 @@
+@charset "utf-8";
+/* CSS Document */
+html, body, div, span, applet, object, iframe,  
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,  
+a, abbr, acronym, address, big, cite, code,  
+del, dfn, em, img, ins, kbd, q, s, samp,  
+small, strike, strong, sub, sup, tt, var,  
+b, u, i, center,  
+dl, dt, dd, ol, ul, li,  
+fieldset, form, label, legend,  
+table, caption, tbody, tfoot, thead, tr, th, td,  
+article, aside, canvas, details, embed,  
+figure, figcaption, footer, header, hgroup,  
+menu, nav, output, ruby, section, summary,  
+time, mark, audio, video {  
+    margin: 0;  
+    padding: 0;  
+    border: 0;  
+    font-size: 100%;  
+    font: inherit;  
+    vertical-align: baseline;  	
+	font-family:"宋体"
+}  
+/* HTML5 display-role reset for older browsers */  
+article, aside, details, figcaption, figure,  
+footer, header, hgroup, menu, nav, section {  
+    display: block;  
+}  
+body {  
+    line-height: 1;  
+}  
+ol, ul {  
+    list-style: none;  
+}  
+blockquote, q {  
+    quotes: none;  
+}  
+blockquote:before, blockquote:after,  
+q:before, q:after {  
+    content: '';  
+    content: none;  
+}  
+table {  
+    border-collapse: collapse;  
+    border-spacing: 0;  
+} 
+/*点击没有虚线*/
+a{outline:none; star:expression(this.onFocus=this.blur()); text-decoration:none;}
+a:hover{text-decoration:none;}
+a.link{ color:#333;}
+a.link:hover{ color:red;}
+.clear{clear:both; font-size:0; line-height:0;}
+
+
+.btn{
+	width:50px; background:url(../Image/btn.jpg) no-repeat left center; height:28px;
+	line-height:28px; text-align:center; font-size:13px;
+	font-family:"黑体"; display:block;
+	color:#fff; float:left;
+}
+.btn-inverse{ background-position:0px 0px; color:#333;margin-top:1px;}
+.btn-danger{ background-position:0px -28px;margin-top:2px; }
+.btn-info{ background-position:0px -56px;}
+.btn-primary{ background-position:0px -82px;}
+.btn-success{ background-position:0px -110px;}
+.btn-warning{ background-position:0px -138px;margin-top:1px;}
+.btn:hover{
+	text-decoration:none;
+	filter:alpha(opacity=80);
+	-moz-opacity:0.8;
+	-khtml-opacity: 0.8;
+	opacity: 0.8; cursor:pointer;
+}
+/*（5）字体或背景颜色*/
+.fontcolor_b       {font-weight:bold;}                        /*加粗*/
+.fontcolor_red     {color:#FF0000}                            /*红色*/
+.fontcolor_blue    {color:#0000FF}                            /*蓝色*/
+.fontcolor_gray    {color:#999999}                            /*灰色*/
+.fontcolor_red_b   {color:#FF0000;font-weight:bold;}          /*红色加粗*/
+.fontcolor_blue_b  {color:#0000FF;font-weight:bold;}          /*蓝色加粗*/
+.fontcolor_gray_b  {color:#999999;font-weight:bold;}          /*灰色加粗*/
+.backcolor_yellow1 {background-color:#FFFFCC;}                /*淡黄色背景*/
+.backcolor_yellow2 {background-color:#FFFF99;}                /*浅黄色背景*/
+.fontcolor_s       {color:red;text-decoration:line-through;}  /*删除线*/
+
+/* -------------
+ * Selects
+ * ------------- */
+ form.jqtransformdone label{
+	margin-top:4px;
+	margin-right: 8px;
+	display: block;
+	float:left;border:1px solid red;
+}
+ form.jqtransformdone div.rowElem{
+	clear:both;
+	padding:4px 0px; border:1px solid red;
+}
+.jqTransformSelectWrapper {
+	width: 45px;
+	position:relative;
+	height: 31px;
+	background: url(../Image/select_left.gif) no-repeat top left;
+	float:left;
+}
+
+.jqTransformSelectWrapper div span {	
+	font-size: 12px;
+	float: none;
+	position: absolute;
+	white-space: nowrap;
+	height: 31px;
+	line-height: 15px;
+	padding: 8px 0 0 7px;
+	overflow: hidden;
+	cursor:pointer;
+	/*border: 1px solid #CCCCCC;*/
+/*	border-right: none;*/
+}
+.jqTransformSelectWrapper  a.jqTransformSelectOpen {
+	display: block;
+	position: absolute;
+	right: 0px;
+	width: 31px;
+	height: 31px;
+	background: url(../Image/select_right.gif) no-repeat center center;
+}
+.jqTransformSelectWrapper ul {
+	position: absolute;
+	width: 43px;
+	top: 30px;
+	left: 0px;
+	list-style: none;
+	background-color: #FFF;
+	border: solid 1px #CCC;
+	display: none;
+	margin: 0px;
+	padding: 0px;
+	height: 150px;
+	overflow: auto;
+	overflow-y: auto; 
+	z-index:10;
+}
+.jqTransformSelectWrapper ul a {
+	display: block;
+	text-decoration: none;
+	color:#333;line-height:28px;height:28px;display:block;
+	background-color: #FFF;padding:0px;text-indent:5px;
+	font-size: 12px;
+}
+.jqTransformSelectWrapper ul a.selected {
+	background: #EDEDED;
+	color: #333;
+}
+.jqTransformSelectWrapper ul a:hover, .jqTransformSelectWrapper ul a.selected:hover {
+	background:#3582c4;
+	color: #fff;
+}
+/* -------------
+ * Hidden - used to hide the original form elements
+ * ------------- */
+.jqTransformHidden {display: none;}

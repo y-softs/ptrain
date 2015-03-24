@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_知识学习 
+@author 许东雄
+@date 2014-3-24
+-->
+<struts>
+    <package name="PtrainBbs" extends="nsoft-ic" namespace="/Ptrain/Bbs">
+    	<!--==========================JQuery相关============================-->
+    	<!-- Jq 帖子互动 列表-->
+    	<action name="listTrainBbsChildByJq" class="ptrainBbsAction" method="listTrainBbsChildByJq"></action>
+    	<!--  回复 Jq -->
+    	<action name="insertPtrainBbsByJq" class="ptrainBbsAction" method="insertPtrainBbsByJq"></action>
+    	<!--  累加下载次数 Jq -->
+    	<action name="DownloadNumberByJq" class="ptrainBbsAction" method="DownloadNumberByJq"></action>
+    	<!--  点赞 Jq -->
+    	<action name="onClickNiceByJq" class="ptrainBbsAction" method="onClickNiceByJq"></action>
+    	
+		<!-- 知识问答 列表 -->
+    	<action name="listTrainBbsByJq" class="ptrainBbsAction" method="listTrainBbsByJq"></action>
+		<!--  删除 主帖 -->
+    	<action name="deleteTrainBbsByJq" class="ptrainBbsAction" method="deleteTrainBbsByJq"></action>
+	
+	
+		<!-- 知识问答 列表 -->
+    	<action name="listtrainbbs" class="ptrainBbsAction" method="listTrainBbs">
+    		<param name="nature">2</param>    		
+    		<param name="KIND">1</param>
+    		<result name="success">/Ptrain/Study/Bbs_List1.jsp</result>
+		</action>
+		<!-- 资源共享 列表 -->
+    	<action name="listtrainbbs_share" class="ptrainBbsAction" method="listTrainBbs">
+    		<param name="nature">2</param>
+    		<param name="KIND">0</param>
+    		<result name="success">/Ptrain/Study/BBS_List2.jsp</result>
+		</action>
+		<!-- 规章制度 列表 -->
+    	<action name="listtrainbbs_rules" class="ptrainBbsAction" method="listTrainBbs">
+    		<param name="nature">2</param>
+    		<param name="KIND">2</param>
+    		<result name="success">/Ptrain/Study/BBS_List4.jsp</result>
+		</action>
+		<!-- 帖子信息 -->
+		<action name="setbbstopic" class="ptrainBbsAction" method="setBbsTopic">
+    		<result name="Topic1">/Ptrain/Study/Bbs_Topic1.jsp</result>
+    		<result name="Topic2">/Ptrain/Study/Bbs_Topic2.jsp</result>
+		</action>		
+		<!--  帖子互动 列表 -->
+    	<action name="listtrainbbschild" class="ptrainBbsAction" method="listTrainBbsChild">
+    		<result name="success">/Ptrain/Study/Bbs_Win1.jsp</result>
+		</action>
+		<!--  新增/修改 [跳转] -->
+    	<action name="settrainbbs" class="ptrainBbsAction" method="setTrainBbs">
+    		<!-- 上传文件路径 -->
+			<param name="SAVEPATH">/Ptrain/Study/Upload/</param>
+    		<result name="success">/Ptrain/Study/${setpage}.jsp</result>
+		</action>
+		<!--  新增/修改 [跳转] -->
+    	<action name="settrainbbswin" class="ptrainBbsAction" method="setTrainBbsWin">
+    		<result name="success">/Ptrain/Study/${setpage}.jsp</result>
+		</action>
+		<!--  帖子互动 列表 -->
+    	<action name="savetrainbbs" class="ptrainBbsAction" method="saveTrainBbs">
+    		<result name="success">/Ptrain/Study/${listpage}.jsp</result>
+		</action>		
+		<!--  转帖 保存 -->
+    	<action name="savetrainbbsreprint" class="ptrainBbsAction" method="saveTrainBbsReprint"></action>
+		<!--  回答|评价  [跳转] -->
+    	<action name="settrainans" class="ptrainBbsAction" method="setTrainAns">
+    		<result name="success">/Ptrain/Study/${setpage}.jsp</result>
+		</action>
+		<!--  对专家解答进行评价 [保存] -->
+    	<action name="savetrainbbsbyevasign" class="ptrainBbsAction" method="saveTrainBbsByEvaSign"></action>		
+		<!--  删除 主帖 -->
+    	<action name="deletetrainbbsbyid" class="ptrainBbsAction" method="deleteTrainBbsById">
+    		<result name="success">/Ptrain/Study/BBS_List1.jsp</result>
+		</action>
+		<!--  删除 子级记录 -->
+    	<action name="deletetrainbbschildbyid" class="ptrainBbsAction" method="deleteTrainBbsChildById">
+    		<result name="success">/Ptrain/Study/BBS_List3.jsp</result>
+		</action>
+		
+		
+    	<!--==========================  查询统计  ============================-->
+    	
+    	<!-- 查询统计 >> 知识学习情况 >> 应用统计 Excel导出 -->
+    	<action name="saveptrainbbsexpexcel" class="ptrainBbsAction" method="savePtrainBbsExpExcel"></action>
+		
+		<!-- 查询统计 >> 知识学习情况 >> 专业版主 -->
+    	<action name="listptrainmode" class="ptrainBbsAction" method="listPtrainMode">
+    		<result name="success">/Ptrain/Query/Konw_Mode_List.jsp</result>
+		</action>
+    	<!-- 查询统计 >> 知识学习情况 >> 最佳知识 Excel导出 -->
+    	<action name="saveptrainbbsrankexpexcel" class="ptrainBbsAction" method="savePtrainBbsRankExpExcel"></action>
+    	<!-- 查询统计 >> 知识学习情况 >> 专业版主 Excel导出 -->
+    	<action name="saveptrainbbsmodeexpexcel" class="ptrainBbsAction" method="savePtrainBbsModeExpExcel"></action>
+    	
+    	<!--==========================  查询统计[修改后]  ============================-->
+    	<!-- 查询统计 >> 知识学习情况 >> 应用统计[跳转] -->
+    	<action name="toforwardqueryknowstat" class="ptrainBbsAction" method="toForwardQueryKnow">
+    		<result name="success">/Ptrain/Query/Konw_Stat_List.jsp</result>
+		</action>
+		
+		<!-- 查询统计 >> 知识学习情况 >> 应用统计 -->
+    	<action name="listptrainappstati" class="ptrainBbsAction" method="listPtrainAppStati"></action>
+    	
+    	<!-- 查询统计 >> 知识学习情况 >> 最佳知识[跳转] -->
+    	<action name="toforwardqueryknowrank" class="ptrainBbsAction" method="toForwardQueryKnow">
+    		<result name="success">/Ptrain/Query/Konw_Rank_List.jsp</result>
+		</action>
+		
+    	<!-- 查询统计 >> 知识学习情况 >> 最佳知识 -->
+    	<action name="listptrainrank" class="ptrainBbsAction" method="listPtrainRank"></action>
+    	
+	</package>
+</struts>
+

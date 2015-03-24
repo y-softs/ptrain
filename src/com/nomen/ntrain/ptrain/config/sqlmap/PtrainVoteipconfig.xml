@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 投票_合法IP段
+@author 林木山
+@date 2014-12-15
+-->
+<sqlMap namespace="PtrainVoteipconfig">
+	<typeAlias alias="ptrainVoteipconfigBean" type="com.nomen.ntrain.ptrain.bean.PtrainVoteipconfigBean"/>
+
+	<!-- 查找投票_合法IP段列表信息 -->
+	<select id="findPtrainVoteipconfigList" resultClass="ptrainVoteipconfigBean" parameterClass="map">
+		select id,appid, startip, endip from ptrain_voteipconfig
+		where 1=1 
+		<isNotEmpty prepend="and" property="appid">
+			appid = #appid#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 查找投票_合法IP段列表信息 -->
+	<select id="findPtrainVoteipconfigBeanById" resultClass="ptrainVoteipconfigBean" parameterClass="string">
+		select id,appid, startip, endip from ptrain_voteipconfig
+		where id = #value#
+	</select>
+
+	<!-- 查找投票_合法IP段列表信息 -->
+	<select id="findPtrainVoteipconfigStrList" resultClass="string" parameterClass="string">
+		select (startip||'-'||endip) as ip from ptrain_voteipconfig
+		where appid = #value#
+	</select>
+
+	<!-- 添加投票_合法IP段信息 -->
+	<insert id="insertPtrainVoteipconfigBean" parameterClass="ptrainVoteipconfigBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_voteipconfig.nextval as id from dual
+		</selectKey>
+		insert into ptrain_voteipconfig
+		  (id,appid,startip,endip)
+		values
+		  (#id#,#appid#,#startip#,#endip#)
+	</insert> 
+
+	<!-- 更新投票_合法IP段信息 -->
+	<update id="updatePtrainVoteipconfigBean" parameterClass="ptrainVoteipconfigBean">
+		update ptrain_voteipconfig set appid = #appid#
+		<isNotEmpty prepend="," property="startip">
+			startip = #startip#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="endip">
+			endip = #endip#
+		</isNotEmpty>
+		where id = #id#
+	</update>
+	
+	<!-- 删除投票_合法IP段信息 -->
+	<delete id="deletePtrainVoteipconfigBean" parameterClass="string">
+		delete from ptrain_voteipconfig where id in ($value$)
+	</delete>
+</sqlMap>

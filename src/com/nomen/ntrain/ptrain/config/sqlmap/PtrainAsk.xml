@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_每日三问
+@author 林木山
+@date 2014-3-24
+-->
+<sqlMap namespace="PtrainAsk">
+	<typeAlias alias="ptrainAskBean" type="com.nomen.ntrain.ptrain.bean.PtrainAskBean"/>
+
+	<!-- 查找每日三问 累计答题次数/得分 -->
+	<select id="findPtrainAskStat" resultClass="ptrainAskBean" parameterClass="map">
+		select count(*) asktotal, to_char(sum(a.score),'FM999990.00') score from ptrain_ask a where subtime is not null
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="year">
+			to_char(subtime,'yyyy')=#year#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="month">
+			to_char(subtime,'mm')=#month#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="day">
+			to_char(subtime,'dd')=#day#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找每日三问 未完成答题三问主记录信息 -->
+	<select id="findPtrainAskNoAskid" resultClass="string" parameterClass="map">
+		select max(id) id from ptrain_ask where subtime is null
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userid">
+			userid = #userid#
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找每日三问 出题轮次 -->
+	<select id="findPtrainAskPushnum" resultClass="ptrainAskBean" parameterClass="map">
+		select (case when pushtime!=to_char(sysdate,'yyyy-mm-dd') then 1 else a.pushnum end) pushnum,p.paramvalue intflag,subtime from (select max(pushnum) pushnum, max(subtime) subtime, max(pushtime) pushtime from(select pushnum,subtime,to_char(pushtime,'yyyy-mm-dd') pushtime from ptrain_ask where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="pushtime">
+			to_char(pushtime,'yyyy-mm-dd') =#pushtime#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="subtime">
+			(to_char(subtime,'yyyy-mm-dd') = #subtime# or subtime is null)
+		</isNotEmpty> order by pushnum desc) where rownum=1) a,ptrain_param p where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="paramname">
+			p.paramname = #paramname#
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找每日三问 已答题日期 -->
+	<select id="findPtrainAskSubday" resultClass="ptrainAskBean" parameterClass="map">
+		select to_char(to_number(to_char(subtime,'dd'))) subtime from ptrain_ask a 
+		where a.subtime is not null 
+		<isNotEmpty prepend="and" property="unitid">
+			a.unitid = #unitid#
+		</isNotEmpty> 
+		<isNotEmpty prepend="and" property="userid">
+			a.userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="subtime">
+			to_char(a.subtime,'yyyy-mm')=#subtime#
+		</isNotEmpty>
+		group by a.subtime
+	</select>
+
+	<!-- 查找莆田岗位培训_每日三问信息 -->
+	<select id="findPtrainAskBeanById" resultClass="ptrainAskBean" parameterClass="string">
+		select id,unitid,userid,pushnum,to_char(pushtime,'yyyy-mm-dd') pushtime,score,to_char(subtime,'yyyy-mm-dd') subtime,strflag,intflag from ptrain_ask where id=#value#
+	</select>
+
+	<!-- 添加莆田岗位培训_每日三问信息 -->
+	<insert id="insertPtrainAsk" parameterClass="ptrainAskBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_ask.nextval as id from dual
+		</selectKey>
+		insert into ptrain_ask
+		  (id,unitid,userid,pushnum,pushtime,score,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#userid#,#pushnum#,sysdate,#score#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_每日三问信息 -->
+	<update id="updatePtrainAsk" parameterClass="ptrainAskBean">
+		update ptrain_ask t set id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="pushnum">
+			pushnum = #pushnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="pushtime">
+			pushtime = #pushtime#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="score">
+			score = (select sum(ansscore) from ptrain_askitem where askid=t.id)
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="subtime">
+			subtime = to_date(#subtime#,'yyyy-mm-dd')
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_每日三问信息 -->
+	<delete id="deletePtrainAskById" parameterClass="string">
+		delete from ptrain_ask where id in ($value$)
+	</delete>
+	
+	<!-- ==================查询统计相关================== -->
+	<!-- 查询统计_每日三问情况_应用统计(按班组) 列表信息 -->
+	<select id="findPtrainAskAppStat" resultClass="hashmap" parameterClass="map" remapResults="true">
+		select 
+			id,appname,usernum,reachnum,reachper,score,avescore,datalevel
+		from (
+			select 
+				to_char(app.id) id,app.organname appname,
+				<!-- decode(level,1,usernum_d,2,usernum_g,usernum_subg) usernum,decode(level,1,reachnum_d,2,reachnum_g,reachnum_subg) reachnum,decode(level,1,score_d,2,score_g,score_subg) score -->
+				to_char(usernum) usernum,to_char(reachnum) reachnum,
+				(case when usernum >0 then(case when reachnum!=0 and reachnum!=usernum then to_char((reachnum / usernum) * 100, 'FM990.00') else to_char((reachnum / usernum) * 100) end) end) reachper,
+				to_char(score) score,(case when score!=0 then to_char(score / usernum, 'FM990.00') else to_char(score / usernum) end) avescore,to_char(level) datalevel
+			from 
+				tb_data_organ app,(
+				select 
+					o.id,sum(u.usernum) usernum,sum(u.reachnum) reachnum,sum(u.score) score
+					<!--sum(decode(o.id,u.deptid,u.reachnum,0)) reachnum_d,
+					sum(decode(o.id,u.deptid,u.score,0)) score_d,
+					sum(case when o.id = u.groupid or o.id = u.subgroupid then u.usernum else 0 end) usernum_g,
+					sum(case when o.id = u.groupid or o.id = u.subgroupid then u.reachnum else 0 end) reachnum_g,
+					sum(case when o.id = u.groupid or o.id = u.subgroupid then u.score else 0 end) score_g,
+					sum(decode(o.id,u.subgroupid,u.usernum,0)) usernum_subg,
+					sum(decode(o.id,u.subgroupid,u.reachnum,0)) reachnum_subg,
+					sum(decode(o.id,u.subgroupid,u.score,0)) score_subg-->
+				from 
+					tb_data_organ o,(select u.deptid, o.fatherid groupid, u.groupid subgroupid, count(*) usernum, 
+					sum(case when score >= #reachscore# then 1 else 0 end) reachnum,sum(score) score from ptrain_postuser p,tb_data_user u,tb_data_organ o,
+	<!--			(select userid,sum(score) score,(case when count(*) >=#reachnum# then count(*) end) reachnum from ptrain_ask where subtime is not null and unitid = #unitid# -->
+					(select userid,sum(score) score,count(*) asknum from ptrain_ask where subtime is not null and unitid = #unitid# 
+					<isNotEmpty prepend="and" property="subtime">
+						to_char(subtime,'yyyy-mm')=#subtime#
+					</isNotEmpty>
+					group by userid) a
+		        	where p.unitid = #unitid# and u.unitid = #unitid# and o.unitid = #unitid# and u.groupid=o.id and p.userid = u.id and u.id = a.userid(+) group by u.deptid, o.fatherid, u.groupid) u
+		        where 
+		        	o.unitid = #unitid# and (o.id = u.deptid or o.id = u.groupid or o.id = u.subgroupid) group by o.id
+	        	)u
+			where app.unitid = #unitid# and app.id = u.id(+)
+			<isNotEmpty prepend="and" property="usesign">
+				app.usesign = #usesign#
+			</isNotEmpty>
+			 start with app.fatherid = 0 connect by prior app.id = app.fatherid
+			<isNotEmpty property="sortfield">
+				order siblings by $sortfield$
+			</isNotEmpty>
+		)
+	</select>
+	<!-- 查询统计_每日三问情况_应用统计(按部门) 列表信息[备用] -->
+	<select id="findPtrainAskAppStatDept" resultClass="hashmap" parameterClass="map" remapResults="true">
+		select 
+			to_char(app.id) id,app.organname appname,to_char(usernum) usernum,to_char(reachnum) reachnum,
+			(case when score >=#reachscore# then(case when reachnum!=0 and reachnum!=usernum then to_char((reachnum / usernum) * 100, 'FM990.00') else to_char((reachnum / usernum) * 100) end) end) reachper,
+			to_char(score) score,(case when score!=0 then to_char(score / usernum, 'FM990.00') else to_char(score / usernum) end) avescore
+		from 
+			tb_data_organ app,(select u.deptid, count(*) usernum, sum(case when score >= #reachscore# then 1 else 0 end),sum(score) score from ptrain_postuser p,tb_data_user u,
+<!--			(select userid,sum(score) score,(case when count(*) >=#reachnum# then count(*) end) reachnum from ptrain_ask where subtime is not null and unitid = #unitid# -->
+			(select userid,sum(score) score,count(*) asknum from ptrain_ask where subtime is not null and unitid = #unitid# 
+			<isNotEmpty prepend="and" property="subtime">
+				to_char(subtime,'yyyy-mm')=#subtime#
+			</isNotEmpty>
+			group by userid) a
+        	where p.unitid = #unitid# and u.unitid = #unitid# and p.userid = u.id and u.id = a.userid(+) group by u.deptid) u
+		where app.unitid = #unitid# and fatherid=0 and app.id = u.deptid(+)
+		<isNotEmpty prepend="and" property="usesign">
+			app.usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+	<!-- 查询统计_每日三问情况_应用统计（按专业） 列表信息 -->
+	<select id="findPtrainAskAppStatSpec" resultClass="hashmap" parameterClass="map" remapResults="true">
+		select 
+			to_char(app.id) id,app.codename appname,to_char(usernum) usernum,to_char(reachnum) reachnum,
+			(case when usernum >0 then(case when reachnum!=0 and reachnum!=usernum then to_char((reachnum / usernum) * 100, 'FM990.00') else to_char((reachnum / usernum) * 100) end) end) reachper,
+			to_char(score) score,(case when score!=0 then to_char(score / usernum, 'FM990.00') else to_char(score / usernum) end) avescore,'1' datalevel
+		from 
+			ptrain_code app,(select p.postid, count(*) usernum, sum(case when score >= #reachscore# then 1 else 0 end) reachnum,sum(score) score from ptrain_postuser p,
+<!--			(select userid,sum(score) score,(case when count(*) >=#reachnum# then count(*) end) reachnum from ptrain_ask where subtime is not null and unitid = #unitid# -->
+			(select userid,sum(score) score,count(*) asknum from ptrain_ask where subtime is not null <isNotEmpty prepend="and" property="unitid"> unitid = #unitid#</isNotEmpty> 
+			<isNotEmpty prepend="and" property="subtime">
+				to_char(subtime,'yyyy-mm')=#subtime#
+			</isNotEmpty>
+			group by userid) a
+        	where 1=1 <isNotEmpty prepend="and" property="unitid"> p.unitid = #unitid#</isNotEmpty> and p.userid = a.userid(+) group by p.postid) u
+		where (app.nature=1 and app.unitid is null or( app.nature=2 and app.unitid = #centerunitid#)) and app.fatherid=#fatherid# and app.id = u.postid(+)
+		<isNotEmpty prepend="and" property="usesign">
+			app.usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+	
+	<!-- 查询统计_每日三问情况_应用统计 人员列表信息 -->
+	<!-- 查询统计_每日三问情况_英雄榜单 列表信息 -->
+	<select id="findPtrainAskUser" resultClass="hashmap" parameterClass="map" remapResults="true">
+		<isNotEmpty property="ranknum">
+			select u.* from (
+		</isNotEmpty>
+			select udept.organname deptname,ugroup.organname groupname,u.username,u.userid,u.workid,to_char(asknum) asknum,(case when score<![CDATA[<]]>1 and score>0 then to_char(score,'FM0.99') else to_char(score) end) score,
+<!--			(case when asknum >=#reachnum# then '达标' else '未达标' end) reachstat-->
+				(case when score >=#reachscore# then '达标' else '未达标' end) reachstat
+  			from ptrain_postuser p,tb_data_user u,tb_data_organ udept,tb_data_organ ugroup,
+  				(select userid,count(*) asknum,sum(score) score from ptrain_ask where subtime is not null<isNotEmpty property="unitid"> and unitid = #unitid# </isNotEmpty>
+				<isNotEmpty prepend="and" property="subtime">
+					to_char(subtime,'yyyy-mm')=#subtime#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="year">
+					to_char(subtime,'yyyy')=#year#
+				</isNotEmpty>
+				group by userid) a
+				where u.id = p.userid and u.deptid=udept.id and u.groupid=ugroup.id(+) and u.id = a.userid(+)
+				<isNotEmpty prepend="and" property="unitid">
+					p.unitid = #unitid# and udept.unitid = #unitid# and ugroup.unitid(+) = #unitid# and u.unitid = #unitid#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="deptid">
+					u.deptid = #deptid#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="groupid">
+					(u.groupid = $groupid$ or u.groupid in (select id from tb_data_organ where unitid = #unitid# and fatherid = #groupid# and usesign=1))
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="subgroupid">
+					u.groupid = #subgroupid#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="specid">
+					p.postid = #specid#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="showsign1"><!-- 仅显示达标 -->
+<!--					asknum>=#reachnum#-->
+					score>=#reachscore#
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="showsign2"><!-- 仅显示未达标  -->
+<!--					(nvl(asknum,0)<![CDATA[<]]>#reachnum#)-->
+					(nvl(score,0)<![CDATA[<]]>#reachscore#)
+				</isNotEmpty>
+				<isNotEmpty prepend="and" property="keyword">
+					$fields$ like '%'||#keyword#||'%'
+				</isNotEmpty>
+				<isEmpty property="sortfield">
+					order by (asknum+score)/4
+				</isEmpty>
+				<isNotEmpty property="sortfield">
+					order by $sortfield$
+				</isNotEmpty>
+		<isNotEmpty property="ranknum">
+			) u where rownum <![CDATA[<=]]>$ranknum$
+		</isNotEmpty>
+	</select>
+
+</sqlMap>

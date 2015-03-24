@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_投票管理
+@author 
+@date 2014-12-15
+-->
+<struts>
+    <package name="PtrainVotesrc" extends="nsoft-ic" namespace="/Ptrain/Votesrc">
+		<!-- =============         Jquery        ================== -->
+		<!-- 查询岗位培训_投票管理 列表 -->
+    	<action name="listPtrainVotesrcByJq" class="ptrainVotesrcAction" method="listPtrainVotesrcByJq"></action>
+		<!-- 删除莆田岗位培训_投票管理 -->
+		<action name="deletePtrainVotesrcByJq" class="ptrainVotesrcAction" method="deletePtrainVotesrcByJq"></action>
+		
+		<!-- 莆田岗位培训_投票管理 列表信息 -->
+    	<action name="toforwardvotesrc" class="ptrainVotesrcAction" method="toForwardVotesrc">
+    		<result name="success">/Ptrain/Vote/Votesrc_List.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_投票管理 [跳转]-->
+    	<action name="setptrainvotesrc" class="ptrainVotesrcAction" method="setPtrainVotesrc">
+    		<result name="success">/Ptrain/Vote/Votesrc_Set.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_投票管理 [保存]-->
+    	<action name="saveptrainvotesrc" class="ptrainVotesrcAction" method="savePtrainVotesrc">
+    		<result name="input">/Ptrain/Vote/Votesrc_Set.jsp</result>
+    		<result name="success">/Ptrain/Vote/Votesrc_List.jsp</result>
+		</action>
+						
+	</package>
+</struts>
+

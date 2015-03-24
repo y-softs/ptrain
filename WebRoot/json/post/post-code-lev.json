@@ -1,0 +1,9 @@
+﻿[
+	{"id":1,"name":"R1","benenum":"100","wagenum":"2100","usesign":"1","codevalue":"A-01"},
+	{"id":2,"name":"R2","benenum":"110","wagenum":"2400","usesign":"1","codevalue":"A-02"},
+	{"id":3,"name":"R3","benenum":"120","wagenum":"2700","usesign":"1","codevalue":"A-03"},
+	{"id":4,"name":"R4","benenum":"200","wagenum":"3200","usesign":"0","codevalue":"A-04"},
+	{"id":5,"name":"R5","benenum":"210","wagenum":"3700","usesign":"1","codevalue":"A-05"},
+	{"id":6,"name":"R6","benenum":"220","wagenum":"4200","usesign":"1","codevalue":"A-06"},
+	{"id":7,"name":"R7","benenum":"300","wagenum":"5000","usesign":"1","codevalue":"A-07"}
+]

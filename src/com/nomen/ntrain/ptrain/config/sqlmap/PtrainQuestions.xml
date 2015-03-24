@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_试题
+@author 林木山
+@date 2014-3-5
+-->
+<sqlMap namespace="PtrainQuestions">
+	<typeAlias alias="ptrainQuestionsBean" type="com.nomen.ntrain.ptrain.bean.PtrainQuestionsBean"/>
+
+	<!-- 查找莆田岗位培训_试题列表信息 -->
+	<select id="findPtrainQuestionsList" resultClass="ptrainQuestionsBean" parameterClass="map" remapResults="true">
+		select 
+			q.id,q.unitid,q.kindid,q.kpid,c.codename typeid,q.topic,q.option1,q.option2,q.option3,q.option4,q.option5,q.option6,q.option7,q.answer1,q.answer2,q.answer3,q.answer4,q.answer5,q.answer6,q.answer7,q.usesign,q.remark,q.flowsta,to_char(q.subtime,'yyyy-mm-dd') subtime,q.flowmark 
+		from 
+			ptrain_questions q,tb_res_code c where q.typeid=c.id
+		<isNotEmpty prepend="and" property="unitid">
+			q.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="kindid">
+			q.kindid = #kindid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="kindidstr">
+			q.kindid in ($kindidstr$)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			q.typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_试题信息 -->
+	<select id="findPtrainQuestionsBeanById" resultClass="ptrainQuestionsBean" parameterClass="string">
+		select id,unitid,kindid,kpid,typeid,topic,option1,option2,option3,option4,option5,option6,option7,answer1,answer2,answer3,answer4,answer5,answer6,answer7,usesign,remark,flowsta,to_char(subtime,'yyyy-mm-dd') subtime,flowmark,sortnum,strflag,intflag from ptrain_questions where id=#value#
+	</select>
+
+	<!-- 查找莆田岗位培训_试题排序号 -->
+	<select id="findPtrainQuestionsSortnum" resultClass="string" parameterClass="map">
+		select count(*)+1 from ptrain_questions q where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			q.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="kindid">
+			q.kindid = #kindid#
+		</isNotEmpty>
+	</select>
+
+	<!-- 添加莆田岗位培训_试题信息 -->
+	<insert id="insertPtrainQuestions" parameterClass="ptrainQuestionsBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_questions.nextval as id from dual
+		</selectKey>
+		insert into ptrain_questions
+		  (id,unitid,kindid,kpid,typeid,topic,option1,option2,option3,option4,option5,option6,option7,answer1,answer2,answer3,answer4,answer5,answer6,answer7,usesign,remark,flowsta,flowmark,sortnum,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#kindid#,#kpid#,#typeid#,#topic#,#option1#,#option2#,#option3#,#option4#,#option5#,#option6#,#option7#,#answer1#,#answer2#,#answer3#,#answer4#,#answer5#,#answer6#,#answer7#,#usesign#,#remark#,#flowsta#,#flowmark#,#sortnum#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_试题信息 -->
+	<update id="updatePtrainQuestions" parameterClass="ptrainQuestionsBean">
+		update ptrain_questions set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="kindid">
+			kindid = #kindid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="kpid">
+			kpid = #kpid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="typeid">
+			typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="topic">
+			topic = #topic#
+		</isNotEmpty>
+		<isNotNull prepend="," property="option1">
+			option1 = #option1#
+		</isNotNull>
+		<isNotNull prepend="," property="option2">
+			option2 = #option2#
+		</isNotNull>
+		<isNotNull prepend="," property="option3">
+			option3 = #option3#
+		</isNotNull>
+		<isNotNull prepend="," property="option4">
+			option4 = #option4#
+		</isNotNull>
+		<isNotNull prepend="," property="option5">
+			option5 = #option5#
+		</isNotNull>
+		<isNotNull prepend="," property="option6">
+			option6 = #option6#
+		</isNotNull>
+		<isNotNull prepend="," property="option7">
+			option7 = #option7#
+		</isNotNull>
+		<isNotNull prepend="," property="answer1">
+			answer1 = #answer1#
+		</isNotNull>
+		<isNotNull prepend="," property="answer2">
+			answer2 = #answer2#
+		</isNotNull>
+		<isNotNull prepend="," property="answer3">
+			answer3 = #answer3#
+		</isNotNull>
+		<isNotNull prepend="," property="answer4">
+			answer4 = #answer4#
+		</isNotNull>
+		<isNotNull prepend="," property="answer5">
+			answer5 = #answer5#
+		</isNotNull>
+		<isNotNull prepend="," property="answer6">
+			answer6 = #answer6#
+		</isNotNull>
+		<isNotNull prepend="," property="answer7">
+			answer7 = #answer7#
+		</isNotNull>
+		<isNotEmpty prepend="," property="usesign">
+			usesign = #usesign#
+		</isNotEmpty>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotEmpty prepend="," property="flowsta">
+			flowsta = #flowsta#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="subtime">
+			subtime = #subtime#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="flowmark">
+			flowmark = #flowmark#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="sortnum">
+			sortnum = #sortnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_试题信息 -->
+	<delete id="deletePtrainQuestionsById" parameterClass="string">
+		delete from ptrain_questions where id in ($value$)
+	</delete>
+
+	<!-- 删除莆田岗位培训_试题信息 -->
+	<delete id="deletePtrainQuestionsByMap" parameterClass="map">
+		delete from ptrain_questions where 1=1 and unitid = #unitid#
+		<isNotEmpty prepend="and" property="kindid">
+			kindid = #kindid#
+		</isNotEmpty>
+	</delete>
+	
+	<!-- 更新莆田岗位培训_试题信息[启用、禁止] -->
+	<update id="updatePtrainQuestionsUsesign" parameterClass="ptrainQuestionsBean">
+		update ptrain_questions set usesign = #usesign#,mainuser = #mainuser#,maintime = sysdate where id in ($id$) 
+	</update>
+
+</sqlMap>

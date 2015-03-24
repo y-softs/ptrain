@@ -1,0 +1,45 @@
+@charset "utf-8";
+/* CSS Document */
+
+.set_tab{ width:99%; margin:10px  auto 5px  auto;
+font-size:13px;}
+.set_tab td{ padding:5px 0 5px 0px; border-top:1px solid #cdcdcd; line-height:30px;}
+.set_tab table{ width:100%;}
+.list-tab{ width:100%;font-family:"黑体";}
+.list-tab thead tr th{ line-height:30px; background:#167c81;color:#fff;}
+.list-tab tbody tr td{ line-height:20px; height:20px; color:#333; border-bottom:1px solid #cdcdcd;}
+.list-tab a{ color:#333;}
+.list-tab a:hover{ color:red;}
+.text{
+	border:none; 
+	margin:0; 
+	height:28px;
+	line-height:28px;
+	padding-left:5px;
+	border:1px solid #e7e7e7;
+	background:#fff url(../Image/input.jpg) repeat-x top;
+}
+.left{ width:15%; text-align:right; vertical-align:middle; background:#e5edf2;}
+.right{padding-left:5px;}
+.text_03           {width:7mm;}                               /*3字符宽*/
+.text_04           {width:9mm;}                               /*4字符宽*/
+.text_06           {width:14mm;}                              /*6字符宽*/
+.text_10           {width:21mm;}	                      	/*10字符宽*/
+.text_15           {width:30mm;}	                      /*15字符宽*/
+.text_20           {width:39mm;}                              /*20字符宽*/
+.text_30           {width:58mm;}                              /*30字符宽*/
+.text_50           {width:90mm;}                              /*50字符宽*/
+.text_all          {width:100%;}                              /*100%宽*/
+/*（2）文本域*/
+.textarea_50_3,.textarea_50_5,.textarea_50_8,.textarea_50_10{
+	border:1px solid #e7e7e7;
+	width:100%;
+	background:#fff url(../Image/input.jpg) repeat-x top;
+}
+.textarea_50_3     {height:15mm;}                             /*50字符宽_3行*/
+.textarea_50_5     {height:25mm;}                             /*50字符宽_5行*/
+.textarea_50_8     {height:35mm;width:630px;}                 /*50字符宽_8行*/
+.textarea_50_10    {height:50mm;}                             /*50字符宽_8行*/
+
+
+

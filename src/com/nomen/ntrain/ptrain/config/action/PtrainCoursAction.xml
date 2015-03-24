@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_课件资源表
+@author 林木山
+@date 2014-11-15
+-->
+<struts>
+    <package name="PtrainCours" extends="nsoft-ic" namespace="/Ptrain/Cours">
+		<!-- ==========================JQuery===================== -->
+		<!-- 课件维护 列表信息 -->
+    	<action name="listPtrainCoursByJq" class="ptrainCoursAction" method="listPtrainCoursByJq"></action>
+		<!-- 课件类别 -->
+    	<action name="findSpecListByJq" class="ptrainCoursAction" method="findSpecListByJq"></action>
+		<!-- 课件维护 删除 -->
+    	<action name="deletePtrainCoursByJq" class="ptrainCoursAction" method="deletePtrainCoursByJq"></action>
+		<!-- 文件上传 -->
+    	<action name="uploadFile" class="ptrainCoursAction" method="uploadFile"></action>
+    	
+
+		<!-- 课件编制 课件 列表信息 -->
+    	<action name="listptraincours_esta" class="ptrainCoursAction" method="listPtrainCours">
+    		<param name="fatherid">0</param>
+    		<param name="sign">1</param>
+    		<result name="success">/Ptrain/Resou/Cours_Esta_List1.jsp</result>
+		</action>
+		
+		<!-- 归口 课件 列表信息 -->
+    	<action name="listptraincours_gchk" class="ptrainCoursAction" method="listPtrainCours">
+    		<param name="fatherid">0</param>
+    		<param name="sign">2</param>
+    		<result name="success">/Ptrain/Resou/Cours_Gchk_List1.jsp</result>
+		</action>
+
+		<!-- 课件维护 课件 列表信息 -->
+    	<action name="listptraincours_cours" class="ptrainCoursAction" method="listPtrainCours">
+    		<param name="fatherid">0</param>
+    		<param name="sign">3</param>
+    		<result name="success">/Ptrain/Resou/Cours_Main_List1.jsp</result>
+		</action>
+
+		<!-- =============================================== -->
+		<!-- =====================公共======================= -->
+		<!-- =============================================== -->
+		<!-- 课件资源 目录 列表信息 -->
+    	<action name="listptraincours_cata" class="ptrainCoursAction" method="listPtrainCours">
+    		<result name="success">${listpage}</result>
+		</action> 
+		
+		<!-- 课件资源 新增、修改[跳转]（目录式课件或子目录） -->
+		<!-- 课件资源 详细页面 -->
+    	<action name="setptraincours" class="ptrainCoursAction" method="setPtrainCours">
+    		<param name="savePath">/Ptrain/Resou/Cours/</param>
+    		<result name="success">${setpage}</result>
+		</action>
+		
+		<!-- 课件资源 新增、修改[跳转]（单个课件） -->
+    	<action name="setptraincours2" class="ptrainCoursAction" method="setPtrainCours2">
+    		<param name="savePath">/Ptrain/Resou/Cours/</param>
+    		<result name="success">${setpage}</result>
+		</action>
+
+		<!-- 课件资源 新增/修改[保存]-->
+		<!-- 课件资源 附件关联[保存]-->
+    	<action name="saveptraincours" class="ptrainCoursAction" method="savePtrainCours">
+    		<result name="input">${setpage}</result>
+		</action>
+				
+		<!-- 附件列表信息 -->
+    	<action name="listptraincoursfile" class="ptrainCoursAction" method="listPtrainCoursFile">
+    		<param name="savePath">/Ptrain/Resou/Cours/</param>
+    		<result name="success">${listpage}</result>
+		</action>
+		
+		<!-- 附件关联 列表信息 -->
+    	<action name="listptraincoursfile_rela" class="ptrainCoursAction" method="listPtrainCoursFile">
+    		<param name="savePath">/Ptrain/Resou/Cours/</param>
+    		<result name="success">/Ptrain/Resou/Cours_MainLela_List.jsp</result>
+		</action>
+		
+		<!-- 附件上传 跳转 -->
+    	<action name="setptraincoursfile" class="ptrainCoursAction" method="setPtrainCoursFile">
+    		<param name="savePath">/Ptrain/Resou/Cours/</param>
+    		<result name="success">/Ptrain/Resou/Cours_MainFile_Set.jsp</result>
+		</action>
+		
+		<!-- =====================流程相关================= -->
+		<!-- 影音影视上传/书籍上传/典型经验上传 申报/撤回 -->
+		<!-- 归口审核 同意(不同意)/退回 -->
+    	<action name="updateptraincourschk" class="ptrainCoursAction" method="updatePtrainCoursChk">
+    		<result name="success">${listpage}</result>
+		</action>
+		<!-- 归口审核 审批/批量审批 -->
+		<!-- 归口审核 批量审批 修改[弹出] -->
+    	<action name="setptraincourschk" class="ptrainCoursAction" method="setPtrainCoursChk">
+    		<result name="success">${setpage}</result>
+		</action>
+		
+		<!-- 归口审核 批量审批 通过ID串查询列表 -->
+    	<action name="listptraincoursbyids" class="ptrainCoursAction" method="listPtrainCoursByIds"></action>
+		
+		<!-- 归口审核 批量审批 修改[保存] -->
+    	<action name="saveptraincoursbychk" class="ptrainCoursAction" method="savePtrainCoursByChk">
+    		<result name="success">/Ptrain/Resou/Cours_Chk_Win3.jsp</result>
+		</action>
+	</package>
+</struts>

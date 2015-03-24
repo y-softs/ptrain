@@ -1,0 +1,6 @@
+﻿[
+	{"id":1,"name":"人事部","posttype":"","number":"","realnum":"","lev":1},
+	{"id":11,"name":"局长（总经理）","posttype":"管理类-领导","number":"2","realnum":"3","lev":2},
+	{"id":12,"name":"党委书记","posttype":"管理类-领导","number":"3","realnum":"3","lev":2},
+	{"id":13,"name":"纪委书记","posttype":"管理类-领导","number":"2","realnum":"2","lev":2}
+]

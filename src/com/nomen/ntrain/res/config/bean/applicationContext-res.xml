@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	@descri 人才管理子系统
+    @author 丁新良
+    @date 2011-03-21
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<!-- ===================资源管理_代码表 模块 设置================================= -->
+	<bean id="resCodeDAO" class="com.nomen.ntrain.res.dao.implement.ResCodeDAOImpl" parent="nsoftDao"/>
+	<bean id="resCodeService" class="com.nomen.ntrain.res.service.implement.ResCodeServiceImpl" parent="baseService">
+		<property name="resCodeDAO" ref="resCodeDAO"/>
+	</bean>
+	
+</beans>

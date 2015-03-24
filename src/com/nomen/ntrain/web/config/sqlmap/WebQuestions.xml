@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_试题
+@author 林木山
+@date 2014-3-5
+-->
+<sqlMap namespace="webQuestions">
+	<typeAlias alias="webQuestionsBean" type="com.nomen.ntrain.ptrain.bean.PtrainQuestionsBean"/>
+
+	<!-- 查找莆田岗位培训_试题信息 -->
+	<select id="findPtrainQuestionsBeanById" resultClass="webQuestionsBean" parameterClass="string">
+		select id,unitid,kindid,kpid,typeid,topic,option1,option2,option3,option4,option5,option6,option7,answer1,answer2,answer3,answer4,answer5,answer6,answer7,usesign,remark,flowsta,to_char(subtime,'yyyy-mm-dd') subtime,flowmark,sortnum,strflag,intflag from ptrain_questions where id=#value#
+	</select>
+</sqlMap>

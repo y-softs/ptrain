@@ -1,0 +1,8 @@
+﻿[
+	{"id":1,"postname":"副总师","commresp":"分配任务。","deptname":"","specresp":"","LEVID1":1},
+	{"id":11,"postname":"副总师","commresp":"分配任务。","deptname":"人事部","specresp":"分配人事部任务。","LEVID1":1,"LEVID2":11},
+	{"id":12,"postname":"副总师","commresp":"分配任务。","deptname":"财务部","specresp":"分配财务部任务。","LEVID1":1,"LEVID2":12},
+	{"id":2,"postname":"主任","commresp":"分配任务。","deptname":"","specresp":"","LEVID1":2},
+	{"id":21,"postname":"主任","commresp":"分配任务。","deptname":"人事部","specresp":"分配人事部任务。","LEVID1":2,"LEVID2":21},
+	{"id":22,"postname":"主任","commresp":"分配任务。","deptname":"财务部","specresp":"分配财务部任务。","LEVID1":2,"LEVID2":22}
+]

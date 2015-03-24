@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_岗位人员
+@author 林木山
+@date 2014-3-10
+-->
+<sqlMap namespace="webPostuser">
+	<typeAlias alias="ptrainPostuserBean" type="com.nomen.ntrain.ptrain.bean.PtrainPostuserBean"/>
+	<!-- 查找岗位类别ID 根据人员ID、单位ID -->
+	<select id="findPtrainPostuserPostid" resultClass="string" parameterClass="map">
+		select postid from ptrain_postuser p where userid=#userid#
+	</select>
+
+</sqlMap>

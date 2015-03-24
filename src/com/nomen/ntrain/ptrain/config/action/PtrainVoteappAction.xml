@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 投票_批次
+@author 林木山
+@date 2014-12-15
+-->
+<struts>
+    <package name="PtrainVoteapp" extends="nsoft-ic" namespace="/Ptrain/Voteapp">
+
+		<!-- 投票_批次 列表信息 -->
+    	<action name="listPtrainVoteappByJq" class="ptrainVoteappAction" method="listPtrainVoteappByJq"></action>
+		<!-- 投票_批次 删除 -->
+    	<action name="deletePtrainVoteappByJq" class="ptrainVoteappAction" method="deletePtrainVoteappByJq">
+		</action>
+		
+
+		<!-- 投票_批次 列表信息 -->
+    	<action name="listptrainvoteapp" class="ptrainVoteappAction" method="listPtrainVoteapp">
+    		<result name="success">/Ptrain/Vote/Voteapp_List.jsp</result>
+		</action>
+
+		<!-- 投票_批次 新增、修改[跳转] -->
+    	<action name="setptrainvoteapp" class="ptrainVoteappAction" method="setPtrainVoteapp">
+    		<result name="success">/Ptrain/Vote/Voteapp_Set.jsp</result>
+		</action>
+
+		<!-- 投票_批次 新增/修改[保存]-->
+    	<action name="saveptrainvoteapp" class="ptrainVoteappAction" method="savePtrainVoteapp">
+    		<result name="success">/Ptrain/Vote/Voteapp_List.jsp</result>
+    		<result name="input">/Ptrain/Vote/Voteapp_Set.jsp</result>
+		</action>
+	</package>
+</struts>
+

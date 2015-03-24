@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 岗位培训_代码表
+@author 林木山
+@date 2014-3-4
+-->
+<struts>
+    <package name="PtrainCode" extends="nsoft-ic" namespace="/Ptrain/Code">
+    	<!--==========================JQuery相关============================-->
+    	<!-- 查询验证编码 -->
+    	<action name="checkCodeValueByJq" class="ptrainCodeAction" method="checkCodeValueByJq"></action>
+    	<!-- 更新[启用|禁止] -->
+    	<action name="updatePtrainCodeUsesignByJq" class="ptrainCodeAction" method="updatePtrainCodeUsesignByJq"></action>
+    	<!-- 信息[删除] -->
+    	<action name="deletePtrainCodeByJq" class="ptrainCodeAction" method="deletePtrainCodeByJq"></action>
+    	<action name="listPtrainCodeByJq" class="ptrainCodeAction" method="listPtrainCodeByJq"></action>
+    	<!-- 更新排序号 -->
+    	<action name="updatePtrainCodeSortnumByJq" class="ptrainCodeAction" method="updatePtrainCodeSortnumByJq"></action>
+    	
+
+    	<!-- **************************代码设置_列表******************* -->
+		<!-- 岗位名称设置  列表信息 -->
+    	<action name="listptraincode_post" class="ptrainCodeAction" method="listPtrainCode">
+    		<result name="success">/Ptrain/Code/Post_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_POST</param>    		
+		</action>
+
+		<!-- 知识类别设置  列表信息 -->
+    	<action name="listptraincode_know" class="ptrainCodeAction" method="listPtrainCode">
+    		<result name="success">/Ptrain/Code/Know_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_KNOW</param>      		
+		</action>
+		
+		
+		<!-- **************************三问专业设置******************* -->
+		<!-- 导入Excel[保存] -->
+    	<action name="saveptraincodeexcel" class="ptrainCodeAction" method="savePtrainCodeExcel">
+    		<param name="savePath">/Ptrain/Code/Upload/</param>
+    		<result name="success">${listpage}</result>
+    		<result name="input">${setpage}</result>
+		</action>
+		
+		<!-- ============================================================================-->
+		
+		<!-- 岗位名称[跳转] -->
+    	<action name="toforwardpost" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Post_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_POST</param>      		
+		</action>
+		<!-- 岗位名称[结果集] -->
+    	<action name="listptraincode_post" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 专业类别[跳转] -->
+    	<action name="toforwardspec" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Spec_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_SPEC</param>      		
+		</action>
+		<!-- 专业类别[结果集] -->
+    	<action name="listptraincode_spec" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 规程文件[跳转] -->
+    	<action name="toforwardlaw" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Law_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_RULES</param>      		
+		</action>
+		<!-- 规程文件[结果集] -->
+    	<action name="listptraincode_law" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 影音影视库[跳转] -->
+    	<action name="toforwardmovies" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Movies_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_MOVIES</param>      		
+		</action>
+		<!-- 影音影视库[结果集] -->
+    	<action name="listptraincode_movies" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 经典书籍库[跳转] -->
+    	<action name="toforwardbooks" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Books_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_BOOKS</param>      		
+		</action>
+		<!-- 经典书籍库[结果集] -->
+    	<action name="listptraincode_books" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 典型经验库[跳转] -->
+    	<action name="toforwardexper" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Exper_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_EXPER</param>      		
+		</action>
+		<!-- 典型经验库[结果集] -->
+    	<action name="listptraincode_exper" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 三问类别[跳转] -->
+    	<action name="toforwardthree" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Three_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_SPEC_ASK</param>      		
+		</action>
+		<!-- 三问类别[结果集] -->
+    	<action name="listptraincode_ask" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 课件类别[跳转] -->
+    	<action name="toforwardcours" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Cours_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_COURS</param>      		
+		</action>
+		<!-- 课件类别[结果集] -->
+    	<action name="listptraincode_cours" class="ptrainCodeAction" method="listPtrainCode"></action>
+    	
+    	<!-- 知识学习[跳转] -->
+    	<action name="toforwardbbs" class="ptrainCodeAction" method="defaultForward">
+    		<result name="success">/Ptrain/Code/Bbs_List.jsp</result>
+    		<param name="nature">2</param>
+    		<param name="fatherid">PTRAIN_BBS</param>      		
+		</action>
+		<!-- 知识学习[结果集] -->
+    	<action name="listptraincode_bbs" class="ptrainCodeAction" method="listPtrainCode"></action>
+		
+		<!-- ==============================新增、修改 ===================================-->
+		<!-- 新增、修改[公共跳转] -->
+    	<action name="setptraincode" class="ptrainCodeAction" method="setPtrainCode">
+   			<result name="success">${setpage}</result>
+		</action>
+		
+		<!-- 新增、修改[保存] -->
+    	<action name="saveptraincode" class="ptrainCodeAction" method="savePtrainCode">
+    		<result name="success">${listpage}</result>
+    		<result name="input">${setpage}</result>
+		</action>
+		
+	</package>
+</struts>
+

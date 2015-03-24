@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_每日三问答题表
+@author 林木山
+@date 2014-3-24
+-->
+<sqlMap namespace="PtrainAskitem">
+	<typeAlias alias="ptrainAskitemBean" type="com.nomen.ntrain.ptrain.bean.PtrainAskitemBean"/>
+
+	<!-- 查找莆田岗位培训_每日三问答题表列表信息[三问答题列表] -->
+	<select id="findPtrainAskitemList" resultClass="ptrainAskitemBean" parameterClass="map">
+		select 
+			ai.id,ai.askid,ai.quesid,ai.ansdetail,ai.ansscore,ai.ansright,ai.remark,
+			ai.typeid,ai.topic,ai.option1,ai.option2,ai.option3,ai.option4,ai.option5,ai.option6,ai.option7,ai.answer1,c.codename strflag
+		from 
+			ptrain_ask a,ptrain_askitem ai,tb_res_code c 
+		where 
+			a.id=ai.askid and ai.typeid=c.id
+		<isNotEmpty prepend="and" property="unitid">
+			a.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="askid">
+			a.id = #askid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="year">
+			to_char(a.subtime,'yyyy')=#year#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="month">
+			to_char(a.subtime,'mm')=#month#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="day">
+			to_char(a.subtime,'dd')=#day#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ansright">
+			ai.ansright=#ansright#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userid">
+			a.userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_每日三问答题表列表信息[个人查询列表] -->
+	<select id="findPtrainAskitemListQue" resultClass="ptrainAskitemBean" parameterClass="map" remapResults="true">
+		select 
+			ai.id,c.codename typeid,ai.topic,ai.ansright,ai.ansdetail,ai.answer1,
+			(case when ai.ansscore<![CDATA[<]]>1 and ai.ansscore>0 then to_char(ai.ansscore,'FM0.99') else to_char(ai.ansscore) end) ansscore
+		from 
+			ptrain_ask a,ptrain_askitem ai,tb_res_code c 
+		where 
+			a.id=ai.askid and ai.typeid=c.id
+		<isNotEmpty prepend="and" property="unitid">
+			a.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="askid">
+			a.id = #askid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			ai.typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="year">
+			to_char(a.subtime,'yyyy')=#year#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="month">
+			to_char(a.subtime,'mm')=#month#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="day">
+			to_char(a.subtime,'dd')=#day#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="subtime">
+			a.subtime=to_date(#subtime#,'yyyy-mm-dd')
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="ansright">
+			ai.ansright=#ansright#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userid">
+			a.userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+	
+	<!-- 查找莆田岗位培训_每日三问答题表列表信息[试题浏览列表] -->
+	<select id="findPtrainAskitemListSkim" resultClass="ptrainAskitemBean" parameterClass="map" remapResults="true">
+		select 
+			q.id,c.codename typeid,q.topic
+		from 
+			ptrain_questions q,tb_res_code c,(select postid from ptrain_postuser where unitid=#unitid# and userid=#userid#) pu
+		where 
+			q.typeid=c.id and q.kindid=pu.postid
+		<isNotEmpty prepend="and" property="unitid">
+			q.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			q.typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_每日三问答题表列表信息[试题浏览列表][excel导出] -->
+	<select id="findPtrainAskitemListSkimExp" resultClass="ptrainAskitemBean" parameterClass="map" remapResults="true">
+		select 
+			c.codename typeid,q.topic,q.option1,q.option2,q.option3,q.option4,q.option5,q.option6,q.option7,q.answer1,pc.codename strflag
+		from 
+			ptrain_questions q,ptrain_code pc,tb_res_code c,(select postid from ptrain_postuser where unitid=#unitid# and userid=#userid#) pu
+		where 
+			q.typeid=c.id and q.kindid=pc.id and q.kindid=pu.postid
+		<!--<isNotEmpty prepend="and" property="unitid">
+			a.unitid = #unitid# and q.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="askid">
+			a.id = #askid#
+		</isNotEmpty>
+		--><isNotEmpty prepend="and" property="unitid">
+			q.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="kindid">
+			q.kindid = #kindid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			q.typeid = #typeid#
+		</isNotEmpty><!--
+		<isNotEmpty prepend="and" property="ansright">
+			ai.ansright=#ansright#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userid">
+			a.userid = #userid#
+		</isNotEmpty>
+		--><isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_每日三问答题表信息 -->
+	<select id="findPtrainAskitemBeanByMap" resultClass="ptrainAskitemBean" parameterClass="map">
+		select 
+			ai.id,ai.typeid,c.codename strflag,ai.topic,ai.option1,ai.option2,ai.option3,ai.option4,ai.option5,ai.option6,ai.option7,ai.ansdetail,ai.answer1,
+			to_char(ai.ansdate,'yyyy-mm-dd') ansdate,ai.ansright,ai.remark,
+			(case when ai.ansscore<![CDATA[<]]>1 and ai.ansscore>0 then to_char(ai.ansscore,'FM0.99') else to_char(ai.ansscore) end) ansscore
+		from 
+			ptrain_askitem ai,tb_res_code c 
+		where ai.typeid=c.id and ai.id=#id#
+	</select>
+
+	<!-- 添加莆田岗位培训_每日三问答题表信息 -->
+	<insert id="insertPtrainAskitem" parameterClass="map">
+<!--	seq_ptrain_askitem.nextval-->
+		insert into ptrain_askitem
+		  (id,askid,quesid,typeid,topic,option1,option2,option3,option4,option5,option6,option7,answer1,estauser,estatime,mainuser,maintime)
+		  ($sqlstr$)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_每日三问答题表信息 -->
+	<update id="updatePtrainAskitem" parameterClass="ptrainAskitemBean">
+		update ptrain_askitem set  id = #id#
+		<isNotEmpty prepend="," property="askid">
+			askid = #askid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="quesid">
+			quesid = #quesid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansdetail">
+			ansdetail = #ansdetail#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansdate">
+			ansdate = sysdate
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansscore">
+			ansscore = #ansscore#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="ansright">
+			ansright = #ansright#
+		</isNotEmpty>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_每日三问答题表信息 -->
+	<delete id="deletePtrainAskitemById" parameterClass="string">
+		delete from ptrain_askitem where id in ($value$)
+	</delete>
+
+</sqlMap>

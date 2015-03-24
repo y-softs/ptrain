@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_资源表
+@author 林木山
+@date 2014-11-17
+-->
+<struts>
+    <package name="PtrainContent" extends="nsoft-ic" namespace="/Ptrain/Content">
+		<!-- ==========================JQuery===================== -->
+		<!-- 资源库 列表信息 -->
+    	<action name="listPtrainContentByJq" class="ptrainContentAction" method="listPtrainContentByJq"></action>
+		<!-- 资源类别 -->
+    	<action name="findSpecListByJq" class="ptrainContentAction" method="findSpecListByJq"></action>
+		<!-- 资源库 删除 -->
+    	<action name="deletePtrainContentByJq" class="ptrainContentAction" method="deletePtrainContentByJq"></action>
+    	<!-- 更新[启用|禁止] -->
+    	<action name="updatePtrainContentUsesignByJq" class="ptrainContentAction" method="updatePtrainContentUsesignByJq"></action>
+    	
+    	<!-- =====================影音影视库====================== -->
+		<!-- 影音影视上传  列表信息 -->
+    	<action name="listptraincontent_filmesta" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">1</param>
+    		<param name="opersign">1</param>
+    		<result name="success">/Ptrain/Resou/Film_Esta_List.jsp</result>
+		</action>
+		
+		<!-- 影音影视归口审核 列表信息 -->
+    	<action name="listptraincontent_filmgchk" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">1</param>
+    		<param name="opersign">2</param>
+    		<result name="success">/Ptrain/Resou/Film_Gchk_List.jsp</result>
+		</action>
+		
+		<!-- 影音影视维护 列表信息 -->
+    	<action name="listptraincontent_film" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">1</param>
+    		<param name="opersign">3</param>
+    		<result name="success">/Ptrain/Resou/Film_Main_List.jsp</result>
+		</action>
+    	<!-- =====================经典书籍库====================== -->
+		<!-- 经典书籍上传  列表信息 -->
+    	<action name="listptraincontent_booksesta" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">2</param>
+    		<param name="opersign">1</param>
+    		<result name="success">/Ptrain/Resou/Books_Esta_List.jsp</result>
+		</action>
+		
+		<!-- 经典书籍归口审核 列表信息 -->
+    	<action name="listptraincontent_booksgchk" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">2</param>
+    		<param name="opersign">2</param>
+    		<result name="success">/Ptrain/Resou/Books_Gchk_List.jsp</result>
+		</action>
+		
+		<!-- 书籍维护 列表信息 -->
+    	<action name="listptraincontent_books" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">2</param>
+    		<param name="opersign">3</param>
+    		<result name="success">/Ptrain/Resou/Books_Main_List.jsp</result>
+		</action>
+    	<!-- =====================规程文件====================== -->
+		<!-- 规程文件 列表信息 -->
+    	<action name="listptraincontent_rules" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">3</param>
+    		<param name="opersign">3</param>
+    		<result name="success">/Ptrain/Resou/Rules_List.jsp</result>
+		</action>
+    	<!-- =====================典型经验库====================== -->
+		<!-- 典型经验上传  列表信息 -->
+    	<action name="listptraincontent_experesta" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">4</param>
+    		<param name="opersign">1</param>
+    		<result name="success">/Ptrain/Resou/Exper_Esta_List.jsp</result>
+		</action>
+		
+		<!-- 典型经验归口审核 列表信息 -->
+    	<action name="listptraincontent_expergchk" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">4</param>
+    		<param name="opersign">2</param>
+    		<result name="success">/Ptrain/Resou/Exper_Gchk_List.jsp</result>
+		</action>
+		
+		<!-- 典型经验维护 列表信息 -->
+    	<action name="listptraincontent_exper" class="ptrainContentAction" method="listPtrainContent">
+    		<param name="sign">4</param>
+    		<param name="opersign">3</param>
+    		<result name="success">/Ptrain/Resou/Exper_Main_List.jsp</result>
+		</action>
+		
+		<!-- ==================================== -->
+		<!-- ===================公共=============== -->
+		<!-- ==================================== -->
+		<!-- 资源库 新增、修改[跳转] -->
+    	<action name="setptraincontent" class="ptrainContentAction" method="setPtrainContent">
+    		<param name="savePath">/Ptrain/Resou/Upload/</param>
+    		<result name="success">${setpage}</result>
+		</action>
+
+		<!-- 资源库 新增/修改[保存]-->
+    	<action name="saveptraincontent" class="ptrainContentAction" method="savePtrainContent">
+    		<param name="savePath">/Ptrain/Resou/Upload/</param>
+    		<result name="input">${setpage}</result>
+		</action>
+		
+		<!-- 资源库 详细页面 -->
+    	<action name="setptraincontentwin" class="ptrainContentAction" method="setPtrainContent">
+    		<param name="savePath">/Ptrain/Resou/Upload/</param>
+    		<result name="success">/Ptrain/Resou/Film_Main_Win.jsp</result>
+		</action>
+		
+		<!-- =====================流程相关================= -->
+		<!-- 影音影视上传/书籍上传/典型经验上传 申报/撤回 -->
+		<!-- 归口审核 同意(不同意)/退回 -->
+    	<action name="updateptraincontentchk" class="ptrainContentAction" method="updatePtrainContentChk">
+    		<result name="success">${listpage}</result>
+		</action>
+		
+		<!-- 归口审核 审批/批量审批 -->
+		<!-- 归口审核 批量审批 修改[弹出] -->
+    	<action name="setptraincontentchk" class="ptrainContentAction" method="setPtrainContentChk">
+    		<param name="savePath">/Ptrain/Resou/Upload/</param>
+    		<result name="success">${setpage}</result>
+		</action>
+		
+		<!-- 归口审核 批量审批 通过ID串查询列表 -->
+    	<action name="listptraincontentbyids" class="ptrainContentAction" method="listPtrainContentByIds"></action>
+		
+		<!-- 归口审核 批量审批 修改[保存] -->
+    	<action name="saveptraincontentbychk" class="ptrainContentAction" method="savePtrainContentByChk">
+    		<result name="success">${setpage}</result>
+		</action>
+	</package>
+</struts>

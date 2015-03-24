@@ -1,0 +1,9 @@
+﻿[
+    {"id":1,"name":"领导","usesign":"1","endsign":"0","codevalue":"A-01","remark":"","lev":1},
+    {"id":11,"name":"局长（总经理）","usesign":"1","endsign":"1","codevalue":"A-01-101","remark":"","lev":2},
+    {"id":12,"name":"党组书记","usesign":"1","endsign":"1","codevalue":"A-01-151","remark":"","lev":2},
+    {"id":13,"name":"党委书记","usesign":"1","endsign":"1","codevalue":"A-01-155","remark":"","lev":2},
+    {"id":2,"name":"副总师","usesign":"0","endsign":"0","codevalue":"A-11","remark":"说明。","lev":1},
+    {"id":21,"name":"局长（总经理）助理","usesign":"0","endsign":"1","codevalue":"A-11-101","remark":"","lev":2},
+    {"id":22,"name":"安全总监","usesign":"0","endsign":"1","codevalue":"A-11-105","remark":"","lev":2}
+]

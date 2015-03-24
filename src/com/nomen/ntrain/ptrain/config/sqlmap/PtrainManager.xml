@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_知识版主
+@author 林木山
+@date 2014-3-10
+-->
+<sqlMap namespace="PtrainManager">
+	<typeAlias alias="ptrainManagerBean" type="com.nomen.ntrain.ptrain.bean.PtrainManagerBean"/>
+
+	<!-- 查找莆田岗位培训_知识版主列表信息 -->
+	<select id="findPtrainManagerList" resultClass="ptrainManagerBean" parameterClass="map">
+		select 
+			c.id kpid,c.codename,m.id,m.managers,(case when m.managers is not null then
+			rtrim((fun_getqryrowlist('select username from tb_data_user where unitid ='||#unitid#||' and id in(' || m.managers || ') order by sortnum,id','；')),'；')end) strflag
+		from 
+			ptrain_code c, ptrain_manager m
+		where 
+			c.id = m.kpid(+)
+		<isNotEmpty prepend="and" property="nature">
+		(c.nature = 1
+	    	<isEqual compareValue="1" property="nature">
+	    		and unitid is null
+	    	</isEqual>
+	    	<isEqual compareValue="2" property="nature">
+	    		or (c.nature = 2 and c.unitid = #centerunitid#)
+	    	</isEqual>
+	    )
+	    </isNotEmpty>
+		<isNotEmpty prepend="and" property="unitid">
+			m.unitid(+) = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="kpid">
+			c.id = #kpid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="usesign">
+		    c.usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_知识版主 已有人员 -->
+	<select id="findDataUserListHas" resultClass="com.nomen.ntrain.data.bean.DataUserBean" parameterClass="map">
+		select id,username from tb_data_user u where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			u.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="id">
+			u.id in ($id$)
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_知识版主信息 -->
+	<select id="findPtrainManagerBeanById" resultClass="ptrainManagerBean" parameterClass="string">
+		select id,unitid,kpid,managers,strflag,intflag from ptrain_manager where id=#value#
+	</select>
+
+	<!-- 添加莆田岗位培训_知识版主信息 -->
+	<insert id="insertPtrainManager" parameterClass="ptrainManagerBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_manager.nextval as id from dual
+		</selectKey>
+		insert into ptrain_manager
+		  (id,unitid,kpid,managers,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#kpid#,#managers#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_知识版主信息 -->
+	<update id="updatePtrainManager" parameterClass="ptrainManagerBean">
+		update ptrain_manager set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="kpid">
+			kpid = #kpid#
+		</isNotEmpty>
+		<isNotNull prepend="," property="managers">
+			managers = #managers#
+		</isNotNull>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_知识版主信息 -->
+	<delete id="deletePtrainManagerById" parameterClass="string">
+		delete from ptrain_manager where id in ($value$)
+	</delete>
+
+</sqlMap>

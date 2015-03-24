@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 岗位培训_代码表
+@author 林木山
+@date 2014-3-4
+-->
+<sqlMap namespace="PtrainCode">
+	<typeAlias alias="ptrainCodeBean" type="com.nomen.ntrain.ptrain.bean.PtrainCodeBean"/>
+	
+	<!-- 查找岗位培训_代码表列表信息 -->
+	<select id="findPtrainCodeList" resultClass="ptrainCodeBean" parameterClass="map">
+		select 
+			id,nature,unitid,fatherid,codename,remark,endsign,specsign,usesign,codevalue,sortnum,
+			<isNotEmpty property="isLevelList">
+			level intflag
+			</isNotEmpty>
+			<isEmpty property="isLevelList">
+			intflag
+			</isEmpty>
+			,strflag
+		from 
+			ptrain_code c
+		where 1=1
+		<isNotEmpty prepend="and" property="nature">
+		(c.nature = 1
+	    	<isEqual compareValue="1" property="nature">
+	    		and unitid is null
+	    	</isEqual>
+	    	<isEqual compareValue="2" property="nature">
+	    		or (c.nature = 2 and c.unitid = #unitid#)
+	    	</isEqual>
+	    )
+	    </isNotEmpty>
+    	<isNotEmpty prepend="and" property="level">
+    		level = #level#
+    	</isNotEmpty>
+    	<isNotEmpty prepend="and" property="specsign">
+    		<isEqual property="specsign" compareValue="1">
+    			c.specsign =1
+    		</isEqual>
+    		<isEqual property="specsign" compareValue="0">
+    			(c.specsign is null or c.specsign=0)
+    		</isEqual>
+    	</isNotEmpty>
+    	<!-- 查询 树串 列表 -->
+		<isNotEmpty property="isLevelList">
+			<isNotEmpty property="startWithId">
+	    		start with c.id = #id#
+	    	</isNotEmpty>
+	    	<isEmpty property="startWithId">
+	    		start with c.fatherid = #fatherid#
+	    	</isEmpty>
+	    	<isNotEmpty prepend="and" property="usesign">
+	    		c.usesign = #usesign#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="endsign">
+	    		c.endsign = #endsign#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="keyword">
+	    		c.$fields$ like '%'||#keyword#||'%'
+	    	</isNotEmpty>
+	    	connect by prior c.id = c.fatherid
+	        order siblings by 
+	        <isEmpty property="sortfield">
+	        	c.sortnum,c.codevalue
+	        </isEmpty>
+	        <isNotEmpty property="sortfield">
+	        	c.$sortfield$
+	    	</isNotEmpty>
+	    </isNotEmpty>	
+    	<!-- 查询 非树串 列表 -->
+		<isEmpty property="isLevelList">
+	    	<isNotEmpty prepend="and" property="fatherid">
+	    		c.fatherid = #fatherid#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="usesign">
+	    		c.usesign = #usesign#
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="keyword">
+	    		c.$fields$ like '%'||#keyword#||'%'
+	    	</isNotEmpty>
+	        order by 
+	        <isEmpty property="sortfield">
+	        	c.sortnum,c.codevalue
+	        </isEmpty>
+	        <isNotEmpty property="sortfield">
+	        	c.$sortfield$
+	    	</isNotEmpty>
+		</isEmpty>
+	</select>
+	<!-- 提供外部调用 列表 (小许-加)-->
+	<select id="findPtrainCodeList_Comm" resultClass="ptrainCodeBean" parameterClass="map">
+		select id,codename from ptrain_code where usesign=1
+		<isNotEmpty prepend="and" property="fatherid">
+    		fatherid = #fatherid#
+    	</isNotEmpty>
+        order by sortnum
+	</select>
+	<!-- 查找岗位培训_代码表Bean信息 -->
+	<select id="findPtrainCodeBeanByMap" resultClass="ptrainCodeBean" parameterClass="map">
+		select id,nature,unitid,fatherid,codename,remark,endsign,specsign,usesign,codevalue,sortnum,estauser,to_char(estatime,'yyyy-mm-dd') estatime,mainuser,to_char(maintime,'yyyy-mm-dd') maintime,
+        <isNotEmpty property="linkfield">
+        	(/*查询父级信息*/select substr(sys_connect_by_path(codename, ' >> '), 5) codename from ptrain_code where id = $linkfield$ start with fatherid = #fatherid# connect by prior id = fatherid)
+    	</isNotEmpty>strflag,intflag from ptrain_code c
+		where id=#id#
+	</select>
+	
+	<!-- 查找岗位培训_代码表 各级名称 -->
+	<select id="findPtrainCodeInfoByMap" resultClass="String" parameterClass="map">
+		select substr(sys_connect_by_path(codename, ' >> '), 5) codename from ptrain_code where id = #id# start with fatherid = #fatherid# connect by prior id = fatherid
+	</select>
+
+	<!-- 添加岗位培训_代码表信息 -->
+	<insert id="insertPtrainCode" parameterClass="ptrainCodeBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_code.nextval as id from dual
+		</selectKey>
+		insert into ptrain_code
+		  (id,nature,unitid,fatherid,codename,remark,endsign,specsign,usesign,codevalue,sortnum,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#nature#,#unitid#,#fatherid#,#codename#,#remark#,#endsign#,#specsign#,#usesign#,#codevalue#,#sortnum#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新岗位培训_代码表信息 -->
+	<update id="updatePtrainCode" parameterClass="ptrainCodeBean">
+		update ptrain_code set  id = #id#
+		<isNotEmpty prepend="," property="fatherid">
+			fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="codename">
+			codename = #codename#
+		</isNotEmpty>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotEmpty prepend="," property="endsign">
+			endsign = #endsign#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="specsign">
+			specsign = #specsign#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="usesign">
+			usesign = #usesign#
+		</isNotEmpty>
+		<isNotNull prepend="," property="codevalue">
+			codevalue = #codevalue#
+		</isNotNull>
+		<isNotEmpty prepend="," property="sortnum">
+			sortnum = #sortnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		<isNotNull prepend="," property="strflag">
+			strflag = #strflag#
+		</isNotNull>
+		<isNotEmpty prepend="," property="intflag">
+			intflag = #intflag#
+		</isNotEmpty>
+		where  id = #id#
+	</update>
+	
+	<!-- 查询排序号 -->
+	<select id="findPtrainCodeSortnum" parameterClass="map" resultClass="string">
+	    select count(*)+1 from ptrain_code where fatherid = #fatherid# 
+		<isNotEmpty prepend="and" property="nature">
+		(nature = 1
+	    	<isEqual compareValue="1" property="nature">
+	    		and unitid is null
+	    	</isEqual>
+	    	<isEqual compareValue="2" property="nature">
+	    		or (nature = 2 and unitid = #unitid#)
+	    	</isEqual>
+	    )
+	    </isNotEmpty>
+	</select>
+	
+    <!-- 查询编码是否存在代码库中 -->
+    <!-- 查询本级是否有子级 -->
+    <select id="findCodeValueNum" parameterClass="map" resultClass="string">
+    	select count(*) from ptrain_code where fatherid = #fatherid#
+    	<isNotEmpty property="codevalue">
+    		 and codevalue = #codevalue#
+    	</isNotEmpty>
+    	<isNotEmpty property="unitid">
+    		 and unitid = #unitid#
+    	</isNotEmpty>
+    </select>	
+
+	<!-- 删除岗位培训_代码表信息 -->
+	<delete id="deletePtrainCode" parameterClass="string">
+		delete from ptrain_code where id in(select id from ptrain_code start with id=$value$ connect by prior id= fatherid) 
+	</delete>
+
+	<!-- 删除岗位培训_代码表信息 -->
+	<delete id="deletePtrainCodeByMap" parameterClass="map">
+		delete from ptrain_code c where 1=1
+		<isNotEmpty prepend="and" property="nature">
+		(c.nature = 1
+	    	<isEqual compareValue="1" property="nature">
+	    		and unitid is null
+	    	</isEqual>
+	    	<isEqual compareValue="2" property="nature">
+	    		or (c.nature = 2 and c.unitid = #unitid#)
+	    	</isEqual>
+	    )
+	    </isNotEmpty>
+	    and fatherid=#fatherid#
+		<isNotEmpty prepend="and" property="codenameNull">
+			codename is null
+		</isNotEmpty>
+	</delete>
+	
+	<!-- 更新代码信息[启用、禁止] -->
+	<update id="updatePtrainCodeUsesign" parameterClass="ptrainCodeBean">
+		update ptrain_code set usesign = #usesign#,mainuser = #mainuser#,maintime = sysdate where id in (select id from ptrain_code start with id=#id# connect by prior id= fatherid) 
+	</update>
+	
+	<!-- 查询本单位的市级单位[unitid:单位ID；datalevel:市级单位所处等级]-->
+    <select id="findCenterBaseUnitBean" parameterClass="map" resultClass="com.nomen.ntrain.base.bean.BaseUnitBean">
+    	select id, unitname from (
+    		select id, unitname, row_number() over(order by level desc) ro from tb_base_unit t
+			where usesign = 1 start with id = #unitid#
+			connect by id = prior fatherid)
+		where 1=1
+    	<isNotEmpty prepend="and" property="datalevel">
+    		ro = #datalevel#
+    	</isNotEmpty>
+    	<isEmpty prepend="and" property="datalevel">
+    		ro = 2
+    	</isEmpty>
+    </select> 
+
+</sqlMap>

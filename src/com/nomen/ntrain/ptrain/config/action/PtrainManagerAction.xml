@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_知识版主
+@author 林木山
+@date 2014-3-10
+-->
+<struts>
+    <package name="PtrainManager" extends="nsoft-ic" namespace="/Ptrain/Manager">
+		<!-- =====================JQuery================= -->
+		<!-- 查找莆田岗位培训_知识版主 已有人员 -->
+    	<action name="findDataUserListHasByJq" class="ptrainManagerAction" method="findDataUserListHasByJq"></action>
+		<!-- 查找莆田岗位培训_知识版主 删除 -->
+    	<action name="deletePtrainManagerByJq" class="ptrainManagerAction" method="deletePtrainManagerByJq"></action>
+		
+		<!-- ****************************** 修改后 ******************************** -->
+		<!-- 莆田岗位培训_知识版主 列表信息 -->
+		<action name="toforwardmanager" class="ptrainManagerAction" method="toForwardManager">
+    		<result name="success">/Ptrain/Base/Kmode_List.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_知识版主 列表信息 -->
+    	<action name="listptrainmanager" class="ptrainManagerAction" method="listPtrainManager"></action>
+		
+		<!-- 莆田岗位培训_知识版主 设置 [弹出] -->
+    	<action name="setptrainmanagerwin" class="ptrainManagerAction" method="setPtrainManagerWin">
+    		<result name="success">/Ptrain/Base/Kmode_Set.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_知识版主 设置[保存]-->
+    	<action name="saveptrainmanager" class="ptrainManagerAction" method="savePtrainManager"></action>
+		
+	</package>
+</struts>
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_资源表
+@author 许东雄
+@date 2014-11-15
+-->
+<struts>
+    <package name="webContent" extends="nsoft-web" namespace="/pt/con">
+    
+		<!-- 规程文件 列表 -->
+    	<action name="listcontentrules" class="webContentAction" method="listContent">
+    		<param name="KIND">1</param>
+    		<param name="fatherid">PTRAIN_RULES</param>
+    		<result name="success">/Web/Res/Rules_List.jsp</result>
+		</action>
+		<!-- 规程文件 详细页 -->
+    	<action name="rulesview" class="webContentAction" method="setContentInfo">
+    		<result name="success">/Web/Res/Rules_View.jsp</result>
+		</action>
+		<!-- 影音影视库 列表 -->
+    	<action name="listcontentmovies" class="webContentAction" method="listContent">
+    		<param name="KIND">2</param>
+    		<param name="fatherid">PTRAIN_MOVIES</param>
+    		<result name="success">/Web/Res/Movies_List.jsp</result>
+		</action>
+		<!-- 影音影视库 详细页 -->
+    	<action name="moviesview" class="webContentAction" method="setContentInfo">
+    		<result name="success">/Web/Res/Movies_View.jsp</result>
+		</action>
+		<!-- 经典书籍库 列表 -->
+    	<action name="listcontentbooks" class="webContentAction" method="listContent">
+    		<param name="KIND">3</param>
+    		<param name="fatherid">PTRAIN_BOOKS</param>
+    		<result name="success">/Web/Res/Books_List.jsp</result>
+		</action>
+		<!-- 影音影视库 详细页 -->
+    	<action name="booksview" class="webContentAction" method="setContentInfo">
+    		<result name="success">/Web/Res/Books_View.jsp</result>
+		</action>
+		<!-- 典型经验库 列表 -->
+    	<action name="listcontentexper" class="webContentAction" method="listContent">
+    		<param name="KIND">4</param>
+    		<param name="fatherid">PTRAIN_EXPER</param>
+    		<result name="success">/Web/Res/Exper_List.jsp</result>
+		</action>
+		<!-- 影音影视库 详细页 -->
+    	<action name="experview" class="webContentAction" method="setContentInfo">
+    		<result name="success">/Web/Res/Exper_View.jsp</result>
+		</action>
+		
+	</package>
+</struts>
+

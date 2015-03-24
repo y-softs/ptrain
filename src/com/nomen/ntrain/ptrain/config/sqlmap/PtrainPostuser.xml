@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_岗位人员
+@author 林木山
+@date 2014-3-10
+-->
+<sqlMap namespace="PtrainPostuser">
+	<typeAlias alias="ptrainPostuserBean" type="com.nomen.ntrain.ptrain.bean.PtrainPostuserBean"/>
+
+	<!-- 查找莆田岗位培训_岗位人员列表信息 -->
+	<select id="findPtrainPostuserList" resultClass="ptrainPostuserBean" parameterClass="map" remapResults="true">
+		select 
+			p.id,u.id userid,p.postid,udept.organname deptname,ugroup.organname groupname,u.username,u.workid,u.userid cardid,c.codename postname
+		from 
+			ptrain_postuser p,tb_data_user u,tb_data_organ udept,tb_data_organ ugroup,ptrain_code c
+		where p.userid<isNotEmpty property="fromReve">(+)</isNotEmpty>=u.id and u.deptid=udept.id and u.deptid=ugroup.id(+) and p.postid=c.id(+)
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid<isNotEmpty property="fromReve">(+)</isNotEmpty> = #unitid# and u.unitid = #unitid# 
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="deptid">
+			u.deptid = #deptid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="groupid">
+			(u.groupid = $groupid$ or u.groupid in (select id from tb_data_organ where unitid = #unitid# and fatherid = #groupid# and usesign=1))
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="subgroupid">
+			u.groupid = #subgroupid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="postid">
+			p.postid = #postid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="userstatefather"><!-- 人员状态 -->
+			u.stateid in(select id from tb_data_code where fatherid=#userstatefather#)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_岗位人员信息 -->
+	<select id="findPtrainPostuserBeanById" resultClass="ptrainPostuserBean" parameterClass="string">
+		select id,unitid,userid,postid,strflag,intflag from ptrain_postuser where id=#value#
+	</select>
+
+	<!-- 添加莆田岗位培训_岗位人员信息 -->
+	<insert id="insertPtrainPostuser" parameterClass="ptrainPostuserBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_postuser.nextval as id from dual
+		</selectKey>
+		insert into ptrain_postuser
+		  (id,unitid,userid,postid,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#userid#,#postid#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_岗位人员信息 -->
+	<update id="updatePtrainPostuser" parameterClass="ptrainPostuserBean">
+		update ptrain_postuser set  maintime = sysdate
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="postid">
+			postid = #postid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+		<isNotEmpty property="id">
+			where id in ($id$)
+			and userid not in (select userid from ptrain_postuser where unitid = #unitid# and postid = #postid#)
+		</isNotEmpty>
+	</update>
+
+	<!-- 删除莆田岗位培训_岗位人员信息 -->
+	<delete id="deletePtrainPostuserById" parameterClass="string">
+		delete from ptrain_postuser where id in ($value$)
+	</delete>
+
+	<!-- 删除莆田岗位培训_岗位人员信息 -->
+	<delete id="deletePtrainPostuserByMap" parameterClass="map">
+		delete from ptrain_postuser where unitid=#unitid# and postid=#postid#
+		<isNotEmpty prepend="and" property="id">
+			id in ($id$)
+		</isNotEmpty>
+	</delete>
+    
+    <!-- 根据条件查询人员信息 -->
+    <select id="findAllUseUser" parameterClass="map" resultClass="com.nomen.ntrain.base.bean.LoginBean">
+    	select id,username 
+    	from (select a.id,
+			   		 a.username||decode(b.mpost,null,'','（'||b.mpost||'）') username,
+			   		 b.mpost postname,
+			   		 a.username users,
+			   		 a.userid,
+			   		 a.workid
+		from tb_data_user a,tb_data_organ o, tb_data_post b
+		where a.unitid = #unitid# and a.id = b.userid(+) and a.deptid = o.id(+) and o.fatherid=0
+		and a.stateid in(select id from tb_data_code where fatherid=#userstatefather#)
+		<isEmpty prepend="" property="keyword">
+			<isNotEmpty prepend="and" property="nature">
+				o.nature = #nature#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="deptid">
+				a.deptid = #deptid#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="groupid">
+				(a.groupid = #groupid# or a.groupid in(select o.id from tb_data_organ o where o.fatherid=#groupid#))
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="groupid2">
+				a.groupid = #groupid2#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="kindid">
+				a.kindid in ($kindid$)
+			</isNotEmpty>
+		</isEmpty>
+			and a.id not in(select userid from ptrain_postuser where unitid = #unitid#
+			<isNotEmpty prepend="and" property="postid">
+				postid = #postid#
+			</isNotEmpty>
+			)
+		)
+		<isNotEmpty prepend="where" property="keyword">
+			<isEqual prepend="" property="fields" compareValue="username">users</isEqual>
+			<isEqual prepend="" property="fields" compareValue="postname">postname</isEqual>
+			<isEqual prepend="" property="fields" compareValue="userid">userid</isEqual>
+			<isEqual prepend="" property="fields" compareValue="workid">workid</isEqual>
+			like '%'||#keyword#||'%'
+		</isNotEmpty>
+    </select>
+
+	<!-- 更新莆田岗位培训_岗位人员信息 更新人员ID -->
+	<update id="updatePtrainPostuserUserid" parameterClass="map">
+		update ptrain_postuser p set  maintime = sysdate
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+		,userid=(select max(id) from tb_data_user where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="linkUserid">
+			upper(userid) = upper(p.strflag)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="linkWorkid">
+			workid = p.strflag
+		</isNotEmpty>),strflag='' 
+		where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="postid">
+			p.postid = #postid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="useridEmpty">
+			p.userid is null
+		</isNotEmpty>
+	</update>
+
+	<!-- 删除莆田岗位培训_岗位人员信息 人员ID为空 -->
+	<delete id="deletePtrainPostuserEmpty" parameterClass="map">
+		delete from ptrain_postuser p where userid is null
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="postid">
+			p.postid = #postid#
+		</isNotEmpty>
+	</delete>
+
+	<!-- 删除莆田岗位培训_岗位人员信息 重复人员 -->
+	<delete id="deletePtrainPostuserRepe" parameterClass="map">
+		delete from ptrain_postuser where 
+		<!-- 要删除的数据 -->
+		id not in (select <isNotEmpty property="datafield">$datafield$ </isNotEmpty><isEmpty property="datafield">min(id) </isEmpty>
+			from ptrain_postuser where unitid=#unitid#
+			<isNotEmpty prepend="and" property="postid">
+				postid = #postid#
+			</isNotEmpty> group by userid having count(*) > 1
+		<!-- 数据范围 -->
+		)and userid in(select userid from ptrain_postuser where unitid=#unitid# group by userid having count(*) > 1)
+		and unitid=#unitid#
+		<isNotEmpty prepend="and" property="postid">
+			postid = #postid#
+		</isNotEmpty>
+	</delete>
+
+	<!-- 查找岗位类别ID 根据人员ID、单位ID -->
+	<select id="findPtrainPostuserPostid" resultClass="string" parameterClass="map">
+		select postid from ptrain_postuser p where userid=#userid#
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid = #unitid#
+		</isNotEmpty>
+	</select>
+
+</sqlMap>

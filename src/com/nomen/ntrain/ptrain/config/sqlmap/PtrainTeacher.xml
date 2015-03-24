@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_讲师团队
+@author 林木山
+@date 2014-3-14
+-->
+<sqlMap namespace="PtrainTeacher">
+	<typeAlias alias="ptrainTeacherBean" type="com.nomen.ntrain.ptrain.bean.PtrainTeacherBean"/>
+
+	<!-- 查找莆田岗位培训_讲师团队列表信息 -->
+	<select id="findPtrainTeacherList" resultClass="ptrainTeacherBean" parameterClass="map">
+		select 
+			t.id,t.unitid,t.teacher,t.specid,t.expert,t.workunit,t.contact,t.remark,t.usesign,c.codename strflag 
+		from ptrain_teacher t,ptrain_code c where t.specid=c.id
+		<isNotEmpty prepend="and" property="unitid">
+			t.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			t.specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_讲师团队信息 -->
+	<select id="findPtrainTeacherBeanById" resultClass="ptrainTeacherBean" parameterClass="string">
+		select id,unitid,teacher,specid,expert,workunit,contact,remark,usesign,sortnum,strflag,intflag from ptrain_teacher where id=#value#
+	</select>
+	
+	<!-- 查询排序号 -->
+	<select id="findPtrainTeacherSortnum" parameterClass="map" resultClass="string">
+	    select count(*)+1 from ptrain_teacher t where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			t.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			t.specid = #specid#
+		</isNotEmpty>
+	</select>
+
+	<!-- 添加莆田岗位培训_讲师团队信息 -->
+	<insert id="insertPtrainTeacher" parameterClass="ptrainTeacherBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_teacher.nextval as id from dual
+		</selectKey>
+		insert into ptrain_teacher
+		  (id,unitid,teacher,specid,expert,workunit,contact,remark,usesign,sortnum,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#teacher#,#specid#,#expert#,#workunit#,#contact#,#remark#,#usesign#,#sortnum#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_讲师团队信息 -->
+	<update id="updatePtrainTeacher" parameterClass="ptrainTeacherBean">
+		update ptrain_teacher set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="teacher">
+			teacher = #teacher#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="expert">
+			expert = #expert#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="workunit">
+			workunit = #workunit#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="contact">
+			contact = #contact#
+		</isNotEmpty>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotEmpty prepend="," property="usesign">
+			usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="sortnum">
+			sortnum = #sortnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_讲师团队信息 -->
+	<delete id="deletePtrainTeacherById" parameterClass="string">
+		delete from ptrain_teacher where id in ($value$)
+	</delete>
+
+</sqlMap>

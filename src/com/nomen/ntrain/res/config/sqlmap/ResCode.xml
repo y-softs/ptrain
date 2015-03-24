@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!-- 
+	@description 资源代码表
+    @author 李刚
+    @date   2011-5-18
+ -->
+<sqlMap namespace="ResCode">
+    <typeAlias alias="rescodebean" type="com.nomen.ntrain.res.bean.ResCodeBean" />  
+    <!-- 查询 资源_代码 列表 -->
+    <select id="getResCodeList" parameterClass="map" resultClass="rescodebean">
+		select 
+			id, nature, unitid, fatherid, codename, 
+			path, remark, endsign, specsign, usesign, 
+			codevalue, sortnum, 
+			<isEqual compareValue="true" property="isTypeList">
+				intflag,
+			</isEqual>
+			<isEqual compareValue="false" property="isTypeList">
+				level intflag,
+			</isEqual> 
+			(select count(*) from tb_res_code rc where rc.fatherid=c.id) strflag 
+		from tb_res_code c where 1=1
+    	and (c.nature = 1
+		    	<isEqual compareValue="1" property="nature">
+		    		and unitid is null
+		    	</isEqual>
+		    	<isEqual compareValue="2" property="nature">
+		    		or (c.nature = 2 and c.unitid = #unitid#)
+		    	</isEqual>
+	    	)
+		<isEqual compareValue="false" property="isTypeList">
+	    	<isNotEmpty prepend="and" property="level">
+	    		level=#level#
+	    	</isNotEmpty>
+    	</isEqual>
+		<isNotEmpty prepend="and" property="endsign">
+			endsign != #endsign#
+		</isNotEmpty>
+   		 <!-- 查询 类别 列表 -->
+    	<isEqual compareValue="true" property="isTypeList">
+    	    <isNotEmpty prepend="and" property="usesign">
+	   			c.usesign = #usesign#
+	   	    </isNotEmpty>
+    		and c.fatherid = #fatherid#
+    		order by c.nature,c.sortnum,c.codevalue
+    	</isEqual>
+    	<!-- 查询 资源_代码 列表 -->
+    	<isEqual compareValue="false" property="isTypeList">
+    	    <isNotEmpty property="isfatherid">
+    	    	start with id = #fatherid#
+    	    </isNotEmpty>
+    	    <isEmpty property="isfatherid">
+	    		start with fatherid = #fatherid#
+    	    </isEmpty>
+	    	<isNotEmpty prepend="and" property="keyword">
+	    		c.$fields$ like '%'||#keyword#||'%'
+	    	</isNotEmpty>
+	    	<isNotEmpty prepend="and" property="usesign">
+	   			c.usesign = #usesign#
+	   	    </isNotEmpty>
+	    	connect by prior c.id = c.fatherid
+	    	order siblings by
+        <isEmpty prepend="" property="sortfield">
+        	c.sortnum,c.codevalue
+        </isEmpty>
+        <isNotEmpty prepend="" property="sortfield">
+        	c.$sortfield$
+    	</isNotEmpty>
+    	</isEqual>  	
+    </select>
+</sqlMap>

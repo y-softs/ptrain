@@ -1,0 +1,12 @@
+﻿[
+	{"id":1,"name":"主任","benenum":"","wagenum":"","lev":1},
+	{"id":11,"name":"R1","benenum":"100元/人/月","wagenum":"2100元/人/月","lev":2},
+	{"id":12,"name":"R2","benenum":"110元/人/月","wagenum":"2400元/人/月","lev":2},
+	{"id":13,"name":"R3","benenum":"120元/人/月","wagenum":"2700元/人/月","lev":2},
+	{"id":2,"name":"副主任","benenum":"","wagenum":"","lev":1},
+	{"id":21,"name":"R4","benenum":"200元/人/月","wagenum":"3200元/人/月","lev":2},
+	{"id":22,"name":"R5","benenum":"210元/人/月","wagenum":"3700元/人/月","lev":2},
+	{"id":3,"name":"干事","benenum":"","wagenum":"","lev":1},
+	{"id":31,"name":"R6","benenum":"220元/人/月","wagenum":"4200元/人/月","lev":2},
+	{"id":32,"name":"R7","benenum":"300元/人/月","wagenum":"5000元/人/月","lev":2}
+]

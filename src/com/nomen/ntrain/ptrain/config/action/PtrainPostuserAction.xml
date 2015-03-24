@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_岗位人员
+@author 林木山
+@date 2014-3-10
+-->
+<struts>
+    <package name="PtrainPostuser" extends="nsoft-ic" namespace="/Ptrain/Postuser">
+		<!-- ===================JQuery================= -->
+		<!-- 根据条件查询人员信息 -->
+    	<action name="listUnitUsersByJq" class="ptrainPostuserAction" method="listUnitUsersByJq"></action>
+		<!-- 查询岗位类别 列表 -->
+    	<action name="findPtrainCodeListByJq" class="ptrainPostuserAction" method="findPtrainCodeListByJq"></action>
+
+		<!-- 莆田岗位培训_岗位人员 人员引入[保存]-->
+		<!-- 莆田岗位培训_岗位人员 反向设置 设置[保存]-->
+    	<action name="saveptrainpostuser" class="ptrainPostuserAction" method="savePtrainPostuser">
+    		<result name="success">/Ptrain/Base/Puser_List1.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_岗位人员  反向设置 删除 -->
+    	<action name="deleteptrainpostuser_reve" class="ptrainPostuserAction" method="deletePtrainPostuser">
+    		<result name="success">/Ptrain/Base/Puser_List2.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_岗位人员 导入excel 跳转 -->
+    	<action name="setptrainpostuserexcel" class="ptrainPostuserAction" method="setPtrainPostuserExcel">
+    		<result name="success">/Ptrain/Base/Puser_Set.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_岗位人员 导入excel[保存]-->
+    	<action name="saveptrainpostuserexcel" class="ptrainPostuserAction" method="savePtrainPostuserExcel">
+    		<param name="savePath">/Ptrain/Base/Upload/</param>
+    		<result name="success">/Ptrain/Base/Puser_List1.jsp</result>
+    		<result name="input">/Ptrain/Base/Puser_Set.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_岗位人员 反向设置 设置 弹出 -->
+    	<action name="setptrainpostuserreve" class="ptrainPostuserAction" method="setPtrainPostuserReve">
+    		<result name="success">/Ptrain/Base/Puser_Win1.jsp</result>
+		</action>
+
+		 <!--莆田岗位培训_岗位人员 反向设置 保存 
+    	<action name="saveptrainpostuserreve" class="ptrainPostuserAction" method="savePtrainPostuserReve">
+    		<result name="success">/Ptrain/Base/Puser_List.jsp</result>
+		</action>-->
+		
+		<!-- ****************************** 修改后 ******************************** -->
+		
+		<!-- 根据条件查询 三问专业类别列表 -->
+    	<action name="findThreeSpecListByJq" class="ptrainPostuserAction" method="findThreeSpecListByJq"></action>
+		<!-- 根据条件查询 部门列表 -->
+    	<action name="findPtrainDeptByJq" class="ptrainPostuserAction" method="findPtrainDeptByJq"></action>
+		<!-- 根据条件查询 班组列表 -->
+    	<action name="findPtrainDeptGroupByJq" class="ptrainPostuserAction" method="findPtrainDeptGroupByJq"></action>
+    	
+		<!-- 跳转到培训_岗位人员 页面 -->
+		<action name="toforwardpuser" class="ptrainPostuserAction" method="toForwardPuser">
+    		<param name="sign">1</param>
+    		<result name="success">/Ptrain/Base/Puser_List1.jsp</result>
+		</action>
+		
+		<!-- 查询 莆田岗位培训_岗位人员 列表信息 -->
+    	<action name="listptrainpostuser" class="ptrainPostuserAction" method="listPtrainPostuser"></action>
+		
+		<!-- 跳转到培训_岗位人员 列表信息 反向设置页面 -->
+		<action name="toforwardreve" class="ptrainPostuserAction" method="toForwardPuser">
+    		<param name="sign">2</param>
+    		<result name="success">/Ptrain/Base/Puser_List2.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_岗位人员 列表信息 反向设置 列表信息-->
+    	<action name="listptrainpostuser_reve" class="ptrainPostuserAction" method="listPtrainPostuser"></action>
+		
+		<!-- 莆田岗位培训_岗位人员 人员引入[弹出] -->
+    	<action name="setptrainpostuserwin" class="ptrainPostuserAction" method="setPtrainPostuserWin">
+    		<result name="success">/Ptrain/Base/Puser_Win2.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_岗位人员 删除 -->
+    	<action name="deleteptrainpostuser" class="ptrainPostuserAction" method="deletePtrainPostuser"></action>
+		
+		<!-- 莆田岗位培训_岗位人员 导出excel -->
+    	<action name="saveptrainpostuserexpexcel" class="ptrainPostuserAction" method="savePtrainPostuserExpExcel"></action>
+		
+	</package>
+</struts>
+

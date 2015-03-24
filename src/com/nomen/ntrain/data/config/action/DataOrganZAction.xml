@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- 
+	@description 部门和班组机构模块 
+    @author 钱新红
+    @date 2009-05-26
+ -->
+<struts>
+    <package name="DataOrganZ" extends="nsoft-ic" namespace="/Data/OrgZ">
+    	<!-- ==============================JQUERY 相关=============================== -->
+    	<!-- 查询机构树状列表 -->
+    	<action name="findDataOrganZTreeListByJq" class="dataOrganZAction" method="findDataOrganZTreeListByJq"></action>
+    	<!-- 查询机构非树状列表 -->
+    	<action name="findDataOrganZNoTreeListByJq" class="dataOrganZAction" method="findDataOrganZNoTreeListByJq"></action>
+    	<!-- 删除机构 -->
+    	<action name="delDataOrganZBeanByJq" class="dataOrganZAction" method="delDataOrganZBeanByJq"></action>
+    	<!-- 验证codevalue是否重复 -->
+    	<action name="chkDataOrganZCodeValueByJq" class="dataOrganZAction" method="chkDataOrganZCodeValueByJq"></action>
+    	<!-- 更新usesign标志 -->
+    	<action name="updateDataOrganZUseSignByJq" class="dataOrganZAction" method="updateDataOrganZUseSignByJq"></action>
+		<!-- 机构调整更名[保存] -->
+    	<action name="saveDataOrganZRenameByJq" class="dataOrganZAction" method="saveDataOrganZRenameByJq"></action>
+    	<!-- 根据选中idStr查询机构树状列表 -->
+    	<action name="findDataOrganZTreeListIdStrByJq" class="dataOrganZAction" method="findDataOrganZTreeListIdStrByJq"></action>
+    	<!-- 根据选中id查询机构Bean -->
+    	<action name="findDataOrganZBeanIdByJq" class="dataOrganZAction" method="findDataOrganZBeanIdByJq"></action>
+    	
+    	
+    	
+    	<!-- 机构维护列表[跳转] -->
+    	<action name="toforwardorganzlist" class="dataOrganZAction" method="toForwardOrganZList">
+    		<result name="success">Main_List.jsp</result>
+    		<param name="fatherid">DATA_DEPTNATURE</param>      		
+		</action>
+    	
+    	<!-- 机构维护设置跳转 -->
+    	<action name="setdataorganzbean" class="dataOrganZAction" method="setDataOrganZBean">
+    		<result name="success">Main_Set1.jsp</result>		
+		</action>
+		
+		<!-- 机构维护设置保存 -->
+		<action name="savedataorganz" class="dataOrganZAction" method="saveDataOrganZ">
+    		<result name="success">Main_Set1.jsp</result>		
+		</action>
+		
+		
+		<!-- 机构调整列表[跳转] -->
+    	<action name="toforwardorganzrectlist" class="dataOrganZAction" method="toForwardOrganZRectList">
+    		<result name="success">Rect_List.jsp</result>
+    		<param name="fatherid">DATA_DEPTNATURE</param>      		
+		</action>
+		
+    	<!-- 机构调整升级跳转 -->
+    	<action name="setdataorganzuplev" class="dataOrganZAction" method="setDataOrganZUpLev">
+    		<result name="success">Rect_Set1.jsp</result>		
+		</action>
+		
+		<!-- 机构调整升级保存 -->
+		<action name="savedataorganzuplev" class="dataOrganZAction" method="saveDataOrganZUpLev"></action>
+		
+		<!-- 机构调整合并跳转 -->
+    	<action name="setdataorganzmerge" class="dataOrganZAction" method="setDataOrganZMerge">
+    		<result name="success">Rect_Set2.jsp</result>		
+		</action>
+		
+		<!-- 机构调整合并保存 -->
+		<action name="savedataorganzmerge" class="dataOrganZAction" method="saveDataOrganZMerge"></action>
+		
+    </package>
+</struts>

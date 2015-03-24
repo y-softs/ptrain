@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_试题
+@author 林木山
+@date 2014-3-5
+-->
+<struts>
+    <package name="PtrainQuestions" extends="nsoft-ic" namespace="/Ptrain/Questions">
+		<!-- ======================Jquery相关================= -->
+		<!-- 更新莆田岗位培训_试题 [启用|禁止] -->
+    	<action name="updatePtrainQuestionsUsesignByJq" class="ptrainQuestionsAction" method="updatePtrainQuestionsUsesignByJq"></action>
+
+		<!-- 莆田岗位培训_试题 列表信息 -->
+    	<action name="toforwardqueslist" class="ptrainQuestionsAction" method="toForwardQuesList">
+    		<result name="success">/Ptrain/Base/Ques_List1.jsp</result>
+		</action>
+		
+    	<action name="listptrainquestions" class="ptrainQuestionsAction" method="listPtrainQuestions"></action>
+
+		<!-- 莆田岗位培训_试题 新增、修改[跳转] -->
+    	<action name="setptrainquestions" class="ptrainQuestionsAction" method="setPtrainQuestions">
+    		<result name="success">/Ptrain/Base/Ques_Set1.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_试题 详细信息 -->
+    	<action name="setptrainquestionswin" class="ptrainQuestionsAction" method="setPtrainQuestionsWin">
+    		<result name="success">/Ptrain/Base/Ques_Win1.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_试题 新增/修改[保存]-->
+    	<action name="saveptrainquestions" class="ptrainQuestionsAction" method="savePtrainQuestions"></action>
+
+		<!-- 莆田岗位培训_试题 删除 -->
+    	<action name="deleteptrainquestions" class="ptrainQuestionsAction" method="deletePtrainQuestions"></action>
+		<!-- ======================Excel导入相关================= -->
+		<!-- 莆田岗位培训_试题临时表 Excel导入[跳转] -->
+    	<action name="setptrainquestionstempexcel" class="ptrainQuestionsAction" method="setPtrainQuestionstempExcel">
+    		<result name="success">/Ptrain/Base/Ques_Set2.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_试题临时表 excel导入[保存] -->
+    	<action name="saveptrainquestionstempexcel" class="ptrainQuestionsAction" method="savePtrainQuestionstempExcel">
+    		<param name="savePath">/Ptrain/Base/Upload/</param>
+    		<result name="success">/Ptrain/Base/Ques_List2.jsp</result>
+    		<result name="input">/Ptrain/Base/Ques_Set2.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_试题临时表 列表信息 -->
+    	<action name="toforwardptrainquestionstemp" class="ptrainQuestionsAction" method="toForwardPtrainQuestionstemp">
+    		<result name="success">/Ptrain/Base/Ques_List2.jsp</result>
+		</action>
+		<!-- 莆田岗位培训_试题临时表 列表信息 -->
+    	<action name="listptrainquestionstemp" class="ptrainQuestionsAction" method="listPtrainQuestionstemp"></action>
+		<!-- 莆田岗位培训_试题临时表 修改 弹出 -->
+    	<action name="setptrainquestionstempwin" class="ptrainQuestionsAction" method="setPtrainQuestionstempWin">
+    		<result name="success">/Ptrain/Base/Ques_Win2.jsp</result>
+    	</action>
+		<!-- 莆田岗位培训_试题临时表 修改 保存 -->
+    	<action name="saveptrainquestionstemp" class="ptrainQuestionsAction" method="savePtrainQuestionstemp"></action>
+		<!-- 莆田岗位培训_试题临时表 删除 -->
+    	<action name="deleteptrainquestionstemp" class="ptrainQuestionsAction" method="deletePtrainQuestionstemp"></action>
+		<!-- 莆田岗位培训_试题临时表 临时表导入到主表[批量导入] -->
+    	<action name="saveprrainquesexcel" class="ptrainQuestionsAction" method="savePrrainQuesExcel"></action>
+		<!-- 莆田岗位培训_试题临时表 临时表导入到主表[全部导入] -->
+    	<action name="saveprrainquesexcelall" class="ptrainQuestionsAction" method="savePrrainQuesExcel"></action>
+		<!-- 莆田岗位培训_试题临时表 [取消] -->
+    	<action name="setptrainquestionstempcan" class="ptrainQuestionsAction" method="setPtrainQuestionstempCan">
+    		<result name="success">/Ptrain/Base/Ques_Set2.jsp</result>
+		</action>
+
+	</package>
+</struts>
+

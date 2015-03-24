@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_课件资源表
+@author 林木山
+@date 2014-11-15
+-->
+<sqlMap namespace="PtrainCours">
+	<typeAlias alias="ptrainCoursBean" type="com.nomen.ntrain.ptrain.bean.PtrainCoursBean"/>
+
+	<!-- 查找莆田岗位培训_课件资源表列表信息 -->
+	<select id="findPtrainCoursList" resultClass="ptrainCoursBean" parameterClass="map">
+		select 
+			co.id,c.codename typeid,co.fatherid,co.title,co.content,co.object,co.hour,co.time,co.fileid,co.endsign,co.flowsta,co.subtime,co.flowmark,co.courstype,
+			<isNotEmpty property="thislev">co.intflag</isNotEmpty><isEmpty property="thislev">level intflag</isEmpty>
+		from 
+			ptrain_cours co,ptrain_code c where co.typeid = c.id(+)
+		<isNotEmpty prepend="and" property="typeid">
+			co.typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="codefatherid">
+			c.fatherid = #codefatherid# and c.usesign=1
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowsta">
+			co.flowsta >= #flowsta#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowstathis">
+			co.flowsta = #flowstathis#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="courstype">
+			co.courstype = #courstype#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="coursid">
+			co.id in ($coursid$)
+		</isNotEmpty>
+		<!-- 本级数据 -->
+		<isNotEmpty property="thislev">
+			<isNotEmpty prepend="and" property="fatherid">
+				co.fatherid = #fatherid#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="keyword">
+				$fields$ like '%'||#keyword#||'%'
+			</isNotEmpty>
+			<isNotEmpty property="sortfield">
+				order  by $sortfield$
+			</isNotEmpty>
+		</isNotEmpty>
+		<!-- 非本级数据 -->
+		<isEmpty property="thislev">
+			start with co.fatherid = #fatherid#
+				<isNotEmpty prepend="and" property="keyword">
+					$fields$ like '%'||#keyword#||'%'
+				</isNotEmpty>
+	    	connect by prior co.id = co.fatherid
+			<isNotEmpty property="sortfield">
+				order siblings by $sortfield$
+			</isNotEmpty>
+		</isEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_课件资源表信息 -->
+	<select id="findPtrainCoursBeanById" resultClass="ptrainCoursBean" parameterClass="string">
+		select 
+			co.id,co.typeid,co.fatherid,co.title,co.content,co.object,co.hour,co.time,co.fileid,co.endsign,co.flowsta,co.subtime,co.flowmark,co.courstype,co.producer,c.codename strflag,co.intflag 
+		from 
+			ptrain_cours co,ptrain_code c where co.typeid = c.id(+) and co.id=#value#
+	</select>
+
+	<!-- 添加莆田岗位培训_课件资源表信息 -->
+	<insert id="insertPtrainCours" parameterClass="ptrainCoursBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_cours.nextval as id from dual
+		</selectKey>
+		insert into ptrain_cours
+		  (id,typeid,fatherid,title,content,object,hour,time,fileid,endsign,flowsta,subtime,flowmark,courstype,producer,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#typeid#,#fatherid#,#title#,#content#,#object#,#hour#,#time#,#fileid#,#endsign#,#flowsta#,#subtime#,#flowmark#,#courstype#,#producer#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_课件资源表信息 -->
+	<update id="updatePtrainCours" parameterClass="ptrainCoursBean">
+		update ptrain_cours set  id = #id#
+		<isNotEmpty prepend="," property="typeid">
+			typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="fatherid">
+			fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="title">
+			title = #title#
+		</isNotEmpty>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotNull prepend="," property="object">
+			object = #object#
+		</isNotNull>
+		<isNotNull prepend="," property="hour">
+			hour = #hour#
+		</isNotNull>
+		<isNotNull prepend="," property="time">
+			time = #time#
+		</isNotNull>
+		<isNotEmpty prepend="," property="fileid">
+			fileid = #fileid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="endsign">
+			endsign = #endsign#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="flowsta">
+			flowsta = #flowsta#
+		</isNotEmpty>
+		<isNotNull prepend="," property="subtime">
+			subtime = to_date(#subtime#,'yyyy-mm-dd')
+		</isNotNull>
+		<isNotEmpty prepend="," property="flowmark">
+			flowmark = #flowmark#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="courstype">
+			courstype = #courstype#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="producer">
+			producer = #producer#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_课件资源表信息 -->
+	<delete id="deletePtrainCoursById" parameterClass="string">
+		delete from ptrain_cours where id in (select id from ptrain_cours start with id=$value$ connect by prior id= fatherid)
+	</delete>
+
+</sqlMap>

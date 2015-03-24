@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 投票_前台
+@author 连金亮
+@date 2014-12-16
+-->
+<struts>
+    <package name="PtrainVote" extends="struts-default">
+
+		<!-- 投票_资源列表 -->
+    	<action name="listptrainvote" class="ptrainVoteAction" method="listPtrainVote">
+    		<result name="success">/Web/Vote/Vote_List.jsp</result>
+    	</action>
+    	
+		<!-- 投票_资源详细 -->
+    	<action name="setptrainvote" class="ptrainVoteAction" method="setPtrainVote">
+    		<result name="success">/Web/Vote/Vote_Win2.jsp</result>
+    	</action>
+    	<action name="savePtrainVoteByJq" class="ptrainVoteAction" method="savePtrainVoteByJq"></action>
+	</package>
+</struts>
+

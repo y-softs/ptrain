@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_培训点菜
+@author 林木山
+@date 2014-3-14
+-->
+<sqlMap namespace="PtrainReq">
+	<typeAlias alias="ptrainReqBean" type="com.nomen.ntrain.ptrain.bean.PtrainReqBean"/>
+
+	<!-- 查找莆田岗位培训_培训点菜列表信息 -->
+	<select id="findPtrainReqList" resultClass="ptrainReqBean" parameterClass="map" remapResults="true">
+		select 
+			r.id,r.unitid,c.codename specid,r.itemname,r.itemdesc,r.daycount,r.reqform,r.teacher,fun_getNameAsID(r.requserid,0) requserid,r.reqtype,r.state,r.flowsta,to_char(r.subtime,'yyyy-mm-dd') subtime,r.flowmark,
+			nvl(requsernum,0) intflag,to_char(r.maintime ,'yyyy-mm-dd') maintime,pf.filenum
+		from 
+			ptrain_req r,ptrain_code c,(select reqid,count(*) requsernum  from ptrain_requser group by reqid) ru,
+			(select recid,count(*) filenum  from ptrain_file f where f.modsign=#modsign# group by recid) pf
+		where r.specid = c.id and r.id=ru.reqid(+) and r.id=pf.recid(+)
+		<isNotEmpty prepend="and" property="unitid">
+			r.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="specid">
+			r.specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			r.reqtype = #reqtype#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtypestr">
+			r.reqtype in ($reqtypestr$)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowsta">
+			r.flowsta >= #flowsta#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowstathis">
+			r.flowsta = #flowstathis#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowstagath"><!-- 汇总维护查询的数据 -->
+			(r.reqtype not in ($reqtypegath$) or (r.reqtype in ($reqtypegath$) and r.flowsta = #flowstagath#))
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="state">
+			r.state = #state#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="requserid">
+			r.requserid = #requserid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqid">
+			r.id in ($reqid$)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_培训点菜信息 -->
+	<select id="findPtrainReqBeanById" resultClass="ptrainReqBean" parameterClass="string">
+		select id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,fun_getNameAsID(requserid,0) requserid,reqtype,state,flowsta,to_char(subtime,'yyyy-mm-dd') subtime,flowmark,strflag,intflag from ptrain_req where id=#value#
+	</select>
+
+	<!-- 查找莆田岗位培训_培训点菜信息 -->
+	<select id="findPtrainReqBeanByMap" resultClass="ptrainReqBean" parameterClass="map">
+		select 
+			r.id,r.unitid,c.codename specid,r.itemname,r.itemdesc,r.daycount,r.reqform,r.teacher,fun_getNameAsID(r.requserid,0) requserid,r.reqtype,r.state,r.flowsta,to_char(r.subtime,'yyyy-mm-dd') subtime,r.flowmark,
+			(select count(*) from ptrain_requser where reqid=r.id) intflag,to_char(r.maintime ,'yyyy-mm-dd') maintime
+		from ptrain_req r,ptrain_code c where r.specid = c.id and r.id=#id#
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+	</select>
+
+	<!-- 添加莆田岗位培训_培训点菜信息 -->
+	<insert id="insertPtrainReq" parameterClass="ptrainReqBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_req.nextval as id from dual
+		</selectKey>
+		insert into ptrain_req
+		  (id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,requserid,reqtype,state,flowsta,subtime,flowmark,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#specid#,#itemname#,#itemdesc#,#daycount#,#reqform#,#teacher#,#requserid#,#reqtype#,#state#,#flowsta#,#subtime#,#flowmark#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_培训点菜信息 -->
+	<update id="updatePtrainReq" parameterClass="ptrainReqBean">
+		update ptrain_req set  id = #id#
+		<isNotEmpty prepend="," property="specid">
+			specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="itemname">
+			itemname = #itemname#
+		</isNotEmpty>
+		<isNotNull prepend="," property="itemdesc">
+			itemdesc = #itemdesc#
+		</isNotNull>
+		<isNotEmpty prepend="," property="daycount">
+			daycount = #daycount#
+		</isNotEmpty>
+		<isNotNull prepend="," property="reqform">
+			reqform = #reqform#
+		</isNotNull>
+		<isNotNull prepend="," property="teacher">
+			teacher = #teacher#
+		</isNotNull>
+		<isNotEmpty prepend="," property="requserid">
+			requserid = #requserid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="reqtype">
+			reqtype = #reqtype#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="state">
+			state = #state#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="flowsta">
+			flowsta = #flowsta#
+		</isNotEmpty>
+		<isNotNull prepend="," property="subtime">
+			subtime = to_date(#subtime#,'yyyy-mm-dd')
+		</isNotNull>
+		<isNotEmpty prepend="," property="flowmark">
+			flowmark = #flowmark#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_培训点菜信息 -->
+	<delete id="deletePtrainReqById" parameterClass="string">
+		delete from ptrain_req where id in ($value$)
+	</delete>
+
+	<!-- 删除莆田岗位培训_培训点菜信息 -->
+	<delete id="deletePtrainReqByMap" parameterClass="map">
+		delete from ptrain_req r where unitid = #unitid#
+		<isNotEmpty prepend="and" property="specid">
+			r.specid = #specid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="reqtype">
+			r.reqtype = #reqtype#
+		</isNotEmpty>
+	</delete>
+	
+	<!-- 添加莆田岗位培训_试题信息 记录复制 -->
+	<insert id="insertPtrainReqByCopy" parameterClass="ptrainReqBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_req.nextval as id from dual
+		</selectKey>
+		insert into ptrain_req
+		  (id,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,requserid,reqtype,flowsta,subtime,flowmark,estauser,estatime,mainuser,maintime)
+		  (select #id#,unitid,specid,itemname,itemdesc,daycount,reqform,teacher,requserid,reqtype,flowsta,subtime,flowmark,$estauser$,sysdate,$mainuser$,sysdate
+		  from ptrain_req where id=#intflag#
+		  )
+	</insert>
+
+</sqlMap>

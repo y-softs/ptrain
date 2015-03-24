@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- 
+	@description 人员基本信息模块 
+    @author 钱新红
+    @date 2009-09-30
+    @modifier 丁新良
+    @date 2011-06-18
+ -->
+<struts>
+    <package name="DataUser" extends="nsoft-ic" namespace="/Data/UserZ">
+    	<!-- ==============================JQUERY 相关=============================== -->
+    	<!-- 查询人员基列表 -->
+    	<action name="findDataUserZListByJq" class="dataUserZAction" method="findDataUserZListByJq"></action>
+    	<!-- 删除人员信息 -->
+    	<action name="delDataUserZBeanIdStrByJq" class="dataUserZAction" method="delDataUserZBeanIdStrByJq"></action>
+    	
+    	
+    	<!-- 人员维护列表 -->
+    	<action name="toforwarduserlist" class="dataUserZAction" method="toForwardUserList">
+    		<result name="success">Nor_Main_List1.jsp</result>
+		</action>
+		
+		<!-- 人员维护新增,修改[跳转] -->
+    	<action name="setdatauserzbean" class="dataUserZAction" method="setDataUserZBean">
+    		<result name="success">Nor_Main_Set1.jsp</result>
+		</action>
+		
+		<!-- 人员维护新增,修改[保存] -->
+    	<action name="savedatauserzbean" class="dataUserZAction" method="saveDataUserZBean">
+    		<result name="success">Nor_Main_Set1.jsp</result>
+		</action>
+        
+    </package>
+</struts>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 投票_批次
+@author 林木山
+@date 2014-12-15
+-->
+<sqlMap namespace="PtrainVoteapp">
+	<typeAlias alias="ptrainVoteappBean" type="com.nomen.ntrain.ptrain.bean.PtrainVoteappBean"/>
+
+	<!-- 查找投票_批次列表信息 -->
+	<select id="findPtrainVoteappList" resultClass="ptrainVoteappBean" parameterClass="map">
+		select id,appname,defvote from ptrain_voteapp where 1=1
+		<isNotEmpty prepend="and" property="defvote">
+			defvote = #defvote#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找投票_批次信息 -->
+	<select id="findPtrainVoteappBeanById" resultClass="ptrainVoteappBean" parameterClass="string">
+		select id,appname,defvote from ptrain_voteapp where id = #value#
+	</select>
+
+	<!-- 添加投票_批次信息 -->
+	<insert id="insertPtrainVoteapp" parameterClass="ptrainVoteappBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_voteapp.nextval as id from dual
+		</selectKey>
+		insert into ptrain_voteapp
+		  (id,appname,defvote)
+		values
+		  (#id#,#appname#,#defvote#)
+	</insert> 
+
+	<!-- 更新投票_批次信息 -->
+	<update id="updatePtrainVoteapp" parameterClass="ptrainVoteappBean">
+		update ptrain_voteapp set id = #id#
+		<isNotEmpty prepend="," property="appname">
+			appname = #appname#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="defvote">
+			defvote = #defvote#
+		</isNotEmpty>
+		where id = #id#
+	</update>
+
+	<!-- 更新 默认批次为非默认批次 -->
+	<update id="updatePtrainVoteappDefvote" parameterClass="ptrainVoteappBean">
+		update ptrain_voteapp set defvote=0 where id != #id#
+	</update>
+
+	<!-- 删除投票_批次信息 -->
+	<delete id="deletePtrainVoteappById" parameterClass="string">
+		delete from ptrain_voteapp where id in ($value$)
+	</delete>
+
+	<!-- 查找投票_默认批次信息 -->
+	<select id="findDefaultPtrainVoteappBean" resultClass="ptrainVoteappBean" parameterClass="string">
+		select * from ptrain_voteapp where defvote = 1 and rownum = 1
+	</select>
+
+</sqlMap>

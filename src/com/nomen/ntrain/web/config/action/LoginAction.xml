@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- 
+	@description 登录模块 
+    @author 许东雄
+    @date 2014-11-13
+ -->
+<struts>
+    <package name="webLogin" extends="struts-default">
+    	
+		<!-- ===================================================== -->
+    	<!-- ==================  Jq方法 =========================== -->
+    	<!-- ===================================================== -->
+    	<!-- 登录验证Jq -->
+    	<action name="isLoginByJq" class="webLoginAction" method="isLoginByJq"></action>
+    	<!-- 登录 Jq-->
+    	<action name="loginInByJq" class="webLoginAction" method="loginInByJq"></action>
+    	<!-- 注销 Jq-->
+    	<action name="loginOutByJq" class="webLoginAction" method="loginOutByJq"></action>
+    	
+    	<!-- 前台首页 -->
+    	<action name="index" class="webLoginAction" method="indexList">
+    		<result name="success">/Web/Index.jsp</result>
+		</action>
+    	<!-- 登录跳转页 -->
+    	<action name="setlogin" class="webLoginAction" method="setWin">
+    		<result name="success">/Web/Login.jsp</result>
+		</action>
+		<!-- 修改密码跳转页 -->
+    	<action name="setpass" class="webLoginAction" method="setWin">
+    		<result name="success">/Web/Pass.jsp</result>
+		</action>
+    	<!-- 修改密码 -->
+    	<action name="updatePasswordByJq" class="webLoginAction" method="updatePasswordByJq"></action>
+    </package>  
+</struts>

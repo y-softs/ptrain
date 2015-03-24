@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 投票_合法IP段
+@author 林木山
+@date 2014-12-15
+-->
+<struts>
+    <package name="PtrainVoteipconfig" extends="nsoft-ic" namespace="/Ptrain/Voteipconfig">
+		<!-- ===================     JQUERY     ================== -->
+		<!-- 投票_合法IP段 列表信息 -->
+    	<action name="listPtrainVoteipconfigByJq" class="ptrainVoteipconfigAction" method="listPtrainVoteipconfigByJq"></action>
+		<!-- 投票_合法IP段 删除 -->
+    	<action name="deletePtrainVoteipconfigByJq" class="ptrainVoteipconfigAction" method="deletePtrainVoteipconfigByJq"></action>
+
+		<!-- 投票_合法IP段 列表信息 -->
+    	<action name="listptrainvoteipconfig" class="ptrainVoteipconfigAction" method="listPtrainVoteipconfig">
+    		<result name="success">/Ptrain/Vote/Voteipconfig_List.jsp</result>
+		</action>
+
+		<!-- 投票_合法IP段 新增、修改[跳转] -->
+    	<action name="setptrainvoteipconfig" class="ptrainVoteipconfigAction" method="setPtrainVoteipconfig">
+    		<result name="success">/Ptrain/Vote/Voteipconfig_Set.jsp</result>
+		</action>
+
+		<!-- 投票_合法IP段 新增/修改[保存]-->
+    	<action name="saveptrainvoteipconfig" class="ptrainVoteipconfigAction" method="savePtrainVoteipconfig">
+    		<result name="success">/Ptrain/Vote/Voteipconfig_List.jsp</result>
+    		<result name="input">/Ptrain/Vote/Voteipconfig_Set.jsp</result>
+		</action>
+	</package>
+</struts>
+

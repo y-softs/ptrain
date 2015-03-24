@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位学习_附件表
+@author 林木山
+@date 2014-3-14
+-->
+<sqlMap namespace="PtrainFile">
+	<typeAlias alias="ptrainFileBean" type="com.nomen.ntrain.ptrain.bean.PtrainFileBean"/>
+
+	<!-- 查找莆田岗位学习_附件表列表信息 -->
+	<select id="findPtrainFileList" resultClass="ptrainFileBean" parameterClass="map">
+		select id,recid,modsign,filename,savename,savepath,content,strflag,intflag from ptrain_file 
+		where 1=1
+		<isNotEmpty prepend="and" property="recid">
+        	recid=#recid#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="modsign">
+        	modsign=#modsign#
+        </isNotEmpty>
+		<!-- 替换新增-被替换的记录 -->
+        <isNotEmpty prepend="and" property="intflag">
+        	intflag=#intflag#
+        </isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位学习_附件表信息 -->
+	<select id="findPtrainFileBeanById" resultClass="ptrainFileBean" parameterClass="string">
+		select id,recid,modsign,filename,savename,savepath,content,strflag,intflag from ptrain_file where id=#value#
+	</select>
+
+	<!-- 添加莆田岗位学习_附件表信息 -->
+	<insert id="insertPtrainFile" parameterClass="ptrainFileBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_file.nextval as id from dual
+		</selectKey>
+		insert into ptrain_file
+		  (id,recid,modsign,filename,savename,savepath,content,strflag,intflag)
+		values
+		  (#id#,#recid#,#modsign#,#filename#,#savename#,#savepath#,#content#,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 修改附件的外健recid -->
+	<update id="updatePtrainFileByRandomStr" parameterClass="map">
+		update ptrain_file set recid = #recid#,strflag='',intflag=null where strflag = #strflag#
+	</update>
+
+	<!-- 删除日常事务_附件表信息 -->
+	<delete id="deletePtrainFileById" parameterClass="string">
+		delete from ptrain_file where id in ($id$)
+	</delete>
+	
+	<!-- 根据modsign 和recid  删除-->
+	<delete id="deletePtrainFileByMap" parameterClass="map">
+		delete from ptrain_file where modsign=$modsign$ and recid in ($recid$)
+	</delete>
+
+	<!-- 添加莆田岗位学习_附件表信息 记录复制 -->
+	<insert id="insertPtrainFileByCopy" parameterClass="map" >
+		insert into ptrain_file
+		  (id,recid,modsign,filename,savename,savepath,content,strflag,intflag)
+		  (select seq_ptrain_file.nextval,$newrecid$,modsign,filename,'$copyname$',savepath,content,strflag,intflag from ptrain_file where id = #id#)
+<!--		  (select seq_ptrain_file.nextval,$newrecid$,modsign,filename,substr(savename,1,instr(savename, '.')-1)||'$copyname$'||substr(savename,instr(savename, '.')),savepath,content,strflag,intflag from ptrain_file where modsign=$modsign$ and recid in ($recid$))-->
+	</insert> 
+</sqlMap>

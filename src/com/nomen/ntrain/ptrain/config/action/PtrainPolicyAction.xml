@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位学习_抽题策略
+@author 林木山
+@date 2014-3-14
+-->
+<struts>
+    <package name="PtrainPolicy" extends="nsoft-ic" namespace="/Ptrain/Policy">
+		<!-- ====================Jquery相关================ -->
+		<!-- 查询抽题策略 -->
+    	<action name="findPtrainPolicyByJq" class="ptrainPolicyAction" method="findPtrainPolicyByJq"></action>
+
+		<!-- 莆田岗位学习_抽题策略 新增、修改[跳转] -->
+    	<action name="setptrainpolicy" class="ptrainPolicyAction" method="setPtrainPolicy">
+    		<result name="success">/Ptrain/Base/Ploy_Set.jsp</result>
+		</action>
+
+		<!-- 莆田岗位学习_抽题策略 新增/修改[保存]-->
+    	<action name="saveptrainpolicy" class="ptrainPolicyAction" method="savePtrainPolicy">
+    		<result name="success">/Ptrain/Base/Ploy_Set.jsp</result>
+		</action>
+
+	</package>
+</struts>
+

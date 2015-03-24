@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位学习_抽题策略
+@date 2014-3-14
+-->
+<sqlMap namespace="webPolicy">
+	<typeAlias alias="ptrainPolicyBean" type="com.nomen.ntrain.ptrain.bean.PtrainPolicyBean"/>
+
+	<!-- 查找莆田岗位学习_抽题策略列表信息 -->
+	<select id="findPtrainPolicyList" resultClass="ptrainPolicyBean" parameterClass="map">
+		select 
+			p.id,p.unitid,p.typeid,p.amount,to_char(p.score,'FM0.00')score,quenum intflag 
+		from 
+			(select p.id,p.unitid,p.typeid,p.amount,score,0 intflag from ptrain_policy p) p
+			<isEmpty property="alltypeid"><!-- 非全部专业 -->
+				,(select kindid,count(*) quenum from ptrain_questions where  usesign=1 and kindid=#typeid# group by kindid) q
+			</isEmpty>
+			<isNotEmpty property="alltypeid"><!-- 全部专业 -->
+				,(select count(*) quenum from ptrain_questions where 1=1<isNotEmpty property="typeid"> and kindid in($typeidstr$)</isNotEmpty> and usesign=1) q
+			</isNotEmpty>
+		where 1=1
+		<isEmpty prepend="and" property="alltypeid"><!-- 非全部专业 -->
+			p.typeid(+) = q.kindid
+		</isEmpty>
+		<isNotEmpty prepend="and" property="alltypeid"><!-- 全部专业 -->
+			intflag(+) <![CDATA[<=]]> q.quenum
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid(+) = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			p.typeid(+) = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+</sqlMap>

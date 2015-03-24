@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位学习_抽题策略
+@author 林木山
+@date 2014-3-14
+-->
+<sqlMap namespace="PtrainParam">
+	<typeAlias alias="ptrainParamBean" type="com.nomen.ntrain.ptrain.bean.PtrainParamBean"/>
+
+	<!-- 查找莆田岗位学习_抽题策略列表信息 -->
+	<select id="findPtrainParamList" resultClass="ptrainParamBean" parameterClass="map">
+		select id,unitid,paramname,paramvalue,remark,estauser,to_char(estatime,'yyyy-mm-dd') estatime,mainuser,to_char(maintime,'yyyy-mm-dd') maintime,strflag,intflag from ptrain_param where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位学习_抽题策略信息 -->
+	<select id="findPtrainParamBeanById" resultClass="ptrainParamBean" parameterClass="string">
+		select id,unitid,paramname,paramvalue,remark,strflag,intflag from ptrain_param where id=#value#
+	</select>
+
+	<!-- 添加莆田岗位学习_抽题策略信息 -->
+	<insert id="insertPtrainParam" parameterClass="ptrainParamBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_param.nextval as id from dual
+		</selectKey>
+		insert into ptrain_param
+		  (id,unitid,paramname,paramvalue,remark,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#paramname#,#paramvalue#,#remark#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位学习_抽题策略信息 -->
+	<update id="updatePtrainParam" parameterClass="ptrainParamBean">
+		update ptrain_param set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="paramname">
+			paramname = #paramname#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="paramvalue">
+			paramvalue = #paramvalue#
+		</isNotEmpty>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位学习_抽题策略信息 -->
+	<delete id="deletePtrainParamById" parameterClass="string">
+		delete from ptrain_param where id in ($value$)
+	</delete>
+
+</sqlMap>

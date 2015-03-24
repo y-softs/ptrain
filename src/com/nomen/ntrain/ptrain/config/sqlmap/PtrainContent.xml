@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_资源表
+@author 林木山
+@date 2014-11-17
+-->
+<sqlMap namespace="PtrainContent">
+	<typeAlias alias="ptrainContentBean" type="com.nomen.ntrain.ptrain.bean.PtrainContentBean"/>
+
+	<!-- 查找莆田岗位培训_资源表列表信息 -->
+	<select id="findPtrainContentList" resultClass="ptrainContentBean" parameterClass="map">
+		select 
+			co.id,co.unitid,co.kind,c.codename typeid,co.title,co.content,co.flowsta,co.subtime,co.flowmark,co.usesign,co.sortnum 
+		from 
+			ptrain_content co,ptrain_code c where co.typeid = c.id and c.usesign=1
+		<isNotEmpty prepend="and" property="unitid">
+			co.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="kind">
+			co.kind = #kind#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			co.typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="usesign">
+			co.usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="fatherid">
+			c.fatherid = #fatherid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowsta">
+			co.flowsta >= #flowsta#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="flowstathis">
+			co.flowsta = #flowstathis#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="contentid">
+			co.id in ($contentid$)
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_资源表信息 -->
+	<select id="findPtrainContentBeanById" resultClass="ptrainContentBean" parameterClass="string">
+		select 
+			co.id,co.unitid,co.kind,co.typeid,co.title,co.content,co.flowsta,co.usesign,co.sortnum,c.codename strflag,co.intflag 
+		from 
+			ptrain_content co,ptrain_code c where co.typeid = c.id and co.id=#value#
+	</select>
+
+	<!-- 添加莆田岗位培训_资源表信息 -->
+	<insert id="insertPtrainContent" parameterClass="ptrainContentBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_content.nextval as id from dual
+		</selectKey>
+		insert into ptrain_content
+		  (id,unitid,kind,typeid,title,content,flowsta,subtime,flowmark,usesign,sortnum,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#kind#,#typeid#,#title#,#content#,#flowsta#,#subtime#,#flowmark#,#usesign#,#sortnum#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_资源表信息 -->
+	<update id="updatePtrainContent" parameterClass="ptrainContentBean">
+		update ptrain_content set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="kind">
+			kind = #kind#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="typeid">
+			typeid = #typeid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="title">
+			title = #title#
+		</isNotEmpty>
+		<isNotNull prepend="," property="content">
+			content = #content#
+		</isNotNull>
+		<isNotEmpty prepend="," property="flowsta">
+			flowsta = #flowsta#
+		</isNotEmpty>
+		<isNotNull prepend="," property="subtime">
+			subtime = to_date(#subtime#,'yyyy-mm-dd')
+		</isNotNull>
+		<isNotEmpty prepend="," property="flowmark">
+			flowmark = #flowmark#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="usesign">
+			usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="sortnum">
+			sortnum = #sortnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_资源表信息 -->
+	<delete id="deletePtrainContentById" parameterClass="string">
+		delete from ptrain_content where id in ($value$)
+	</delete>
+	
+	<!-- 查询排序号 -->
+	<select id="findPtrainContentSortnum" parameterClass="map" resultClass="string">
+	    select count(*)+1 from ptrain_content co where kind = #kind# 
+		<isNotEmpty prepend="and" property="unitid">
+			co.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="typeid">
+			typeid = #typeid# 
+	    </isNotEmpty>
+	</select>
+
+</sqlMap>

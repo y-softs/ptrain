@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+<sqlMapConfig>
+    <settings cacheModelsEnabled="true" enhancementEnabled="true" errorTracingEnabled="true" lazyLoadingEnabled="true" useStatementNamespaces="true"/>
+    <typeHandler callback="org.springframework.orm.ibatis.support.BlobByteArrayTypeHandler" javaType="[B" jdbcType="BLOB"/>
+    <typeHandler callback="com.nomen.ntrain.util.LargeStringTypeHandler" javaType="java.lang.String"/>
+
+
+    <!-- 基础管理子系统 -->	
+  	<sqlMap resource="com/nomen/ntrain/base/config/sqlmap/Login.xml"/>  
+  	
+  	<sqlMap resource="com/nomen/ntrain/base/config/sqlmap/BaseMenu.xml"/>
+   	<sqlMap resource="com/nomen/ntrain/base/config/sqlmap/BaseRole.xml"/>
+   	<sqlMap resource="com/nomen/ntrain/base/config/sqlmap/BaseRoleUser.xml"/>
+   	<sqlMap resource="com/nomen/ntrain/base/config/sqlmap/BaseOptLog.xml"/>
+   	<sqlMap resource="com/nomen/ntrain/base/config/sqlmap/BaseException.xml"/>
+   	<!-- 机构 -->
+   	<sqlMap resource="com/nomen/ntrain/data/config/sqlmap/DataOrganZ.xml"/>
+  	<sqlMap resource="com/nomen/ntrain/data/config/sqlmap/DataUserZ.xml"/>
+  	
+  
+	 <!-- 莆田岗位培训管理系统 -->
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainCode.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainQuestions.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainQuestionstemp.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainPostuser.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainManager.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainPorg.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainTeacher.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainParam.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainPolicy.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainReq.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainReqtemp.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainFile.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainFlow.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainRequser.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainAsk.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainAskitem.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainBbs.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainCours.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainContent.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainVotesrc.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainVoteapp.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainVoteitem.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/ptrain/config/sqlmap/PtrainVoteipconfig.xml"/>
+	 
+	 
+	 <!-- 前台 -->
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebBbs.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebQuestions.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebAsk.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebAskitem.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebPolicy.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebPostuser.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebRequser.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebContent.xml"/>
+	 <sqlMap resource="com/nomen/ntrain/web/config/sqlmap/WebCours.xml"/>
+</sqlMapConfig>

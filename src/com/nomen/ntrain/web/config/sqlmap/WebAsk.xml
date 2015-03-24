@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_每日三问
+@author 林木山
+@date 2014-3-24
+-->
+<sqlMap namespace="webAsk">
+	<typeAlias alias="ptrainAskBean" type="com.nomen.ntrain.ptrain.bean.PtrainAskBean"/>
+
+	<!-- 查找每日三问 累计答题次数/得分 -->
+	<select id="findPtrainAskStat" resultClass="ptrainAskBean" parameterClass="map">
+		select count(*) asktotal, to_char(sum(a.score),'FM999990.00') score from ptrain_ask a where subtime is not null
+		<isNotEmpty prepend="and" property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="year">
+			to_char(subtime,'yyyy')=#year#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="month">
+			to_char(subtime,'mm')=#month#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="day">
+			to_char(subtime,'dd')=#day#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找每日三问 未完成答题三问主记录信息 -->
+	<select id="findPtrainAskNoAskid" resultClass="string" parameterClass="map">
+		select max(id) id from ptrain_ask where subtime is null
+		<isNotEmpty prepend="and" property="userid">
+			userid = #userid#
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找每日三问 出题轮次 -->
+	<select id="findPtrainAskPushnum" resultClass="ptrainAskBean" parameterClass="map">
+		select (case when pushtime!=to_char(sysdate,'yyyy-mm-dd') then 1 else a.pushnum end) pushnum,p.paramvalue intflag,subtime from (select max(pushnum) pushnum, max(subtime) subtime, max(pushtime) pushtime from(select pushnum,subtime,to_char(pushtime,'yyyy-mm-dd') pushtime from ptrain_ask where 1=1
+		<isNotEmpty prepend="and" property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="pushtime">
+			to_char(pushtime,'yyyy-mm-dd') =#pushtime#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="subtime">
+			(to_char(subtime,'yyyy-mm-dd') = #subtime# or subtime is null)
+		</isNotEmpty> order by pushnum desc) where rownum=1) a,ptrain_param p where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			p.unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="paramname">
+			p.paramname = #paramname#
+		</isNotEmpty>
+	</select>
+
+
+	<!-- 添加莆田岗位培训_每日三问信息 -->
+	<insert id="insertPtrainAsk" parameterClass="ptrainAskBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_ask.nextval as id from dual
+		</selectKey>
+		insert into ptrain_ask
+		  (id,unitid,userid,pushnum,pushtime,score,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#userid#,#pushnum#,sysdate,#score#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_每日三问信息 -->
+	<update id="updatePtrainAsk" parameterClass="ptrainAskBean">
+		update ptrain_ask t set id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="userid">
+			userid = #userid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="pushnum">
+			pushnum = #pushnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="pushtime">
+			pushtime = #pushtime#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="score">
+			score = (select sum(ansscore) from ptrain_askitem where askid=t.id)
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="subtime">
+			subtime = to_date(#subtime#,'yyyy-mm-dd')
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_每日三问信息 -->
+	<delete id="deletePtrainAskById" parameterClass="string">
+		delete from ptrain_ask where id in ($value$)
+	</delete>	
+
+</sqlMap>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- 
+	@description 技术论坛模块 
+    @author 许东雄
+    @date 2014-11-13
+ -->
+<struts>
+    <package name="webBbs" extends="nsoft-web" namespace="/pt/bbs">
+<!--    	<global-results>-->
+<!--			<result name="nodata">/Include/NoData.jsp</result>-->
+<!--		</global-results>-->
+		<!--==========================JQuery相关============================-->
+    	<!-- Jq 帖子互动 列表-->
+    	<action name="listTrainBbsChildByJq" class="webBbsAction" method="listTrainBbsChildByJq"></action>
+    	<!--  回复 Jq -->
+    	<action name="insertPtrainBbsByJq" class="webBbsAction" method="insertPtrainBbsByJq"></action>
+    	<!--  累加下载次数 Jq -->
+    	<action name="DownloadNumberByJq" class="webBbsAction" method="DownloadNumberByJq"></action>
+    	<!--  点赞 Jq -->
+    	<action name="onClickNiceByJq" class="webBbsAction" method="onClickNiceByJq"></action>
+    	
+    	<!-- 知识问答 列表 -->
+    	<action name="listtrainbbs" class="webBbsAction" method="listTrainBbs">
+    		<param name="nature">2</param>    		
+    		<param name="KIND">1</param>
+    		<result name="success">/Web/Bbs/Bbs_List1.jsp</result>
+		</action>
+		<!-- 资源共享 列表 -->
+    	<action name="listtrainbbs_share" class="webBbsAction" method="listTrainBbs">
+    		<param name="nature">2</param>
+    		<param name="KIND">0</param>
+    		<result name="success">/Web/Bbs/Bbs_List2.jsp</result>
+		</action>
+		<!-- 规章制度 列表 -->
+    	<action name="listtrainbbs_rules" class="webBbsAction" method="listTrainBbs">
+    		<param name="nature">2</param>
+    		<param name="KIND">2</param>
+    		<result name="success">/Web/Bbs/Bbs_List3.jsp</result>
+		</action>
+		<!-- 帖子信息 -->
+		<action name="setbbstopic" class="webBbsAction" method="setBbsTopic">
+    		<result name="Topic1">/Web/Bbs/Bbs_Topic1.jsp</result>
+    		<result name="Topic2">/Web/Bbs/Bbs_Topic2.jsp</result>
+		</action>
+		<!--  帖子互动 列表 -->
+    	<action name="listtrainbbschild" class="webBbsAction" method="listTrainBbsChild">
+    		<result name="success">/Web/Bbs/Bbs_Win1.jsp</result>
+		</action>
+		<!--  新增/修改 [跳转] -->
+    	<action name="settrainbbs" class="webBbsAction" method="setTrainBbs">
+    		<!-- 上传文件路径 -->
+			<param name="SAVEPATH">/Web/Bbs/Upload/</param>
+    		<result name="success">/Web/Bbs/${setpage}.jsp</result>
+		</action>
+		<!-- 回复内容 列表 -->
+		<action name="settrainbbswin" class="webBbsAction" method="setTrainBbsWin">
+    		<result name="success">/Web/Bbs/${setpage}.jsp</result>
+		</action>
+		<!--  帖子互动 列表 -->
+    	<action name="savetrainbbs" class="webBbsAction" method="saveTrainBbs"></action>
+    	<!--  回答|评价  [跳转] -->
+    	<action name="settrainans" class="webBbsAction" method="setTrainAns">
+    		<result name="success">/Web/Bbs/${setpage}.jsp</result>
+		</action>		
+		<!--  转帖 保存 -->
+    	<action name="savetrainbbsreprint" class="webBbsAction" method="saveTrainBbsReprint"></action>
+		<!--  对专家解答进行评价 [保存] -->
+    	<action name="savetrainbbsbyevasign" class="webBbsAction" method="saveTrainBbsByEvaSign"></action>	
+    	<!--  删除 主帖 -->
+    	<action name="deletetrainbbsbyid" class="webBbsAction" method="deleteTrainBbsById">
+    		<result name="success">/Web/Bbs/${listpage}.jsp</result>
+		</action>
+		<!--  删除 子级记录 -->
+    	<action name="deletetrainbbschildbyid" class="webBbsAction" method="deleteTrainBbsChildById">
+    		<result name="success">/Web/Bbs/Bbs_Win1.jsp</result>
+		</action>
+    </package>  
+</struts>

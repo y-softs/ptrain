@@ -1,0 +1,50 @@
+{
+    "totalCount": 1328,
+    "items": [
+        {
+            "ORGANNAME":"研发部",
+            "ORGANSHORT":"研发部",
+            "ORGANENG":"DEV",
+            "ORGANWH":"0001",
+            "ORGANSTAT":"1",
+            "LEV":"1",
+            "ENDSIGN":"0"
+        },
+        {
+            "ORGANNAME":"研发部1",
+            "ORGANSHORT":"研发部1",
+            "ORGANENG":"DEV",
+            "ORGANWH":"0001",
+            "ORGANSTAT":"1",
+            "LEV":"2",
+            "ENDSIGN":"0"
+        },
+        {
+            "ORGANNAME":"研发部1-小组",
+            "ORGANSHORT":"研发部1",
+            "ORGANENG":"DEV",
+            "ORGANWH":"0001",
+            "ORGANSTAT":"1",
+            "LEV":"3",
+            "ENDSIGN":"1"
+        },
+        {
+            "ORGANNAME":"研发部2",
+            "ORGANSHORT":"研发部2",
+            "ORGANENG":"DEV",
+            "ORGANWH":"0001",
+            "ORGANSTAT":"1",
+            "LEV":"2",
+            "ENDSIGN":"1"
+        },
+        {
+            "ORGANNAME":"综合部",
+            "ORGANSHORT":"综合部",
+            "ORGANENG":"ALL",
+            "ORGANWH":"0002",
+            "ORGANSTAT":"0",
+            "LEV":"1",
+            "ENDSIGN":"0"
+        }
+    ]
+}

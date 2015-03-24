@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 莆田岗位培训_咨询公司
+@author 林木山
+@date 2014-3-13
+-->
+<sqlMap namespace="PtrainPorg">
+	<typeAlias alias="ptrainPorgBean" type="com.nomen.ntrain.ptrain.bean.PtrainPorgBean"/>
+
+	<!-- 查找莆田岗位培训_咨询公司列表信息 -->
+	<select id="findPtrainPorgList" resultClass="ptrainPorgBean" parameterClass="map" remapResults="true">
+		select id,unitid,orgname,orgdesc,orgcase,contact,usesign,sortnum,estauser,to_char(estatime,'yyyy-mm-dd') estatime,mainuser,to_char(maintime,'yyyy-mm-dd') maintime,strflag,intflag from ptrain_porg where 1=1
+		<isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+			$fields$ like '%'||#keyword#||'%'
+		</isNotEmpty>
+		<isNotEmpty property="sortfield">
+			order by $sortfield$
+		</isNotEmpty>
+	</select>
+
+	<!-- 查找莆田岗位培训_咨询公司信息 -->
+	<select id="findPtrainPorgBeanById" resultClass="ptrainPorgBean" parameterClass="string">
+		select id,unitid,orgname,orgdesc,orgcase,contact,usesign,sortnum,strflag,intflag from ptrain_porg where id=#value#
+	</select>
+	
+	<!-- 查询排序号 -->
+	<select id="findPtrainPorgSortnum" parameterClass="map" resultClass="string">
+	    select count(*)+1 from ptrain_porg where 1=1
+	    <isNotEmpty prepend="and" property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+	</select>
+
+	<!-- 添加莆田岗位培训_咨询公司信息 -->
+	<insert id="insertPtrainPorg" parameterClass="ptrainPorgBean" >
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_porg.nextval as id from dual
+		</selectKey>
+		insert into ptrain_porg
+		  (id,unitid,orgname,orgdesc,orgcase,contact,usesign,sortnum,estauser,estatime,mainuser,maintime,strflag,intflag)
+		values
+		  (#id#,#unitid#,#orgname#,#orgdesc#,#orgcase#,#contact#,#usesign#,#sortnum#,#estauser#,sysdate,#mainuser#,sysdate,#strflag#,#intflag#)
+	</insert> 
+
+	<!-- 更新莆田岗位培训_咨询公司信息 -->
+	<update id="updatePtrainPorg" parameterClass="ptrainPorgBean">
+		update ptrain_porg set  id = #id#
+		<isNotEmpty prepend="," property="unitid">
+			unitid = #unitid#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="orgname">
+			orgname = #orgname#
+		</isNotEmpty>
+		<isNotNull prepend="," property="orgdesc">
+			orgdesc = #orgdesc#
+		</isNotNull>
+		<isNotNull prepend="," property="orgcase">
+			orgcase = #orgcase#
+		</isNotNull>
+		<isNotNull prepend="," property="contact">
+			contact = #contact#
+		</isNotNull>
+		<isNotEmpty prepend="," property="usesign">
+			usesign = #usesign#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="sortnum">
+			sortnum = #sortnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+			,maintime = sysdate
+		where  id = #id#
+	</update>
+
+	<!-- 删除莆田岗位培训_咨询公司信息 -->
+	<delete id="deletePtrainPorgById" parameterClass="string">
+		delete from ptrain_porg where id in ($value$)
+	</delete>
+
+	<!-- 删除莆田岗位培训_咨询公司信息 -->
+	<delete id="deletePtrainPorgByMap" parameterClass="map">
+		delete from ptrain_porg where unitid=#unitid#
+	</delete>
+
+</sqlMap>

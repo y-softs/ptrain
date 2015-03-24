@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!--
+@description 莆田岗位培训_培训点菜
+@author 林木山
+@date 2014-3-14
+-->
+<struts>
+    <package name="PtrainReq" extends="nsoft-ic" namespace="/Ptrain/Req">
+		<!-- =========================Jquery===================== -->
+		<!-- 莆田岗位培训_培训点菜 列表信息 -->
+    	<action name="listPtrainReqByJq" class="ptrainReqAction" method="listPtrainReqByJq"></action>
+		<!-- 专业类别 -->
+    	<action name="findSpecListByJq" class="ptrainReqAction" method="findSpecListByJq"></action>
+		<!-- 培训点菜临时表 列表信息 -->
+    	<action name="listPtrainReqtempByJq" class="ptrainReqAction" method="listPtrainReqtempByJq"></action>
+		
+
+		<!-- 莆田岗位培训_培训点菜 培训中心加菜 列表信息 -->
+    	<action name="listptrainreq_com" class="ptrainReqAction" method="listPtrainReq">
+    		<param name="sign">1</param>
+    		<result name="success">/Ptrain/Request/Conte_Cmain_List1.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+		<!-- 莆田岗位培训_培训点菜 兼职教师加菜 列表信息 -->
+    	<action name="listptrainreq_exp" class="ptrainReqAction" method="listPtrainReq">
+    		<param name="sign">2</param>
+    		<result name="success">/Ptrain/Request/Conte_Emain_List1.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+		<!-- 莆田岗位培训_培训点菜 员工加菜 列表信息 -->
+    	<action name="listptrainreq_user" class="ptrainReqAction" method="listPtrainReq">
+    		<param name="sign">3</param>
+    		<result name="success">/Ptrain/Request/Conte_User_List.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+		<!-- 莆田岗位培训_培训点菜 菜单审批 列表信息 -->
+    	<action name="listptrainreq_uchk" class="ptrainReqAction" method="listPtrainReq">
+    		<param name="sign">4</param>
+    		<result name="success">/Ptrain/Request/Conte_Uchk_List.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+		<!-- 莆田岗位培训_培训点菜 汇总维护 列表信息 -->
+    	<action name="listptrainreq_gath" class="ptrainReqAction" method="listPtrainReq">
+    		<param name="sign">5</param>
+    		<result name="success">/Ptrain/Request/Conte_Gath_List.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+		<!-- 莆田岗位培训_培训点菜 课件培训点菜 列表信息 -->
+    	<action name="listptrainreq_cour" class="ptrainReqAction" method="listPtrainReq">
+    		<param name="sign">6</param>
+    		<result name="success">/Ptrain/Request/Conte_Cour_List1.jsp</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+
+		<!-- =========================================== -->
+		<!-- ===================[公共]==================== -->
+		<!-- =========================================== -->
+		<!-- 莆田岗位培训_培训点菜 新增、修改[跳转] -->
+    	<action name="setptrainreq" class="ptrainReqAction" method="setPtrainReq">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">${setpage}</result>
+		</action>
+		
+		<!-- 莆田岗位培训_培训点菜 新增/修改[保存]-->
+    	<action name="saveptrainreq" class="ptrainReqAction" method="savePtrainReq">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">${listpage}</result>
+    		<result name="input">${setpage}</result>
+		</action>
+		
+		<!-- 莆田岗位培训_培训点菜 详细页面[弹出] -->
+    	<action name="setptrainreqwin" class="ptrainReqAction" method="setPtrainReqWin">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">/Ptrain/Request/Conte_Cmain_Win1.jsp</result>
+		</action>
+
+		<!-- 莆田岗位培训_培训点菜 删除 -->
+    	<action name="deletePtrainReqByJq" class="ptrainReqAction" method="deletePtrainReqByJq">
+    		<!--<result name="success">${listpage}</result> -->
+		</action>
+
+		<!-- 莆田岗位培训_培训点菜 导出Excel -->
+    	<action name="saveptrainreqexpexcel" class="ptrainReqAction" method="savePtrainReqExpExcel">
+    		<result name="success">${listpage}</result>
+		</action>
+		
+		<!-- ======================Excel导入相关================= -->
+		<!-- 莆田岗位培训_培训点菜临时表 Excel导入[跳转] -->
+    	<action name="setptrainreqtempexcel" class="ptrainReqAction" method="setPtrainReqtempExcel">
+    		<result name="success">${settemppage}</result>
+		</action>
+		<!-- 莆田岗位培训_培训点菜临时表 excel导入[保存] -->
+    	<action name="saveptrainreqtempexcel" class="ptrainReqAction" method="savePtrainReqtempExcel">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">${listtemppage}</result>
+    		<result name="input">${settemppage}</result>
+		</action>
+		<!-- 莆田岗位培训_培训点菜临时表 列表信息 -->
+    	<action name="listptrainreqtemp" class="ptrainReqAction" method="listPtrainReqtemp">
+    		<result name="success">${listtemppage}</result>
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+		</action>
+		<!-- 莆田岗位培训_培训点菜临时表 修改 弹出 -->
+    	<action name="setptrainreqtempwin" class="ptrainReqAction" method="setPtrainReqtempWin">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">/Ptrain/Request/Conte_Cmain_Win2.jsp</result>
+    	</action>
+		<!-- 莆田岗位培训_培训点菜临时表 修改 保存 -->
+    	<action name="saveptrainreqtemp" class="ptrainReqAction" method="savePtrainReqtemp">
+    		<result name="success">${listtemppage}</result>
+    	</action>
+		<!-- 莆田岗位培训_培训点菜临时表 删除 -->
+    	<action name="deletePtrainReqtempByJq" class="ptrainReqAction" method="deletePtrainReqtempByJq">
+    		<!-- <result name="success">${listtemppage}</result> -->
+		</action>
+		<!-- 莆田岗位培训_培训点菜临时表 临时表导入到主表[批量导入] -->
+    	<action name="saveptrainreqexcel" class="ptrainReqAction" method="savePtrainReqExcel">
+    		<result name="success">${listtemppage}</result>
+		</action>
+		<!-- 莆田岗位培训_培训点菜临时表 临时表导入到主表[全部导入] -->
+    	<action name="saveptrainreqexcelall" class="ptrainReqAction" method="savePtrainReqExcel">
+    		<result name="success">${listpage}</result>
+		</action>
+		<!-- 莆田岗位培训_培训点菜临时表 [取消] -->
+    	<action name="setptrainreqtempcan" class="ptrainReqAction" method="setPtrainReqtempCan">
+    		<result name="success">${listpage}</result>
+		</action>
+		<!-- =====================流程相关================= -->
+		<!-- 员工加菜 申报/撤回 -->
+		<!-- 菜单审批 同意(不同意)/退回 -->
+    	<action name="updateptrainreqchk" class="ptrainReqAction" method="updatePtrainReqChk">
+    		<result name="success">${listpage}</result>
+		</action>
+		<!-- 菜单审批 审批/批量审批 -->
+		<!-- 菜单审批 批量审批 修改[弹出] -->
+    	<action name="setptrainreqchk" class="ptrainReqAction" method="setPtrainReqChk">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">${setpage}</result>
+		</action>
+		
+		<!-- 菜单审批 批量审批 通过ID串查询列表 -->
+    	<action name="listptrainreqbyids" class="ptrainReqAction" method="listPtrainReqByIds"></action>
+		
+		<!-- 菜单审批 批量审批 修改[保存] -->
+    	<action name="saveptrainreqbychk" class="ptrainReqAction" method="savePtrainReqByChk">
+    		<result name="success">/Ptrain/Request/Conte_Uchk_Win3.jsp</result>
+		</action>
+		
+		<!-- 汇总维护 拟办班/再办班 -->
+    	<action name="saveptrainreqclas" class="ptrainReqAction" method="savePtrainReqClas">
+    		<result name="success">/Ptrain/Request/Conte_Gath_List.jsp</result>
+		</action>
+		
+		<!-- 莆田岗位培训_培训点菜 点菜 详细页面[弹出] -->
+    	<action name="setptrainreqwin_sign" class="ptrainReqAction" method="setPtrainReqWin">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">/Ptrain/Request/Conte_Sign_Win1.jsp</result>
+		</action>
+		
+		<!-- 查询统计_自助需求情况 详细页面[弹出] -->
+    	<action name="setptrainreqwin_que" class="ptrainReqAction" method="setPtrainReqWin">
+    		<param name="savePath">/Ptrain/Request/Upload/</param>
+    		<result name="success">/Ptrain/Query/Sign_State_Win1.jsp</result>
+		</action>
+
+	</package>
+</struts>

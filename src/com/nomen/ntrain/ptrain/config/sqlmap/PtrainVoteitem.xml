@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 投票管理_投票资源
+@author 林木山
+@date 2014-12-15
+-->
+<sqlMap namespace="PtrainVoteitem">
+	<typeAlias alias="ptrainVoteitemBean" type="com.nomen.ntrain.ptrain.bean.PtrainVoteitemBean"/>
+	<!-- 添加岗位培训_代码表信息 -->
+	<insert id="insertPtrainVoteitemBean" parameterClass="ptrainVoteitemBean" >
+		insert into ptrain_voteitem(srcid, voteip, voteflag)
+		values(#srcid#,#voteip#,#voteflag#)
+	</insert>
+	
+	<!-- 统计出某个批次特定客户端IP地址投票的次数 -->
+	<select id="findPtrainVoteitemCount" resultClass="string" parameterClass="map">
+		select count(1) t
+		from ptrain_voteitem vi,
+		     ptrain_votesrc  vs
+		where vi.srcid = vs.id
+    	and   vs.appid    = #appid#
+		and   vi.voteip = #clientip#
+	</select>
+	
+	<!-- 统计出某个批次特定客户端IP地址投票特定的资源ID的次数-->
+	<select id="findPtrainVoteitemCountBySrcId" resultClass="string" parameterClass="map">
+		select count(1) t
+		from ptrain_voteitem vi
+		where vi.srcid = #srcid#
+		<isNotEmpty prepend="and" property="clientip">
+			vi.voteip = #clientip#
+		</isNotEmpty>
+	</select>
+	
+	<!-- 统计出某个批次特定客户端IP地址投票的资源ID列表 -->
+	<select id="findPtrainVotesrcIdList" resultClass="string" parameterClass="map">
+		select vi.srcid
+		from ptrain_voteitem vi,
+		     ptrain_votesrc  vs
+		where vi.srcid = vs.id
+		and   vs.appid    = #appid#
+		and   vi.voteip = #clientip#
+	</select>
+	
+</sqlMap>

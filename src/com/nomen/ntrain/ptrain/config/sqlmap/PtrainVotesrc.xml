@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="gbk" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--
+@description 投票管理_投票资源
+@author 林木山
+@date 2014-12-15
+-->
+<sqlMap namespace="PtrainVotesrc">
+	<typeAlias alias="ptrainVotesrcBean" type="com.nomen.ntrain.ptrain.bean.PtrainVotesrcBean"/>
+	<!-- 投票_资源列表 -->
+	<select id="findPtrainVotesrcList" resultClass="ptrainVotesrcBean" parameterClass="map" remapResults="true">
+		select id,
+		       appid,
+		       srcimg,
+		       srctitle,
+		       srcsign,
+		       srcurl,
+		       author,
+		       unitname,
+		       remark,
+		       sortnum,
+		       nvl(votecount,0)votecount
+		from ptrain_votesrc s
+		where 1=1
+		<isNotEmpty prepend="and" property="appid">
+			s.appid=#appid#
+		</isNotEmpty>
+		<isNotEmpty prepend="and" property="keyword">
+    		s.$fields$ like '%'||#keyword#||'%'
+    	</isNotEmpty>
+		order by s.sortnum
+	</select>
+	
+	<!-- 修改资源对应的投票数=投票数+1 -->
+	<update id="updatePtrainVoteSrcVoteCount" parameterClass="string">
+		update ptrain_votesrc 
+		set  votecount=votecount+1
+		where  id = #id#
+	</update>
+
+	<!-- 投票_资源Bean列表 -->
+	<select id="findPtrainVotesrcBean" resultClass="ptrainVotesrcBean" parameterClass="string" remapResults="true">
+		select id,
+		       appid,
+		       srcimg,
+		       srctitle,
+		       srcsign,
+		       srcurl,
+		       author,
+		       unitname,
+		       remark,
+		       sortnum,
+		       votecount
+		from ptrain_votesrc s
+		where s.id = #value#
+		order by s.sortnum
+	</select>
+	
+	<!-- 添加 投票_资源Bean -->
+	<insert id="insertPtrainVotesrcBean" parameterClass="ptrainVotesrcBean">
+		<selectKey resultClass="java.lang.String" keyProperty="id">
+			select seq_ptrain_votesrc.nextval as id from dual
+		</selectKey>
+		insert into ptrain_votesrc
+		  (id, appid, srcimg, srctitle, srcsign, srcurl, author, unitname, remark, sortnum, votecount, mainuser, maintime, estauser, estatime)
+		values
+		  (#id#, #appid#, #srcimg#, #srctitle#, #srcsign#, #srcurl#, #author#, #unitname#, #remark#, #sortnum#, #votecount#, #mainuser#, sysdate, #estauser#, sysdate)
+	</insert>
+	
+	<!-- 更新投票_资源Bean表信息 -->
+	<update id="updatePtrainVotesrcBean" parameterClass="ptrainVotesrcBean">
+		update ptrain_votesrc
+		    set maintime = sysdate
+		<isNotEmpty prepend="," property="mainuser">
+			mainuser = #mainuser#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="srcimg">
+			srcimg = #srcimg#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="srctitle">
+			srctitle = #srctitle#
+		</isNotEmpty>
+		<isNotNull prepend="," property="srcsign">
+			srcsign = #srcsign#
+		</isNotNull>
+		<isNotEmpty prepend="," property="srcurl">
+			srcurl = #srcurl#
+		</isNotEmpty>
+		<isNotNull prepend="," property="author">
+			author = #author#
+		</isNotNull>
+		<isNotNull prepend="," property="unitname">
+			unitname = #unitname#
+		</isNotNull>
+		<isNotNull prepend="," property="remark">
+			remark = #remark#
+		</isNotNull>
+		<isNotEmpty prepend="," property="sortnum">
+			sortnum = #sortnum#
+		</isNotEmpty>
+		<isNotEmpty prepend="," property="votecount">
+			votecount = #votecount#
+		</isNotEmpty>
+		where  id = #id#
+	</update>
+	
+	<!-- 查询该批次下面的排序号 -->
+	<select id="findPtrainVotesrcNextSortnum" parameterClass="string" resultClass="string">
+	    select count(*)+1 from ptrain_votesrc 
+	    where appid = #appid# 
+	</select>
+	
+	<!-- 删除投票_资源Bean表信息 -->
+	<delete id="deletePtrainVotesrcBean" parameterClass="string">
+		delete from ptrain_votesrc where id in ($id$) 
+	</delete>
+	
+</sqlMap>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	@description 莆田岗位培训管理系统
+	@author 林木山
+	@date 2014-3-4
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<!-- ==========================================代码设置========================================== -->
+	<bean id="ptrainCodeDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainCodeDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainCodeService" class="com.nomen.ntrain.ptrain.service.implement.PtrainCodeServiceImpl" parent="baseService">
+		<property name="ptrainCodeDAO" ref="ptrainCodeDAO" />
+	</bean>
+	<bean id="ptrainCodeAction" class="com.nomen.ntrain.ptrain.action.PtrainCodeAction" scope="prototype">
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- ==========================================基础设置========================================== -->
+	<!-- 试题资源设置 -->
+	<bean id="ptrainQuestionsDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainQuestionsDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainQuestionsService" class="com.nomen.ntrain.ptrain.service.implement.PtrainQuestionsServiceImpl" parent="baseService">
+		<property name="ptrainQuestionsDAO" ref="ptrainQuestionsDAO" />
+	</bean>
+	<bean id="ptrainQuestionsAction" class="com.nomen.ntrain.ptrain.action.PtrainQuestionsAction" scope="prototype">
+		<property name="ptrainQuestionsService" ref="ptrainQuestionsService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="resCodeService" ref="resCodeService" />
+		<property name="loginService" ref="loginService" />
+		<property name="ptrainQuestionstempService" ref="ptrainQuestionstempService" />
+	</bean>
+	<!-- 试题资源临时表 -->
+	<bean id="ptrainQuestionstempDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainQuestionstempDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainQuestionstempService" class="com.nomen.ntrain.ptrain.service.implement.PtrainQuestionstempServiceImpl" parent="baseService">
+		<property name="ptrainQuestionstempDAO" ref="ptrainQuestionstempDAO" />
+		<property name="ptrainQuestionsDAO" ref="ptrainQuestionsDAO" />
+	</bean>
+	<!-- 人员岗位关联 -->
+	<bean id="ptrainPostuserDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainPostuserDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainPostuserService" class="com.nomen.ntrain.ptrain.service.implement.PtrainPostuserServiceImpl" parent="baseService">
+		<property name="ptrainPostuserDAO" ref="ptrainPostuserDAO" />
+	</bean>
+	<bean id="ptrainPostuserAction" class="com.nomen.ntrain.ptrain.action.PtrainPostuserAction" scope="prototype">
+		<property name="ptrainPostuserService" ref="ptrainPostuserService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- 知识版主设置 -->
+	<bean id="ptrainManagerDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainManagerDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainManagerService" class="com.nomen.ntrain.ptrain.service.implement.PtrainManagerServiceImpl" parent="baseService">
+		<property name="ptrainManagerDAO" ref="ptrainManagerDAO" />
+	</bean>
+	<bean id="ptrainManagerAction" class="com.nomen.ntrain.ptrain.action.PtrainManagerAction" scope="prototype">
+		<property name="ptrainManagerService" ref="ptrainManagerService" />
+		<property name="loginService" ref="loginService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+	</bean>
+	<!-- 咨询公司设置 -->
+	<bean id="ptrainPorgDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainPorgDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainPorgService" class="com.nomen.ntrain.ptrain.service.implement.PtrainPorgServiceImpl" parent="baseService">
+		<property name="ptrainPorgDAO" ref="ptrainPorgDAO" />
+	</bean>
+	<bean id="ptrainPorgAction" class="com.nomen.ntrain.ptrain.action.PtrainPorgAction" scope="prototype">
+		<property name="ptrainPorgService" ref="ptrainPorgService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- 讲师团队设置 -->
+	<bean id="ptrainTeacherDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainTeacherDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainTeacherService" class="com.nomen.ntrain.ptrain.service.implement.PtrainTeacherServiceImpl" parent="baseService">
+		<property name="ptrainTeacherDAO" ref="ptrainTeacherDAO" />
+	</bean>
+	<bean id="ptrainTeacherAction" class="com.nomen.ntrain.ptrain.action.PtrainTeacherAction" scope="prototype">
+		<property name="ptrainTeacherService" ref="ptrainTeacherService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- 抽题策略设置 -->
+	<bean id="ptrainParamDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainParamDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainParamService" class="com.nomen.ntrain.ptrain.service.implement.PtrainParamServiceImpl" parent="baseService">
+		<property name="ptrainParamDAO" ref="ptrainParamDAO" />
+	</bean>
+	
+	<bean id="ptrainPolicyDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainPolicyDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainPolicyService" class="com.nomen.ntrain.ptrain.service.implement.PtrainPolicyServiceImpl" parent="baseService">
+		<property name="ptrainPolicyDAO" ref="ptrainPolicyDAO" />
+	</bean>
+	<bean id="ptrainPolicyAction" class="com.nomen.ntrain.ptrain.action.PtrainPolicyAction" scope="prototype">
+		<property name="ptrainPolicyService" ref="ptrainPolicyService" />
+		<property name="ptrainParamService" ref="ptrainParamService" />
+		<property name="resCodeService" ref="resCodeService" />
+	</bean>
+	<!-- ==========================================培训需求========================================== -->
+	<!-- 培训点菜 -->
+	<bean id="ptrainReqDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainReqDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainReqService" class="com.nomen.ntrain.ptrain.service.implement.PtrainReqServiceImpl" parent="baseService">
+		<property name="ptrainReqDAO" ref="ptrainReqDAO" />
+		<property name="ptrainFlowDAO" ref="ptrainFlowDAO" />
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<bean id="ptrainReqAction" class="com.nomen.ntrain.ptrain.action.PtrainReqAction" scope="prototype">
+		<property name="ptrainReqService" ref="ptrainReqService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="ptrainFileService" ref="ptrainFileService" />
+		<property name="loginService" ref="loginService" />
+		<property name="ptrainReqtempService" ref="ptrainReqtempService" />
+	</bean>
+	<!--培训点菜临时表 -->
+	<bean id="ptrainReqtempDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainReqtempDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainReqtempService" class="com.nomen.ntrain.ptrain.service.implement.PtrainReqtempServiceImpl" parent="baseService">
+		<property name="ptrainReqtempDAO" ref="ptrainReqtempDAO" />
+		<property name="ptrainReqDAO" ref="ptrainReqDAO" />
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<!-- 附件表 -->
+	<bean id="ptrainFileDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainFileDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainFileService" class="com.nomen.ntrain.ptrain.service.implement.PtrainFileServiceImpl" parent="baseService">
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<bean id="ptrainFileAction" class="com.nomen.ntrain.ptrain.action.PtrainFileAction" scope="prototype">
+		<property name="ptrainFileService" ref="ptrainFileService" />
+	</bean>
+	<!-- 流程表 -->
+	<bean id="ptrainFlowDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainFlowDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainFlowService" class="com.nomen.ntrain.ptrain.service.implement.PtrainFlowServiceImpl" parent="baseService">
+		<property name="ptrainFlowDAO" ref="ptrainFlowDAO" />
+	</bean>
+	<bean id="ptrainFlowAction" class="com.nomen.ntrain.ptrain.action.PtrainFlowAction" scope="prototype">
+		<property name="ptrainFlowService" ref="ptrainFlowService" />
+	</bean>
+	<!-- 培训点菜 人员报名 -->
+	<bean id="ptrainRequserDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainRequserDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainRequserService" class="com.nomen.ntrain.ptrain.service.implement.PtrainRequserServiceImpl" parent="baseService">
+		<property name="ptrainRequserDAO" ref="ptrainRequserDAO" />
+	</bean>
+	<bean id="ptrainRequserAction" class="com.nomen.ntrain.ptrain.action.PtrainRequserAction" scope="prototype">
+		<property name="ptrainRequserService" ref="ptrainRequserService" />
+		<property name="ptrainReqService" ref="ptrainReqService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- ==========================================常态学习========================================== -->
+	<!-- 每日三问 主表 -->
+	<bean id="ptrainAskDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainAskDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainAskService" class="com.nomen.ntrain.ptrain.service.implement.PtrainAskServiceImpl" parent="baseService">
+		<property name="ptrainAskDAO" ref="ptrainAskDAO" />
+	</bean>
+	<bean id="ptrainAskAction" class="com.nomen.ntrain.ptrain.action.PtrainAskAction" scope="prototype">
+		<property name="ptrainAskService" ref="ptrainAskService" />
+		<property name="ptrainAskitemService" ref="ptrainAskitemService" />
+		<property name="ptrainPolicyService" ref="ptrainPolicyService" />
+		<property name="ptrainPostuserService" ref="ptrainPostuserService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="resCodeService" ref="resCodeService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- 每日三问 子表 -->
+	<bean id="ptrainAskitemDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainAskitemDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainAskitemService" class="com.nomen.ntrain.ptrain.service.implement.PtrainAskitemServiceImpl" parent="baseService">
+		<property name="ptrainAskitemDAO" ref="ptrainAskitemDAO" />
+		<property name="ptrainAskDAO" ref="ptrainAskDAO" />
+	</bean>
+	<!-- 知识学习 -->
+	<bean id="ptrainBbsDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainBbsDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainBbsService" class="com.nomen.ntrain.ptrain.service.implement.PtrainBbsServiceImpl" parent="baseService">
+		<property name="ptrainBbsDAO" ref="ptrainBbsDAO" />
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<bean id="ptrainBbsAction" class="com.nomen.ntrain.ptrain.action.PtrainBbsAction" scope="prototype">
+		<property name="ptrainBbsService" ref="ptrainBbsService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="ptrainFileService" ref="ptrainFileService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- ==========================================资源管理========================================== -->
+	<!-- 课件资源库 -->
+	<bean id="ptrainCoursDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainCoursDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainCoursService" class="com.nomen.ntrain.ptrain.service.implement.PtrainCoursServiceImpl" parent="baseService">
+		<property name="ptrainCoursDAO" ref="ptrainCoursDAO" />
+		<property name="ptrainFlowDAO" ref="ptrainFlowDAO" />
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<bean id="ptrainCoursAction" class="com.nomen.ntrain.ptrain.action.PtrainCoursAction" scope="prototype">
+		<property name="ptrainCoursService" ref="ptrainCoursService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="ptrainFileService" ref="ptrainFileService" />
+	</bean>
+	<!-- 资源表 -->
+	<bean id="ptrainContentDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainContentDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainContentService" class="com.nomen.ntrain.ptrain.service.implement.PtrainContentServiceImpl" parent="baseService">
+		<property name="ptrainContentDAO" ref="ptrainContentDAO" />
+		<property name="ptrainFlowDAO" ref="ptrainFlowDAO" />
+		<property name="ptrainFileDAO" ref="ptrainFileDAO" />
+	</bean>
+	<bean id="ptrainContentAction" class="com.nomen.ntrain.ptrain.action.PtrainContentAction" scope="prototype">
+		<property name="ptrainContentService" ref="ptrainContentService" />
+		<property name="ptrainCodeService" ref="ptrainCodeService" />
+		<property name="ptrainFileService" ref="ptrainFileService" />
+	</bean>
+	<!-- ==========================================投票管理========================================== -->
+	<!-- 投票_批次 -->
+	<bean id="ptrainVoteappDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainVoteappDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainVoteappService" class="com.nomen.ntrain.ptrain.service.implement.PtrainVoteappServiceImpl" parent="baseService">
+		<property name="ptrainVoteappDAO" ref="ptrainVoteappDAO" />
+	</bean>
+	<bean id="ptrainVoteappAction" class="com.nomen.ntrain.ptrain.action.PtrainVoteappAction" scope="prototype">
+		<property name="ptrainVoteappService" ref="ptrainVoteappService" />
+	</bean>
+	<!-- 投票_合法IP段 -->
+	<bean id="ptrainVoteipconfigDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainVoteipconfigDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainVoteipconfigService" class="com.nomen.ntrain.ptrain.service.implement.PtrainVoteipconfigServiceImpl" parent="baseService">
+		<property name="ptrainVoteipconfigDAO" ref="ptrainVoteipconfigDAO" />
+	</bean>
+	<bean id="ptrainVoteipconfigAction" class="com.nomen.ntrain.ptrain.action.PtrainVoteipconfigAction" scope="prototype">
+		<property name="ptrainVoteipconfigService" ref="ptrainVoteipconfigService" />
+		<property name="ptrainVoteappService" ref="ptrainVoteappService" />
+	</bean>
+
+	<!-- 投票_资源 -->
+	<bean id="ptrainVotesrcDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainVotesrcDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainVotesrcService" class="com.nomen.ntrain.ptrain.service.implement.PtrainVotesrcServiceImpl" parent="baseService">
+		<property name="ptrainVotesrcDAO" ref="ptrainVotesrcDAO" />
+	</bean>
+	<bean id="ptrainVotesrcAction" class="com.nomen.ntrain.ptrain.action.PtrainVotesrcAction" scope="prototype">
+		<property name="ptrainVotesrcService" ref="ptrainVotesrcService" />
+		<property name="ptrainVoteappService" ref="ptrainVoteappService" />
+		<property name="loginService" ref="loginService" />
+	</bean>
+	<!-- 投票_前台 -->
+	<bean id="ptrainVoteitemDAO" class="com.nomen.ntrain.ptrain.dao.implement.PtrainVoteitemDAOImpl" parent="nsoftDao"></bean>
+	<bean id="ptrainVoteService" class="com.nomen.ntrain.ptrain.service.implement.PtrainVoteServiceImpl">
+		<property name="ptrainVoteitemDAO" ref="ptrainVoteitemDAO" />
+		<property name="ptrainVotesrcDAO" ref="ptrainVotesrcDAO" />
+	</bean>
+	<bean id="ptrainVoteAction" class="com.nomen.ntrain.ptrain.action.PtrainVoteAction" scope="prototype">
+		<property name="ptrainVotesrcService" ref="ptrainVotesrcService" />
+		<property name="ptrainVoteService" ref="ptrainVoteService" />
+		<property name="ptrainVoteappService" ref="ptrainVoteappService" />
+		<property name="ptrainVoteipconfigService" ref="ptrainVoteipconfigService" />
+	</bean>
+	
+	
+	
+	
+	
+	
+</beans>

@@ -1,0 +1,137 @@
+.em_tab tr td{
+	height:30px; 
+	line-height:20px; 
+	padding:5px 0 5px 5px;
+	border-bottom:1px solid #ccc;
+}
+.em_tab a{font-size: 12px;}
+.td-user{
+	background:#FBFBFB; 
+	border-right:1px solid #E9E9E9; 
+	width:14%; 
+	font-size:13px;
+}
+.experts{
+	width:100%;
+	border:1px solid #9ADF8F; 
+	margin:10px 0 10px 0;
+	background:#D5FFCE;position:relative;
+ }
+.experts .user{
+	line-height:30px; 
+	height:30px; 
+	border-bottom:1px dashed #9ADF8F;
+	font-size:14px; 
+	font-weight:bold; 
+	padding-left:10px;
+}
+.user-time{
+	font-size:12px; 
+	font-weight:normal; 
+	color:#666; 
+	padding-left:10px;
+}
+.eva{position:absolute;top:0px;right:5px;}
+.experts .experts-content{ padding:10px 0 10px 10px;}
+.annex{margin:10px 0 0 5px;padding:10px 0 10px 20px;font-size:12px;border:1px solid #ccc;}
+#the-vote{
+	width:100%;text-align:center;
+	margin-bottom:10px;
+	}
+.votecard {
+	background:url(../Image/sprite.PNG) no-repeat 0 0;
+	padding: 4px;
+	width: 63px;
+	height: 43px;
+	text-align: center;	
+}
+.votecard div {
+	position: relative;
+	overflow: hidden;
+	width: 63px;
+	height: 43px;
+}		 
+.votecard em {
+	display: block;
+	position: relative;
+	width: 63px;
+	height: 33px;
+	padding: 6px 0 6px 0;
+	font: normal 24px/24px "Helvetica Neue","Helvetica","Arial",Sans-serif;
+	color: #45453f;
+}
+.votecard strong {
+	font-weight: bold;
+}
+.votecard span {
+	font-size: 10px;
+	line-height: 10px;
+	display: block;
+	color: #9a9a94;
+}
+a.voteaction {
+	margin: 0 0 0 3px;
+	display: block;
+	text-indent: -9999px;
+	width: 71px;
+	height: 21px;overflow:hidden;
+	background: url(../Image/sprite.PNG) no-repeat -3px -75px; 
+}
+a.disabled{
+	margin: 0 0 0 3px;
+	display: block;
+	text-indent: -9999px;
+	width: 71px;
+	height: 21px; cursor:inherit;
+	background: url(../Image/sprite.PNG) no-repeat -3px -96px;border:none;
+}
+a.voteaction:hover {
+	outline: none;
+	background-position: -3px -54px;
+}
+a.voted,
+a.voted:hover {
+	outline: none;
+	background-position: -3px -96px;
+	cursor: default;
+}
+.pageBtn{
+	background:#D5FFCE;
+    color:#9ADF8F;  
+    font-size:12px;  
+    line-height:20px; margin-right:10px;
+    cursor:pointer; border:1px solid #9ADF8F;
+}  
+.disabled{  
+    background:#fff;
+    color:#eee;  
+    font-size:12px;margin-right:10px;
+    line-height:20px;
+    border:1px solid #eee;
+	cursor:inherit;
+}  
+.turnPage{  
+    display:left;  
+    width:20px;  
+    height:10px;  
+    font-size:12px;  
+    text-align:center;  
+}  
+.page{  
+    font-size:12px;  
+    display:block;  
+}  
+.msg{  
+    font-size:12px;  
+    margin:0 5px 0 5px;  
+    text-align:center;  
+}  
+.choosed{  
+    margin:0 2px 0 2px;  
+}  
+.notChoosed{  
+    cursor:pointer;  
+    background-color:#005757;  
+    color:#fff;  
+    margin:0 2px 0 2px;  
+} 

@@ -1,0 +1,27 @@
+[
+    {
+        "CODENAME":"龙呈集团",
+        "REMARK":"说明...",
+        "CODEVALUE":"A",
+        "LEV":"1",
+        "ENDSIGN":"0"
+    },{
+        "CODENAME":"龙呈公司",
+        "REMARK":"&nbsp;",
+        "CODEVALUE":"A-001",
+        "LEV":"2",
+        "ENDSIGN":"1"
+    },{
+        "CODENAME":"龙创公司",
+        "REMARK":"&nbsp;",
+        "CODEVALUE":"A-002",
+        "LEV":"2",
+        "ENDSIGN":"1"
+    },{
+        "CODENAME":"慧智达公司",
+        "REMARK":"&nbsp;",
+        "CODEVALUE":"A-003",
+        "LEV":"2",
+        "ENDSIGN":"1"
+    }
+]
